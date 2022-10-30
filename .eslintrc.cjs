@@ -24,5 +24,6 @@ module.exports = {
         project: './tsconfig.json'
       }
     }
-  }
+  },
+  ignorePatterns: ['dist/**/*.js']
 }
