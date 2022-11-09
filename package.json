@@ -16,7 +16,8 @@
     "axios": "^1.1.2",
     "koa": "^2.13.4",
     "koa-body": "^6.0.1",
-    "koa-logger": "^3.2.1"
+    "koa-logger": "^3.2.1",
+    "md5": "^2.3.0"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.57",
@@ -25,12 +26,12 @@
     "@types/koa": "^2.13.5",
     "@types/koa-logger": "^3.1.2",
     "@types/koa__router": "^12.0.0",
+    "@types/md5": "^2.3.2",
     "@types/node": "^18.8.5",
     "@types/supertest": "^2.0.12",
-    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.40.0",
     "chokidar": "^3.5.3",
     "eslint": "^8.0.1",
-    "eslint-config-standard-with-typescript": "^23.0.0",
     "eslint-import-resolver-typescript": "^3.5.2",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.0.0",
@@ -63,7 +64,9 @@
     "testEnvironment": "node",
     "collectCoverage": true,
     "coverageProvider": "v8",
-    "testMatch": ["**/test/**/*.[jt]s"],
+    "testMatch": [
+      "**/test/**/*.[jt]s"
+    ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
       "^@src$": "<rootDir>/src"
