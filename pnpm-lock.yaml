@@ -26,6 +26,7 @@ specifiers:
   koa-logger: ^3.2.1
   md5: ^2.3.0
   moment: ^2.29.4
+  simplify-chinese: ^1.2.0
   supertest: ^6.3.0
   ts-jest: ^29.0.3
   typescript: '*'
@@ -39,6 +40,7 @@ dependencies:
   koa-logger: 3.2.1
   md5: 2.3.0
   moment: 2.29.4
+  simplify-chinese: 1.2.0
 
 devDependencies:
   '@swc/cli': 0.1.57_4bkduxx566kwkjizhaeydz2kcy
@@ -4471,6 +4473,10 @@ packages:
   /signal-exit/3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
     dev: true
+
+  /simplify-chinese/1.2.0:
+    resolution: {integrity: sha512-RqXm1nS2I6qHenLrHrkbe/Jomrt3jL1+fHIkt7cdnyzsghJV7g/SzxdxbUyzYuXHCjCJ0T8M7WqYO2Firb3slA==}
+    dev: false
 
   /sisteransi/1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
