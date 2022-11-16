@@ -1,22 +1,43 @@
-import Router from '@koa/router'
-import { queryToplistInfo } from '@/feature/qq'
-import { Source } from '@/typing'
-const router = new Router()
-// todo 逻辑不完善
-router.get('/info/:src', async (ctx, next) => {
-  await next()
-  const { src } = ctx.query
-  try {
-    switch (src) {
-      case Source.qq: {
-        ctx.response.body = await queryToplistInfo()
-      }
-    }
-    ctx.res.statusCode = 200
-    ctx.res.end()
-  } catch (e) {
-    console.error(e)
-  }
-})
+import Router from "@koa/router";
+import {
+  queryToplistAll as queryQQToplistAll,
+  queryToplistDetail,
+} from "@/feature/qq";
+import { queryToplistAll as queryNeteaseToplistAll } from "@/feature/netease";
+import { Source } from "@/typing";
 
-export default router
+const router = new Router();
+// todo: router logic is not completed.
+router.get("/all", async (ctx, next) => {
+  await next();
+  const { src } = ctx.query;
+  switch (src) {
+    case Source.qq: {
+      ctx.response.body = await queryQQToplistAll();
+      break;
+    }
+    case Source.netease: {
+      ctx.response.body = await queryNeteaseToplistAll();
+      break;
+    }
+    default: {
+    }
+  }
+
+  ctx.res.statusCode = 200;
+  ctx.res.end();
+});
+
+router.get("/detail", async (ctx, next) => {
+  await next();
+  const { src, id } = ctx.query;
+  switch (src) {
+    case Source.qq: {
+      ctx.response.body = await queryToplistDetail(Number(id));
+    }
+  }
+  ctx.res.statusCode = 200;
+  ctx.res.end();
+});
+
+export default router;
