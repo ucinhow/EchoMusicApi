@@ -113,3 +113,9 @@ export interface ToplistDetailResponse {
     };
   }>;
 }
+export interface ToplistAllApi {
+  (): Promise<ToplistAllResponse>;
+}
+export interface ToplistDetailApi {
+  (id: number): Promise<ToplistDetailResponse>;
+}

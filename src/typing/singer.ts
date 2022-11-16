@@ -18,3 +18,7 @@ export interface SingerListResponse {
   genre: number;
   singerList: Singer[];
 }
+
+export interface SingerListApi {
+  (): Promise<SingerListResponse>;
+}
