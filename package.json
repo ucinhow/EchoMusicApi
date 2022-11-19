@@ -68,7 +68,7 @@
     "collectCoverage": true,
     "coverageProvider": "v8",
     "testMatch": [
-      "**/test/**/*.[jt]s"
+      "**/test/index.[jt]s"
     ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
