@@ -4,12 +4,13 @@ export enum SearchType {
   album = 2,
   song = 3,
   singer = 4,
+  // lyric = 5,
 }
 interface Album {
   id: string;
   name: string;
   pic: string;
-  singer: string;
+  singer: Array<{ id: string; name: string }>;
 }
 interface Mv {
   id: string;
@@ -27,7 +28,7 @@ interface Singer {
 interface Song {
   id: string;
   name: string;
-  singer: string;
+  singer: Array<{ id: string; name: string }>;
 }
 interface Songlist {
   id: string;
@@ -36,7 +37,12 @@ interface Songlist {
 }
 export interface SearchResponse {
   album?: {
-    itemList: Array<Album>;
+    itemList: Array<{
+      id: string;
+      name: string;
+      pic: string;
+      singer: string;
+    }>;
     title: string;
   };
   mv?: {
@@ -44,11 +50,20 @@ export interface SearchResponse {
     title: string;
   };
   singer?: {
-    itemList: Array<Singer>;
+    itemList: Array<{
+      id: string;
+      name: string;
+      pic: string;
+      //   singer: string;
+    }>;
     title: string;
   };
   song?: {
-    itemList: Array<Song>;
+    itemList: Array<{
+      id: string;
+      name: string;
+      singer: string;
+    }>;
     title: string;
   };
   songlist?: {

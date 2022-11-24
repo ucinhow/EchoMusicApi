@@ -1,7 +1,7 @@
 import axios from "axios";
 import { AxiosResponse } from "axios";
 
-const instance = axios.create({
+const instanceU = axios.create({
   baseURL: "https://u.y.qq.com",
   timeout: 10000,
   headers: {
@@ -15,11 +15,15 @@ const instance = axios.create({
   },
 });
 
-export const post = <P, R>(paramsBody: P, sign: string) =>
-  instance.post<R, AxiosResponse<R>, P>(
+export const postMusics = <P, R>(paramsBody: P, sign: string) =>
+  instanceU.post<R, AxiosResponse<R>, P>(
     `/cgi-bin/musics.fcg?_=${Date.now()}&sign=${sign}`,
     paramsBody
   );
+export const getMusicu = <P, R>(params: P) =>
+  instanceU.get<R>("/cgi-bin/musicu.fcg", {
+    params,
+  });
 
 export const commParams = {
   g_tk: 5381,
@@ -31,5 +35,15 @@ export const commParams = {
   uid: "",
   guid: "",
 };
-
-export default instance;
+export const instanceC = axios.create({
+  baseURL: "https://c.y.qq.com/",
+  headers: {
+    Connection: "keep-alive",
+    Origin: "https://y.qq.com",
+    Referer: "https://y.qq.com",
+    "User-Agent":
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
+  },
+});
+// export const;
+// export default instance;

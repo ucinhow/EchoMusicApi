@@ -124,7 +124,7 @@ export const serializeSearchType = (
             id: item.id,
             name: simplify(item.name),
             pic: convertImage(item.images),
-            singer: simplify(item.artist_list.map((a) => a.name).join(" | ")),
+            singer: item.artist_list.map((a) => ({ id: a.id, name: a.name })),
           }))
         );
       }
@@ -150,9 +150,10 @@ export const serializeSearchType = (
               id: track.id,
               name: simplify(track.name),
               pic: convertImage(track.images),
-              singer: simplify(
-                track.artist_list.map((a) => a.name).join(" | ")
-              ),
+              singer: track.artist_list.map((a) => ({
+                id: a.id,
+                name: a.name,
+              })),
             }))
           );
         });

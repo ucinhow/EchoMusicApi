@@ -18,12 +18,18 @@ export const search = (keyword: string) =>
     },
   }).then((res) => serializeSearch(res.data));
 
-export const searchType = (keyword: string, type: SearchType) =>
+/**
+ * @description: Joox source type search request function. If request success, server will return upto 30 results.
+ * @param {string} key
+ * @param {SearchType} type
+ * @return {*}
+ */
+export const searchType = (key: string, type: SearchType = SearchType.song) =>
   get<SearchTypeParams, SearchTypeResponse>("/openjoox/v3/search_type", {
     params: {
       country: "hk",
       lang: "zh_cn",
-      keyword,
+      key,
       type: convertType(type),
     },
   }).then((res) => serializeSearchType(res.data, type));
