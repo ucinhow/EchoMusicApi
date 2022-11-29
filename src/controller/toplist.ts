@@ -4,7 +4,7 @@ import {
   queryToplistDetail,
 } from "@/feature/qq";
 import { queryToplistAll as queryNeteaseToplistAll } from "@/feature/netease";
-import { Source } from "@/typing";
+import { Source } from "@/common/typing";
 
 const router = new Router();
 // todo: router logic is not completed.

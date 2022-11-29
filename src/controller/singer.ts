@@ -1,6 +1,6 @@
 import Router from "@koa/router";
 import { querySingerList } from "@/feature/qq";
-import { Source } from "@/typing";
+import { Source } from "@/common/typing";
 // import { AxiosError } from "axios";
 const router = new Router();
 // todo: router logic is not completed.

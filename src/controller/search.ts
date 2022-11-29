@@ -1,5 +1,5 @@
 import Router from "@koa/router";
-import { Source } from "@/typing";
+import { Source } from "@/common/typing";
 import { search as searchQQ, searchType as searchTypeQQ } from "@/feature/qq";
 import {
   search as searchJoox,
@@ -7,7 +7,7 @@ import {
 } from "@/feature/joox";
 const router = new Router();
 // todo: router logic is not completed.
-router.get("/", async (ctx, next) => {
+router.get("/type", async (ctx, next) => {
   await next();
   const { src, key } = ctx.query;
   const page = Number(ctx.query.page) || undefined;

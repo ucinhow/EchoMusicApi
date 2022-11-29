@@ -1,5 +1,5 @@
 import { Song as RawSong } from "./typing";
-import { Song } from "@/typing";
+import { Song } from "@/common/typing";
 import { convertImage } from "../common";
 import moment from "moment";
 import { simplify } from "simplify-chinese";

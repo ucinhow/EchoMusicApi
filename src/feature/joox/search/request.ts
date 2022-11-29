@@ -1,4 +1,4 @@
-import { SearchType } from "@/typing";
+import { SearchType } from "@/common/typing";
 import { get } from "../common";
 import { ItemType, SearchResponse, SearchTypeResponse } from "./typing";
 import { convertType, serializeSearch, serializeSearchType } from "./utils";

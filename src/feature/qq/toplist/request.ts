@@ -1,7 +1,7 @@
 import { serializeToplistAll, serializeToplistDetail } from "./utils";
 import { ToplistAllResponse, ToplistDetailResponse } from "./typing";
-import { post, commParams, getSecuritySign } from "../common";
-import { ToplistAllApi, ToplistDetailApi } from "@/typing";
+import { postMusics, commParams, getSecuritySign } from "../common";
+import { ToplistAllApi, ToplistDetailApi } from "@/common/typing";
 import moment from "moment";
 const toplistAllParams = {
   req_0: {
@@ -25,15 +25,17 @@ const createDetailParams = (id: number, num = 300) => ({
 });
 
 export const queryToplistAll: ToplistAllApi = () =>
-  post<typeof toplistAllParams, ToplistAllResponse>(
+  postMusics<typeof toplistAllParams, ToplistAllResponse>(
     toplistAllParams,
     getSecuritySign(toplistAllParams)
   ).then((res) => serializeToplistAll(res.data));
 
-export const queryToplistDetail: ToplistDetailApi = (id: number) => {
+export const queryToplistDetail: ToplistDetailApi = async (id: number) => {
   const params = createDetailParams(id);
-  return post<ReturnType<typeof createDetailParams>, ToplistDetailResponse>(
-    params,
-    getSecuritySign(params)
-  ).then((res) => serializeToplistDetail(res.data));
+  return postMusics<
+    ReturnType<typeof createDetailParams>,
+    ToplistDetailResponse
+  >(params, getSecuritySign(params)).then((res) =>
+    serializeToplistDetail(res.data)
+  );
 };

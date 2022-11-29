@@ -1,5 +1,5 @@
 import { SingerListResponse as RawSingerListResponse } from "./typing";
-import { SingerListResponse } from "@/typing";
+import { SingerListResponse } from "@/common/typing";
 
 export const serializeSingerList = (
   res: RawSingerListResponse

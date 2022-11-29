@@ -2,7 +2,7 @@ import {
   ToplistAllResponse as RawToplistAllResponse,
   ToplistDetailResponse as RawToplistDetailResponse,
 } from "./typing";
-import { ToplistAllResponse, ToplistDetailResponse } from "@/typing";
+import { ToplistAllResponse, ToplistDetailResponse } from "@/common/typing";
 import moment from "moment";
 const parseTimestamp = (str: string): number =>
   moment(str, "YYYY-MM-DD").valueOf();
