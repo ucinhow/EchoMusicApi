@@ -1,3 +1,5 @@
+import { Source } from "./common";
+
 // import { DataType } from "./common";
 export enum SearchType {
   songlist = 1,
@@ -6,18 +8,53 @@ export enum SearchType {
   singer = 4,
   // lyric = 5,
 }
-interface Album {
+
+// Type of Search All Api
+
+type Meta = {
   id: string;
-  name: string;
   pic: string;
-  singer: Array<{ id: string; name: string }>;
-}
-interface Mv {
-  id: string;
   name: string;
   singer: string;
-  vid: string;
+  // publicTime: number;
+};
+
+// type ItemMeta = {
+
+// };
+
+type SrcMeta = {
+  [K in keyof typeof Source]?: Pick<Meta, "id" | "pic">;
+};
+// type NameSinger = {};
+export type AlbumItem = SrcMeta & Pick<Meta, "name" | "singer">;
+export type SingerItem = SrcMeta & Pick<Meta, "name">;
+export type SonglistItem = SrcMeta & Pick<Meta, "name">;
+export type SongItem = SrcMeta & Pick<Meta, "name" | "singer">;
+export type SearchData = {
+  album?: Array<Meta>;
+  singer?: Array<Omit<Meta, "singer">>;
+  song?: Array<Omit<Meta, "pic">>;
+  songlist?: Array<Omit<Meta, "singer">>;
+  src: Source;
+};
+export interface SearchResponse {
+  album?: Array<AlbumItem>;
+  // mv?: {
+  //   itemList: Array<Mv>;
+  //   title: string;
+  // };
+  singer?: Array<SingerItem>;
+  song?: Array<SongItem>;
+  songlist?: Array<SonglistItem>;
 }
+
+// interface Mv {
+//   id: string;
+//   name: string;
+//   singer: string;
+//   vid: string;
+// }
 
 interface Singer {
   id: string;
@@ -35,45 +72,17 @@ interface Songlist {
   name: string;
   pic: string;
 }
-export interface SearchResponse {
-  album?: {
-    itemList: Array<{
-      id: string;
-      name: string;
-      pic: string;
-      singer: string;
-    }>;
-    title: string;
-  };
-  mv?: {
-    itemList: Array<Mv>;
-    title: string;
-  };
-  singer?: {
-    itemList: Array<{
-      id: string;
-      name: string;
-      pic: string;
-      //   singer: string;
-    }>;
-    title: string;
-  };
-  song?: {
-    itemList: Array<{
-      id: string;
-      name: string;
-      singer: string;
-    }>;
-    title: string;
-  };
-  songlist?: {
-    itemList: Array<Songlist>;
-    title: string;
-  };
-}
+
 // export interface SearchApi {
 //   (keyword: string): Promise<SearchResponse>;
 // }
+// Type of Search Type Api
+interface AlbumType {
+  id: string;
+  name: string;
+  pic: string;
+  singer: Array<{ id: string; name: string }>;
+}
 export type SearchTypeResponse =
   | {
       hasMore: boolean;
@@ -82,7 +91,7 @@ export type SearchTypeResponse =
     }
   | {
       hasMore: boolean;
-      data: Array<Album>;
+      data: Array<AlbumType>;
       type: SearchType.album;
     }
   | {

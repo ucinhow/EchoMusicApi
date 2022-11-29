@@ -3,7 +3,12 @@ import {
   ItemType,
   SearchTypeResponse as RawSearchTypeResponse,
 } from "./typing";
-import { SearchType, SearchResponse, SearchTypeResponse } from "@/typing";
+import {
+  SearchType,
+  SearchData,
+  SearchTypeResponse,
+  Source,
+} from "@/common/typing";
 import { simplify } from "simplify-chinese";
 import { convertImage } from "../common";
 export function convertType(type: ItemType): SearchType;
@@ -32,20 +37,17 @@ export function convertType(type: ItemType | SearchType) {
   }
 }
 
-export const serializeSearch = (data: RawSearchResponse): SearchResponse => {
+export const serializeSearch = (data: RawSearchResponse): SearchData => {
   const sections = data.section_list;
-  const res: SearchResponse = {};
+  const res: SearchData = { src: Source.joox };
   for (const s of sections) {
     for (const item of s.item_list) {
       switch (item.type) {
         case ItemType.songlist: {
           if (res.songlist === undefined) {
-            res.songlist = {
-              title: "歌单",
-              itemList: [],
-            };
+            res.songlist = [];
           }
-          res.songlist.itemList.push({
+          res.songlist.push({
             id: item.editor_playlist.id,
             name: simplify(item.editor_playlist.name),
             pic: convertImage(item.editor_playlist.images),
@@ -54,12 +56,9 @@ export const serializeSearch = (data: RawSearchResponse): SearchResponse => {
         }
         case ItemType.album: {
           if (res.album === undefined) {
-            res.album = {
-              title: "专辑",
-              itemList: [],
-            };
+            res.album = [];
           }
-          res.album.itemList.push({
+          res.album.push({
             id: item.album.id,
             name: simplify(item.album.name),
             pic: convertImage(item.album.images),
@@ -71,12 +70,9 @@ export const serializeSearch = (data: RawSearchResponse): SearchResponse => {
         }
         case ItemType.song: {
           if (res.song === undefined) {
-            res.song = {
-              title: "歌曲",
-              itemList: [],
-            };
+            res.song = [];
           }
-          res.song.itemList.push(
+          res.song.push(
             ...item.song.map((i) => ({
               id: i.song_info.id,
               name: simplify(i.song_info.name),
@@ -89,12 +85,9 @@ export const serializeSearch = (data: RawSearchResponse): SearchResponse => {
         }
         case ItemType.singer: {
           if (res.singer === undefined) {
-            res.singer = {
-              title: "歌手",
-              itemList: [],
-            };
+            res.singer = [];
           }
-          res.singer.itemList.push({
+          res.singer.push({
             id: item.singer.id,
             name: simplify(item.singer.name),
             pic: convertImage(item.singer.images),

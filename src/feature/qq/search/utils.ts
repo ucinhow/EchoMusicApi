@@ -2,31 +2,25 @@ import {
   SearchResponse as RawSearchResponse,
   SearchTypeResponse as RawSearchTypeResponse,
 } from "./typing";
-import { SearchResponse, SearchType, SearchTypeResponse } from "@/typing";
+import {
+  SearchData,
+  SearchType,
+  SearchTypeResponse,
+  Source,
+} from "@/common/typing";
 import { SearchType as QQSearchType } from "./typing";
-export const serializeSearch = (data: RawSearchResponse): SearchResponse => {
+export const serializeSearch = (data: RawSearchResponse): SearchData => {
   const temp = data.data;
   return {
-    album: {
-      title: temp.album.name,
-      itemList: temp.album.itemlist,
-      //   count: temp.album.count,
-    },
-    mv: {
-      title: temp.mv.name,
-      itemList: temp.mv.itemlist,
-      //   count: temp.mv.count,
-    },
-    song: {
-      title: temp.song.name,
-      itemList: temp.song.itemlist,
-      //   count: temp.song.count,
-    },
-    singer: {
-      title: temp.singer.name,
-      itemList: temp.singer.itemlist,
-      //   count: temp.singer.count,
-    },
+    album: temp.album.itemlist,
+    // mv: {
+    //   title: temp.mv.name,
+    //   itemList: temp.mv.itemlist,
+    //   //   count: temp.mv.count,
+    // },
+    song: temp.song.itemlist,
+    singer: temp.singer.itemlist,
+    src: Source.qq,
   };
 };
 
