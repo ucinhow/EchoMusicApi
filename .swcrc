@@ -1,19 +1,19 @@
 {
-    "jsc": {
-        "parser": {
-            "syntax": "typescript",
-            "tsx": false,
-            "decorators": true,
-            "dynamicImport": true
-        },
-        "baseUrl": ".",
-        "paths": {
-            "@/*": ["src/*"]
-        },
-        "target": "es2020"
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "tsx": false,
+      "decorators": true,
+      "dynamicImport": true
     },
-    "module": {
-        "type": "es6"
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
     },
-    "isModule": true
+    "target": "ES2022"
+  },
+  "module": {
+    "type": "ES2022"
+  },
+  "isModule": true
 }
