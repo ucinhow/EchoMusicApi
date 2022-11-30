@@ -3,9 +3,7 @@ import {
   ToplistDetailResponse as RawToplistDetailResponse,
 } from "./typing";
 import { ToplistAllResponse, ToplistDetailResponse } from "@/common/typing";
-import moment from "moment";
-const parseTimestamp = (str: string): number =>
-  moment(str, "YYYY-MM-DD").valueOf();
+import { parseTimestamp } from "@/common/utils";
 
 export const serializeToplistAll = (
   data: RawToplistAllResponse

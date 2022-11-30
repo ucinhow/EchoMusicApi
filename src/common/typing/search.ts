@@ -1,6 +1,5 @@
 import { Source } from "./common";
 
-// import { DataType } from "./common";
 export enum SearchType {
   songlist = 1,
   album = 2,
@@ -11,31 +10,32 @@ export enum SearchType {
 
 // Type of Search All Api
 
-type Meta = {
+type Field = {
   id: string;
   pic: string;
   name: string;
   singer: string;
-  // publicTime: number;
 };
 
-// type ItemMeta = {
-
-// };
-
-type SrcMeta = {
-  [K in keyof typeof Source]?: Pick<Meta, "id" | "pic">;
+type SrcInfo = {
+  [K in keyof typeof Source]?: Pick<Field, "id" | "pic">;
 };
-// type NameSinger = {};
-export type AlbumItem = SrcMeta & Pick<Meta, "name" | "singer">;
-export type SingerItem = SrcMeta & Pick<Meta, "name">;
-export type SonglistItem = SrcMeta & Pick<Meta, "name">;
-export type SongItem = SrcMeta & Pick<Meta, "name" | "singer">;
+
+// interface Mv {
+//   id: string;
+//   name: string;
+//   singer: string;
+//   vid: string;
+// }
+export type AlbumItem = SrcInfo & Pick<Field, "name" | "singer">;
+export type SingerItem = SrcInfo & Pick<Field, "name">;
+export type SonglistItem = SrcInfo & Pick<Field, "name">;
+export type SongItem = SrcInfo & Pick<Field, "name" | "singer">;
 export type SearchData = {
-  album?: Array<Meta>;
-  singer?: Array<Omit<Meta, "singer">>;
-  song?: Array<Omit<Meta, "pic">>;
-  songlist?: Array<Omit<Meta, "singer">>;
+  album?: Array<Field>;
+  singer?: Array<Omit<Field, "singer">>;
+  song?: Array<Omit<Field, "pic">>;
+  songlist?: Array<Omit<Field, "singer">>;
   src: Source;
 };
 export interface SearchResponse {
@@ -49,40 +49,63 @@ export interface SearchResponse {
   songlist?: Array<SonglistItem>;
 }
 
-// interface Mv {
-//   id: string;
-//   name: string;
-//   singer: string;
-//   vid: string;
-// }
-
-interface Singer {
-  id: string;
-  name: string;
-  pic: string;
-  //   singer: string;
-}
-interface Song {
-  id: string;
-  name: string;
-  singer: Array<{ id: string; name: string }>;
-}
-interface Songlist {
-  id: string;
-  name: string;
-  pic: string;
-}
-
-// export interface SearchApi {
-//   (keyword: string): Promise<SearchResponse>;
-// }
 // Type of Search Type Api
-interface AlbumType {
+
+type TypeField = {
   id: string;
-  name: string;
+  singerId: Array<string>;
+  albumId: string;
   pic: string;
   singer: Array<{ id: string; name: string }>;
-}
+  singerName: Array<string>;
+  albumName: string;
+  duration: number;
+  name: string;
+  publicTime: number;
+  songCount: number;
+  src: Source;
+};
+
+type SrcMeta<T> = {
+  [K in keyof typeof Source]: T;
+};
+type Singer = Pick<TypeField, "name"> & SrcMeta<Pick<TypeField, "id" | "pic">>;
+
+type Song = Pick<TypeField, "name" | "singerName" | "albumName" | "duration"> &
+  SrcMeta<Pick<TypeField, "id" | "singerId" | "albumId">>;
+
+type Album = Pick<TypeField, "name" | "publicTime" | "singerName"> &
+  SrcMeta<Pick<TypeField, "id" | "singerId">>;
+
+type Songlist = Pick<TypeField, "id" | "name" | "pic" | "src">;
+
+export type SearchTypeData =
+  | {
+      hasMore: boolean;
+      data: Array<
+        Pick<
+          TypeField,
+          "id" | "name" | "singer" | "albumId" | "albumName" | "duration"
+        >
+      >;
+      type: SearchType.song;
+    }
+  | {
+      hasMore: boolean;
+      data: Array<Pick<TypeField, "id" | "name" | "singer" | "publicTime">>;
+      type: SearchType.album;
+    }
+  | {
+      hasMore: boolean;
+      data: Array<Pick<TypeField, "name" | "id" | "pic">>;
+      type: SearchType.singer;
+    }
+  | {
+      hasMore: boolean;
+      data: Array<Pick<TypeField, "id" | "name" | "pic" | "src">>;
+      type: SearchType.songlist;
+    };
+
 export type SearchTypeResponse =
   | {
       hasMore: boolean;
@@ -91,7 +114,7 @@ export type SearchTypeResponse =
     }
   | {
       hasMore: boolean;
-      data: Array<AlbumType>;
+      data: Array<Album>;
       type: SearchType.album;
     }
   | {

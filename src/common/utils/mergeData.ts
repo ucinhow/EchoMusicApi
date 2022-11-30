@@ -12,7 +12,7 @@ import md5 from "md5";
 const hashSong = (song: Song) => {
   return md5(song.name + song.albumName + song.publicTime + song.duration);
 };
-export const mergeSong = (songs: Song[][]) => {
+export const mergeSongDetail = (songs: Song[][]) => {
   const map = new Map<string, Song>();
   let i = 0;
   while (true) {
@@ -34,6 +34,9 @@ export const mergeSong = (songs: Song[][]) => {
   }
   return Array.from(map.values());
 };
+export const mergeSearchSong = () => {};
+export const mergeSearchAlbum = () => {};
+export const mergeSearchSinger = () => {};
 
 // const hashSearchAlbum = ()
 export const mergeSearchItem = (datas: SearchData[]): SearchResponse => {

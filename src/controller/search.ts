@@ -1,10 +1,12 @@
 import Router from "@koa/router";
-import { Source } from "@/common/typing";
+import { SearchType, Source } from "@/common/typing";
 import { search as searchQQ, searchType as searchTypeQQ } from "@/feature/qq";
 import {
   search as searchJoox,
   searchType as searchTypeJoox,
 } from "@/feature/joox";
+import { mergeSearchItem } from "@/common/utils";
+
 const router = new Router();
 // todo: router logic is not completed.
 router.get("/type", async (ctx, next) => {
@@ -13,9 +15,9 @@ router.get("/type", async (ctx, next) => {
   const page = Number(ctx.query.page) || undefined;
   const pageSize = Number(ctx.query.pageSize) || undefined;
   const type = Number(ctx.query.type) || undefined;
-  if (typeof key !== "string") {
+  if (typeof key !== "string" || (!src && type === SearchType.songlist)) {
     ctx.res.statusCode = 400;
-    ctx.message = "invalid params type: 'key'";
+    // ctx.message = "invalid params type: 'key'";
     ctx.res.end();
     return;
   }
@@ -28,6 +30,8 @@ router.get("/type", async (ctx, next) => {
     case Source.joox: {
       ctx.response.body = await searchTypeJoox(key, type);
       break;
+    }
+    default: {
     }
   }
 
@@ -54,6 +58,10 @@ router.get("/", async (ctx, next) => {
       break;
     }
     default: {
+      ctx.response.body = mergeSearchItem([
+        await searchQQ(key),
+        await searchJoox(key),
+      ]);
     }
   }
 

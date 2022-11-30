@@ -5,10 +5,11 @@ import {
 import {
   SearchData,
   SearchType,
-  SearchTypeResponse,
+  SearchTypeData,
   Source,
 } from "@/common/typing";
 import { SearchType as QQSearchType } from "./typing";
+import { parseTimestamp } from "@/common/utils";
 export const serializeSearch = (data: RawSearchResponse): SearchData => {
   const temp = data.data;
   return {
@@ -71,9 +72,9 @@ export function convertType(type: QQSearchType | SearchType) {
 export const serializeSearchType = (
   data: RawSearchTypeResponse,
   type: SearchType
-): SearchTypeResponse => {
+): SearchTypeData => {
   const temp = data.req_0.data;
-  const res: SearchTypeResponse = {
+  const res: SearchTypeData = {
     hasMore: temp.meta.curpage < temp.meta.nextpage,
     data: [],
     type,
@@ -90,6 +91,7 @@ export const serializeSearchType = (
               id: s.id.toString(),
               name: s.name,
             })),
+            publicTime: parseTimestamp(item.publicTime),
           }))
         );
       }
@@ -118,6 +120,9 @@ export const serializeSearchType = (
               id: s.id.toString(),
               name: s.name,
             })),
+            albumId: item.album.id.toString(),
+            albumName: item.album.name,
+            duration: item.interval,
           }))
         );
         // });
@@ -131,6 +136,7 @@ export const serializeSearchType = (
             id: item.dissid,
             name: item.dissname,
             pic: item.imgurl,
+            src: Source.qq,
           }))
         );
       }

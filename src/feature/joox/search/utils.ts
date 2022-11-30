@@ -6,11 +6,13 @@ import {
 import {
   SearchType,
   SearchData,
-  SearchTypeResponse,
+  SearchTypeData,
   Source,
 } from "@/common/typing";
 import { simplify } from "simplify-chinese";
 import { convertImage } from "../common";
+import { parseTimestamp } from "@/common/utils";
+
 export function convertType(type: ItemType): SearchType;
 export function convertType(type: SearchType): ItemType;
 
@@ -103,8 +105,8 @@ export const serializeSearch = (data: RawSearchResponse): SearchData => {
 export const serializeSearchType = (
   data: RawSearchTypeResponse,
   type: SearchType
-): SearchTypeResponse => {
-  const res: SearchTypeResponse = {
+): SearchTypeData => {
+  const res: SearchTypeData = {
     hasMore: data.has_more,
     data: [],
     type,
@@ -118,6 +120,7 @@ export const serializeSearchType = (
             name: simplify(item.name),
             pic: convertImage(item.images),
             singer: item.artist_list.map((a) => ({ id: a.id, name: a.name })),
+            publicTime: parseTimestamp(item.publish_date),
           }))
         );
       }
@@ -147,6 +150,9 @@ export const serializeSearchType = (
                 id: a.id,
                 name: a.name,
               })),
+              albumId: track.album_id,
+              albumName: track.album_name,
+              duration: track.play_duration,
             }))
           );
         });
@@ -160,6 +166,7 @@ export const serializeSearchType = (
             id: item.id,
             name: simplify(item.name),
             pic: convertImage(item.images),
+            src: Source.joox,
           }))
         );
       }

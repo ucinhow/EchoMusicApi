@@ -136,7 +136,7 @@ export interface SearchTypeResponse {
             id: number;
             // index_album: 27;
             // index_cd: 0;
-            // interval: 160;
+            interval: number; // seconds
             // isonly: 0;
             // ksong: [Object];
             // label: "0";
