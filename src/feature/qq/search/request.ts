@@ -1,15 +1,12 @@
 import { SearchType } from "@/common/typing";
 import { AxiosResponse } from "axios";
-// import { post } from "../common";
 import { SearchResponse, SearchTypeResponse } from "./typing";
 import {
   serializeSearch,
   createSearchTypeParams,
   serializeSearchType,
 } from "./utils";
-import { getMusicu, instanceC } from "../common";
-// import { getSecuritySign } from "../common";
-// import { SearchApi } from "@/typing";
+import { postMusicu, instanceC } from "../common";
 
 export const search = (key: string) =>
   instanceC
@@ -33,6 +30,6 @@ export const searchType = (
   pageSize?: number,
   type: SearchType = SearchType.song
 ) =>
-  getMusicu<SearchTypeParams, SearchTypeResponse>(
+  postMusicu<SearchTypeParams, SearchTypeResponse>(
     createSearchTypeParams(key, page, pageSize, type)
   ).then((res) => serializeSearchType(res.data, type));

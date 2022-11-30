@@ -10,7 +10,7 @@ const instanceU = axios.create({
     Accept: "application/json",
     Connection: "keep-alive",
     "User-Agent":
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 12.6.0 ) AppleWebKit/600.1.4 (KHTML, like Gecko) patch/2 QQMusic/8.4.0 Released[1] Skinid/10209|||2|||1fd4af",
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
     "Content-Type": "text/plain",
   },
 });
@@ -20,10 +20,8 @@ export const postMusics = <P, R>(paramsBody: P, sign: string) =>
     `/cgi-bin/musics.fcg?_=${Date.now()}&sign=${sign}`,
     paramsBody
   );
-export const getMusicu = <P, R>(params: P) =>
-  instanceU.get<R>("/cgi-bin/musicu.fcg", {
-    params,
-  });
+export const postMusicu = <P, R>(paramsBody: P) =>
+  instanceU.post<R, AxiosResponse<R>, P>("/cgi-bin/musicu.fcg", paramsBody);
 
 export const commParams = {
   g_tk: 5381,
