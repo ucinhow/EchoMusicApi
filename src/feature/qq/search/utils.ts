@@ -2,12 +2,8 @@ import {
   SearchResponse as RawSearchResponse,
   SearchTypeResponse as RawSearchTypeResponse,
 } from "./typing";
-import {
-  SearchData,
-  SearchType,
-  SearchTypeData,
-  Source,
-} from "@/common/typing";
+import { SearchData, SearchType, SearchTypeData } from "@/common/typing/search";
+import { Source } from "@/common/typing/common";
 import { SearchType as QQSearchType } from "./typing";
 import { parseTimestamp } from "@/common/utils";
 export const serializeSearch = (data: RawSearchResponse): SearchData => {
@@ -78,6 +74,7 @@ export const serializeSearchType = (
     hasMore: temp.meta.curpage < temp.meta.nextpage,
     data: [],
     type,
+    src: Source.qq,
   };
   switch (res.type) {
     case SearchType.album: {
@@ -136,7 +133,7 @@ export const serializeSearchType = (
             id: item.dissid,
             name: item.dissname,
             pic: item.imgurl,
-            src: Source.qq,
+            // src: Source.qq,
           }))
         );
       }

@@ -1,4 +1,4 @@
-import { SearchType } from "@/common/typing";
+import { SearchType } from "@/common/typing/search";
 import { AxiosResponse } from "axios";
 import { SearchResponse, SearchTypeResponse } from "./typing";
 import {

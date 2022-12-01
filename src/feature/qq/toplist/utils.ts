@@ -2,7 +2,10 @@ import {
   ToplistAllResponse as RawToplistAllResponse,
   ToplistDetailResponse as RawToplistDetailResponse,
 } from "./typing";
-import { ToplistAllResponse, ToplistDetailResponse } from "@/common/typing";
+import {
+  ToplistAllResponse,
+  ToplistDetailResponse,
+} from "@/common/typing/toplist";
 import { parseTimestamp } from "@/common/utils";
 
 export const serializeToplistAll = (

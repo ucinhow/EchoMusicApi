@@ -63,21 +63,25 @@ type TypeField = {
   name: string;
   publicTime: number;
   songCount: number;
-  src: Source;
+  // src: Source;
 };
 
 type SrcMeta<T> = {
-  [K in keyof typeof Source]: T;
+  [K in keyof typeof Source]?: T;
 };
-type Singer = Pick<TypeField, "name"> & SrcMeta<Pick<TypeField, "id" | "pic">>;
+export type Singer = Pick<TypeField, "name"> &
+  SrcMeta<Pick<TypeField, "id" | "pic">>;
 
-type Song = Pick<TypeField, "name" | "singerName" | "albumName" | "duration"> &
+export type Song = Pick<
+  TypeField,
+  "name" | "singerName" | "albumName" | "duration"
+> &
   SrcMeta<Pick<TypeField, "id" | "singerId" | "albumId">>;
 
-type Album = Pick<TypeField, "name" | "publicTime" | "singerName"> &
+export type Album = Pick<TypeField, "name" | "publicTime" | "singerName"> &
   SrcMeta<Pick<TypeField, "id" | "singerId">>;
 
-type Songlist = Pick<TypeField, "id" | "name" | "pic" | "src">;
+export type Songlist = Pick<TypeField, "id" | "name" | "pic">;
 
 export type SearchTypeData =
   | {
@@ -89,21 +93,25 @@ export type SearchTypeData =
         >
       >;
       type: SearchType.song;
+      src: Source;
     }
   | {
       hasMore: boolean;
       data: Array<Pick<TypeField, "id" | "name" | "singer" | "publicTime">>;
       type: SearchType.album;
+      src: Source;
     }
   | {
       hasMore: boolean;
       data: Array<Pick<TypeField, "name" | "id" | "pic">>;
       type: SearchType.singer;
+      src: Source;
     }
   | {
       hasMore: boolean;
-      data: Array<Pick<TypeField, "id" | "name" | "pic" | "src">>;
+      data: Array<Pick<TypeField, "id" | "name" | "pic">>;
       type: SearchType.songlist;
+      src: Source;
     };
 
 export type SearchTypeResponse =

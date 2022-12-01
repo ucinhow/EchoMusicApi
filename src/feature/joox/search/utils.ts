@@ -3,12 +3,9 @@ import {
   ItemType,
   SearchTypeResponse as RawSearchTypeResponse,
 } from "./typing";
-import {
-  SearchType,
-  SearchData,
-  SearchTypeData,
-  Source,
-} from "@/common/typing";
+import { SearchType, SearchData, SearchTypeData } from "@/common/typing/search";
+import { Source } from "@/common/typing/common";
+
 import { simplify } from "simplify-chinese";
 import { convertImage } from "../common";
 import { parseTimestamp } from "@/common/utils";
@@ -110,6 +107,7 @@ export const serializeSearchType = (
     hasMore: data.has_more,
     data: [],
     type,
+    src: Source.joox,
   };
   switch (res.type) {
     case SearchType.album: {
@@ -166,7 +164,6 @@ export const serializeSearchType = (
             id: item.id,
             name: simplify(item.name),
             pic: convertImage(item.images),
-            src: Source.joox,
           }))
         );
       }
