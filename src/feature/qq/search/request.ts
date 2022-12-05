@@ -1,4 +1,4 @@
-import { SearchType } from "@/common/typing/search";
+import { SearchType, SearchTypeData } from "@/common/typing/search";
 import { AxiosResponse } from "axios";
 import { SearchResponse, SearchTypeResponse } from "./typing";
 import {
@@ -24,12 +24,15 @@ export const search = (key: string) =>
 
 type SearchTypeParams = ReturnType<typeof createSearchTypeParams>;
 
+/**
+ * @description: qq source searchType request, it will return upto 100 results if request success.
+ * @return SearchTypeData
+ */
 export const searchType = (
   key: string,
-  page?: number,
-  pageSize?: number,
+  page: number,
   type: SearchType = SearchType.song
 ) =>
   postMusicu<SearchTypeParams, SearchTypeResponse>(
-    createSearchTypeParams(key, page, pageSize, type)
-  ).then((res) => serializeSearchType(res.data, type));
+    createSearchTypeParams(key, page, type)
+  ).then((res) => serializeSearchType(res.data, type, page));

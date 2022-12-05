@@ -1,4 +1,4 @@
-import { SearchType } from "@/common/typing";
+import { SearchType } from "@/common/typing/search";
 import { get } from "../common";
 import { ItemType, SearchResponse, SearchTypeResponse } from "./typing";
 import { convertType, serializeSearch, serializeSearchType } from "./utils";
@@ -22,7 +22,7 @@ export const search = (keyword: string) =>
  * @description: Joox source type search request function. If request success, server will return upto 30 results.
  * @param {string} key
  * @param {SearchType} type
- * @return {*}
+ * @return SearchTypeData
  */
 export const searchType = (key: string, type: SearchType = SearchType.song) =>
   get<SearchTypeParams, SearchTypeResponse>("/openjoox/v3/search_type", {

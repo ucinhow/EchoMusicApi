@@ -3,7 +3,7 @@ export enum ItemType {
   songlist = 1,
   album = 2,
   song = 5,
-  singer = 6,
+  // singer = 6,
   //   user = 7,
 }
 
@@ -19,11 +19,11 @@ type Item =
   | {
       type: ItemType.song;
       song: Array<{ song_info: Track }>;
-    }
-  | {
-      type: ItemType.singer;
-      singer: Singer;
     };
+// | {
+//     type: ItemType.singer;
+//     singer: Singer;
+//   };
 type Section = {
   item_list: Array<Item>;
 };

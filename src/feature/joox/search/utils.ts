@@ -21,12 +21,12 @@ export function convertType(type: ItemType | SearchType) {
       return SearchType.songlist;
     case ItemType.album:
       return SearchType.song;
-    case ItemType.singer:
-      return SearchType.singer;
+    // case ItemType.singer:
+    //   return SearchType.singer;
     case SearchType.album:
       return ItemType.album;
-    case SearchType.singer:
-      return ItemType.singer;
+    // case SearchType.singer:
+    //   return ItemType.singer;
     case SearchType.song:
       return ItemType.song;
     case SearchType.songlist:
@@ -82,17 +82,17 @@ export const serializeSearch = (data: RawSearchResponse): SearchData => {
           );
           break;
         }
-        case ItemType.singer: {
-          if (res.singer === undefined) {
-            res.singer = [];
-          }
-          res.singer.push({
-            id: item.singer.id,
-            name: simplify(item.singer.name),
-            pic: convertImage(item.singer.images),
-          });
-          break;
-        }
+        // case ItemType.singer: {
+        //   if (res.singer === undefined) {
+        //     res.singer = [];
+        //   }
+        //   res.singer.push({
+        //     id: item.singer.id,
+        //     name: simplify(item.singer.name),
+        //     pic: convertImage(item.singer.images),
+        //   });
+        //   break;
+        // }
       }
     }
   }
@@ -104,56 +104,66 @@ export const serializeSearchType = (
   type: SearchType
 ): SearchTypeData => {
   const res: SearchTypeData = {
-    hasMore: data.has_more,
+    hasMore: false,
     data: [],
     type,
-    src: Source.joox,
+    // src: Source.joox,
+    // page: 1,
+    // sum: 0,
   };
   switch (res.type) {
     case SearchType.album: {
       if (data.albums) {
         res.data.push(
           ...data.albums.map((item) => ({
-            id: item.id,
             name: simplify(item.name),
-            pic: convertImage(item.images),
-            singer: item.artist_list.map((a) => ({ id: a.id, name: a.name })),
+            singerName: item.artist_list.map((a) => a.id),
             publicTime: parseTimestamp(item.publish_date),
+            [Source.joox]: {
+              id: item.id,
+              pic: convertImage(item.images),
+              singerId: item.artist_list.map((a) => a.name),
+            },
           }))
         );
+        // res.sum = res.data.length;
       }
       break;
     }
-    case SearchType.singer: {
-      if (data.artists) {
-        res.data.push(
-          ...data.artists.map((item) => ({
-            id: item.id,
-            name: simplify(item.name),
-            pic: convertImage(item.images),
-          }))
-        );
-        break;
-      }
-    }
+    // case SearchType.singer: {
+    //   if (data.artists) {
+    //     res.data.push(
+    //       ...data.artists.map((item) => ({
+    //         name: simplify(item.name),
+    //         [Source.joox]: {
+    //           id: item.id,
+    //           pic: convertImage(item.images),
+    //         },
+    //       }))
+    //     );
+    //     res.sum = res.data.length;
+    //   }
+    //   break;
+    // }
     case SearchType.song: {
       if (data.tracks) {
         data.tracks.forEach((item) => {
           res.data.push(
             ...item.map((track) => ({
-              id: track.id,
               name: simplify(track.name),
-              pic: convertImage(track.images),
-              singer: track.artist_list.map((a) => ({
-                id: a.id,
-                name: a.name,
-              })),
-              albumId: track.album_id,
+              singerName: track.artist_list.map((a) => a.name),
               albumName: track.album_name,
               duration: track.play_duration,
+              [Source.joox]: {
+                id: track.id,
+                pic: convertImage(track.images),
+                albumId: track.album_id,
+                singerId: track.artist_list.map((a) => a.id),
+              },
             }))
           );
         });
+        // res.sum = res.data.length;
       }
       break;
     }
@@ -166,6 +176,7 @@ export const serializeSearchType = (
             pic: convertImage(item.images),
           }))
         );
+        // res.sum = res.data.length;
       }
       break;
     }

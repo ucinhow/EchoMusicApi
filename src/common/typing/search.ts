@@ -4,7 +4,7 @@ export enum SearchType {
   songlist = 1,
   album = 2,
   song = 3,
-  singer = 4,
+  // singer = 4, // todo: deduplicate singer info.
   // lyric = 5,
 }
 
@@ -65,6 +65,37 @@ type TypeField = {
   songCount: number;
   // src: Source;
 };
+// export type RawSong = Pick<
+//   TypeField,
+//   "id" | "name" | "singer" | "albumId" | "albumName" | "duration"
+// >;
+// export type RawAlbum = Pick<TypeField, "id" | "name" | "singer" | "publicTime">;
+// export type RawSinger = Pick<TypeField, "name" | "id" | "pic">;
+// export type RawSonglist = Pick<TypeField, "id" | "name" | "pic">;
+// type TypeRawData =
+//   | {
+//       data: Array<RawSong>;
+//       type: SearchType.song;
+//     }
+//   | {
+//       data: Array<RawAlbum>;
+//       type: SearchType.album;
+//     }
+//   | {
+//       data: Array<RawSinger>;
+//       type: SearchType.singer;
+//     }
+//   | {
+//       data: Array<RawSonglist>;
+//       type: SearchType.songlist;
+//     };
+
+// export type SearchTypeData = {
+//   hasMore: boolean;
+//   src: Source;
+//   page: number;
+//   sum: number;
+// } & TypeRawData;
 
 type SrcMeta<T> = {
   [K in keyof typeof Source]?: T;
@@ -83,55 +114,15 @@ export type Album = Pick<TypeField, "name" | "publicTime" | "singerName"> &
 
 export type Songlist = Pick<TypeField, "id" | "name" | "pic">;
 
-export type SearchTypeData =
-  | {
-      hasMore: boolean;
-      data: Array<
-        Pick<
-          TypeField,
-          "id" | "name" | "singer" | "albumId" | "albumName" | "duration"
-        >
-      >;
-      type: SearchType.song;
-      src: Source;
-    }
-  | {
-      hasMore: boolean;
-      data: Array<Pick<TypeField, "id" | "name" | "singer" | "publicTime">>;
-      type: SearchType.album;
-      src: Source;
-    }
-  | {
-      hasMore: boolean;
-      data: Array<Pick<TypeField, "name" | "id" | "pic">>;
-      type: SearchType.singer;
-      src: Source;
-    }
-  | {
-      hasMore: boolean;
-      data: Array<Pick<TypeField, "id" | "name" | "pic">>;
-      type: SearchType.songlist;
-      src: Source;
-    };
+export type TypeData =
+  | { data: Array<Song>; type: SearchType.song }
+  | { data: Array<Album>; type: SearchType.album }
+  // | { data: Array<Singer>; type: SearchType.singer }
+  | { data: Array<Songlist>; type: SearchType.songlist };
 
-export type SearchTypeResponse =
-  | {
-      hasMore: boolean;
-      data: Array<Song>;
-      type: SearchType.song;
-    }
-  | {
-      hasMore: boolean;
-      data: Array<Album>;
-      type: SearchType.album;
-    }
-  | {
-      hasMore: boolean;
-      data: Array<Singer>;
-      type: SearchType.singer;
-    }
-  | {
-      hasMore: boolean;
-      data: Array<Songlist>;
-      type: SearchType.songlist;
-    };
+export type SearchTypeData = {
+  hasMore: boolean;
+  // sum?: number;
+  // src: Source;
+  // page?: number;
+} & TypeData;

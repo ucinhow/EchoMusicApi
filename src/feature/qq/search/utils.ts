@@ -2,7 +2,12 @@ import {
   SearchResponse as RawSearchResponse,
   SearchTypeResponse as RawSearchTypeResponse,
 } from "./typing";
-import { SearchData, SearchType, SearchTypeData } from "@/common/typing/search";
+import {
+  SearchData,
+  SearchType,
+  SearchTypeData,
+  // SearchTypeResponse,
+} from "@/common/typing/search";
 import { Source } from "@/common/typing/common";
 import { SearchType as QQSearchType } from "./typing";
 import { parseTimestamp } from "@/common/utils";
@@ -23,7 +28,6 @@ export const serializeSearch = (data: RawSearchResponse): SearchData => {
 
 export const createSearchTypeParams = (
   key: string,
-  pageSize = 15,
   page = 1,
   type: SearchType = SearchType.song
 ) => ({
@@ -31,7 +35,7 @@ export const createSearchTypeParams = (
     method: "DoSearchForQQMusicDesktop",
     module: "music.search.SearchCgiService",
     param: {
-      num_per_page: pageSize,
+      num_per_page: 100,
       page_num: page,
       query: key,
       search_type: convertType(type),
@@ -50,12 +54,12 @@ export function convertType(type: QQSearchType | SearchType) {
       return SearchType.songlist;
     case QQSearchType.album:
       return SearchType.song;
-    case QQSearchType.singer:
-      return SearchType.singer;
+    // case QQSearchType.singer:
+    //   return SearchType.singer;
     case SearchType.album:
       return QQSearchType.album;
-    case SearchType.singer:
-      return QQSearchType.singer;
+    // case SearchType.singer:
+    //   return QQSearchType.singer;
     case SearchType.song:
       return QQSearchType.song;
     case SearchType.songlist:
@@ -67,62 +71,66 @@ export function convertType(type: QQSearchType | SearchType) {
 
 export const serializeSearchType = (
   data: RawSearchTypeResponse,
-  type: SearchType
+  type: SearchType,
+  page: number
 ): SearchTypeData => {
   const temp = data.req_0.data;
   const res: SearchTypeData = {
     hasMore: temp.meta.curpage < temp.meta.nextpage,
     data: [],
     type,
-    src: Source.qq,
+    // src: Source.qq,
+    // page,
+    // sum: 0,
   };
   switch (res.type) {
     case SearchType.album: {
       if (temp.body.album) {
         res.data.push(
           ...temp.body.album.list.map((item) => ({
-            id: item.albumID.toString(),
             name: item.albumName,
-            pic: item.albumPic,
-            singer: item.singer_list.map((s) => ({
-              id: s.id.toString(),
-              name: s.name,
-            })),
+            singerName: item.singer_list.map((s) => s.name),
             publicTime: parseTimestamp(item.publicTime),
+            [Source.qq]: {
+              id: item.albumID.toString(),
+              pic: item.albumPic,
+              singerId: item.singer_list.map((s) => s.id.toString()),
+            },
           }))
         );
+        // res.sum = temp.meta.estimate_sum;
       }
       break;
     }
-    case SearchType.singer: {
-      if (temp.body.singer) {
-        res.data.push(
-          ...temp.body.singer.list.map((item) => ({
-            id: item.singerID.toString(),
-            name: item.singerName,
-            pic: item.singerPic,
-          }))
-        );
-      }
-      break;
-    }
+    // case SearchType.singer: {
+    //   if (temp.body.singer) {
+    //     res.data.push(
+    //       ...temp.body.singer.list.map((item) => ({
+    //         id: item.singerID.toString(),
+    //         name: item.singerName,
+    //         pic: item.singerPic,
+    //       }))
+    //     );
+    //     res.sum = temp.meta.estimate_sum;
+    //   }
+    //   break;
+    // }
     case SearchType.song: {
       if (temp.body.song) {
-        // data.tracks.forEach((item) => {
         res.data.push(
           ...temp.body.song.list.map((item) => ({
-            id: item.id.toString(),
             name: item.name,
-            singer: item.singer.map((s) => ({
-              id: s.id.toString(),
-              name: s.name,
-            })),
-            albumId: item.album.id.toString(),
+            singerName: item.singer.map((s) => s.name),
             albumName: item.album.name,
             duration: item.interval,
+            [Source.qq]: {
+              id: item.id.toString(),
+              singerId: item.singer.map((s) => s.id.toString()),
+              albumId: item.album.id.toString(),
+            },
           }))
         );
-        // });
+        // res.sum = temp.meta.estimate_sum;
       }
       break;
     }
@@ -137,6 +145,7 @@ export const serializeSearchType = (
           }))
         );
       }
+      // res.sum = temp.meta.estimate_sum;
       break;
     }
   }

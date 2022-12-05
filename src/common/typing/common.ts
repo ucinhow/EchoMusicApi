@@ -1,8 +1,9 @@
 export enum Source {
   qq = "qq",
-  netease = "netease",
-  kugou = "kugou",
+  // netease = "netease",
+  // kugou = "kugou",
   joox = "joox",
+  // all = "ALL",
 }
 
 export enum DataType {
