@@ -18,5 +18,5 @@ const instance = axios.create({
 //     `/cgi-bin/musics.fcg?_=${Date.now()}&sign=${sign}`,
 //     paramsBody
 //   );
-export const get = <P, R>(path: string, config: AxiosRequestConfig<P>) =>
-  instance.get<R, AxiosResponse<R>, P>(path, config);
+export const get = <R>(path: string, config: AxiosRequestConfig) =>
+  instance.get<any, AxiosResponse<R>>(path, config);

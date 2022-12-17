@@ -1,26 +1,24 @@
 import {
-  Song,
-  SearchData,
-  SearchResponse,
-  AlbumItem,
-  SingerItem,
-  SongItem,
-  SonglistItem,
-  SearchTypeData,
+  SuggestSearch,
+  SSData,
   SearchType,
-  Album,
-  Songlist,
-  Singer,
+  SearchTypeData,
 } from "@/common/typing/search";
 import md5 from "md5";
-import { Source } from "../typing/common";
+import { AlbumItem } from "../typing/album";
+import { SongItem } from "../typing/song";
+import { SonglistItem } from "../typing/songlist";
 
-export const mergeSearchItem = (datas: SearchData[]): SearchResponse => {
-  const albumMap = new Map<string, AlbumItem>();
-  const singerMap = new Map<string, SingerItem>();
-  const songMap = new Map<string, SongItem>();
-  // const songlistMap = new Map<string, SonglistItem>();
-  const songlists: SonglistItem[] = [];
+/**
+ * @description: function to merge suggest search data items from multi source.
+ * @param {SuggestSearch} datas
+ * @return {SuggestSearch} SuggestSearch data
+ */
+export const mergeSSItem = (datas: SuggestSearch[]): SuggestSearch => {
+  const albumMap = new Map<string, SSData["album"]>();
+  const singerMap = new Map<string, SSData["singer"]>();
+  const songMap = new Map<string, SSData["song"]>();
+  const songlists: SSData["songlist"][] = [];
   let i = 0;
   while (true) {
     let done = true;
@@ -34,14 +32,10 @@ export const mergeSearchItem = (datas: SearchData[]): SearchResponse => {
           const item = albumMap.get(key)!;
           albumMap.set(key, {
             ...item,
-            [data.src]: { id: album.id, pic: album.pic },
+            ...album,
           });
         } else {
-          albumMap.set(key, {
-            name: album.name,
-            singer: album.singer,
-            [data.src]: { id: album.id, pic: album.pic },
-          });
+          albumMap.set(key, album);
         }
       }
       if (data.song && i < data.song.length) {
@@ -52,14 +46,10 @@ export const mergeSearchItem = (datas: SearchData[]): SearchResponse => {
           const item = songMap.get(key)!;
           songMap.set(key, {
             ...item,
-            [data.src]: { id: song.id },
+            ...song,
           });
         } else {
-          songMap.set(key, {
-            name: song.name,
-            singer: song.singer,
-            [data.src]: { id: song.id },
-          });
+          songMap.set(key, song);
         }
       }
       if (data.singer && i < data.singer.length) {
@@ -70,13 +60,10 @@ export const mergeSearchItem = (datas: SearchData[]): SearchResponse => {
           const item = songMap.get(key)!;
           singerMap.set(key, {
             ...item,
-            [data.src]: { id: singer.id, pic: singer.pic },
+            ...singer,
           });
         } else {
-          singerMap.set(key, {
-            name: singer.name,
-            [data.src]: { id: singer.id, pic: singer.pic },
-          });
+          singerMap.set(key, singer);
         }
       }
       if (data.songlist && i < data.songlist.length) {
@@ -104,15 +91,16 @@ export const mergeSearchItem = (datas: SearchData[]): SearchResponse => {
 //   };
 // };
 
-const mergeSearchSong = (datas: SearchTypeData[]) => {
+// todo: need to add up the logic of cache data.
+export const mergeSongItem = (datas: SongItem[][]) => {
   let i = 0;
-  const map = new Map<string, Song>();
+  const map = new Map<string, SongItem>();
   while (true) {
     let done = true;
     for (const data of datas) {
-      if (data.type !== SearchType.song || i >= data.data.length) continue;
+      // if (data.type !== SearchType.song || i >= data.data.length) continue;
       done = false;
-      const item = data.data[i];
+      const item = data[i];
       const key = md5(
         item.name + item.duration + item.albumName + item.singerName.join("|")
       );
@@ -125,22 +113,24 @@ const mergeSearchSong = (datas: SearchTypeData[]) => {
     if (done) break;
     ++i;
   }
-  return {
-    hasMore: datas.findIndex((d) => d.hasMore) !== -1,
-    data: Array.from(map.values()),
-    type: SearchType.song,
-  };
+  return Array.from(map.values());
 };
+// const mergeSearchSong = (datas: SearchTypeData[]) => {
 
-const mergeSearchAlbum = (datas: SearchTypeData[]) => {
+//   return {
+//     hasMore: datas.findIndex((d) => d.hasMore) !== -1,
+//     data: Array.from(map.values()),
+//     type: SearchType.song,
+//   };
+// };
+export const mergeAlbumItem = (datas: AlbumItem[][]) => {
   let i = 0;
-  const map = new Map<string, Album>();
+  const map = new Map<string, AlbumItem>();
   while (true) {
     let done = true;
     for (const data of datas) {
-      if (data.type !== SearchType.album || i >= data.data.length) continue;
       done = false;
-      const item = data.data[i];
+      const item = data[i];
       const key = md5(item.name + item.publicTime + item.singerName.join("|"));
       const temp = map.has(key) ? map.get(key)! : {};
       map.set(key, {
@@ -151,12 +141,33 @@ const mergeSearchAlbum = (datas: SearchTypeData[]) => {
     if (done) break;
     ++i;
   }
-  return {
-    hasMore: datas.findIndex((d) => d.hasMore) !== -1,
-    data: Array.from(map.values()),
-    type: SearchType.album,
-  };
+  return Array.from(map.values());
 };
+// const mergeSearchAlbum = (datas: SearchTypeData[]) => {
+//   let i = 0;
+//   const map = new Map<string, Album>();
+//   while (true) {
+//     let done = true;
+//     for (const data of datas) {
+//       if (data.type !== SearchType.album || i >= data.data.length) continue;
+//       done = false;
+//       const item = data.data[i];
+//       const key = md5(item.name + item.publicTime + item.singerName.join("|"));
+//       const temp = map.has(key) ? map.get(key)! : {};
+//       map.set(key, {
+//         ...temp,
+//         ...item,
+//       });
+//     }
+//     if (done) break;
+//     ++i;
+//   }
+//   return {
+//     hasMore: datas.findIndex((d) => d.hasMore) !== -1,
+//     data: Array.from(map.values()),
+//     type: SearchType.album,
+//   };
+// };
 
 // const mergeSearchSinger = (datas: SearchTypeData[]) => {
 //   let i = 0;
@@ -187,45 +198,53 @@ const mergeSearchAlbum = (datas: SearchTypeData[]) => {
 //   };
 // };
 
-const mergeSearchSonglist = (datas: SearchTypeData[]) => {
-  const list: Songlist[] = [];
+export const mergeSonglistItem = (datas: SonglistItem[][]) => {
+  const list: SonglistItem[] = [];
   let i = 0;
   while (true) {
     let done = true;
     for (const data of datas) {
-      if (data.type !== SearchType.songlist || i >= data.data.length) continue;
+      // if (data.type !== SearchType.songlist || i >= data.data.length) continue;
       done = false;
-      const item = data.data[i];
+      const item = data[i];
       list.push(item);
     }
     if (done) break;
     ++i;
   }
-  return {
-    hasMore: datas.findIndex((d) => d.hasMore) !== -1,
-    data: list,
-    type: SearchType.songlist,
-  };
+  return list;
+  // return {
+  //   hasMore: datas.findIndex((d) => d.hasMore) !== -1,
+  //   data: list,
+  //   type: SearchType.songlist,
+  // };
 };
 
-export const mergeMultiSrc = (
-  datas: SearchTypeData[],
-  type: SearchType = SearchType.song
-) => {
+export const mergeTypeItem = (datas: SearchTypeData[], type: SearchType) => {
+  const temp = datas.map((d) => d.data);
+  const hasMore = ~datas.findIndex(({ hasMore }) => hasMore);
   switch (type) {
     case SearchType.song:
-      return mergeSearchSong(datas);
+      return {
+        hasMore,
+        data: mergeSongItem(temp as SongItem[][]),
+      };
     case SearchType.album:
-      return mergeSearchAlbum(datas);
+      return {
+        hasMore,
+        data: mergeAlbumItem(temp as AlbumItem[][]),
+      };
     // case SearchType.singer:
     //   return mergeSearchSinger(datas);
     case SearchType.songlist:
-      return mergeSearchSonglist(datas);
+      return {
+        hasMore,
+        data: mergeSonglistItem(temp as SonglistItem[][]),
+      };
     default: {
       return {
-        hasMore: false,
+        hasMore: hasMore,
         data: [],
-        type: SearchType.song,
       };
     }
   }

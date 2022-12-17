@@ -1,6 +1,6 @@
 import axios from "axios";
 import { AxiosResponse } from "axios";
-
+import getSecuritySign from "./getSecuritySign";
 const instanceU = axios.create({
   baseURL: "https://u.y.qq.com",
   timeout: 10000,
@@ -15,9 +15,9 @@ const instanceU = axios.create({
   },
 });
 
-export const postMusics = <P, R>(paramsBody: P, sign: string) =>
+export const postMusics = <P extends Record<string, any>, R>(paramsBody: P) =>
   instanceU.post<R, AxiosResponse<R>, P>(
-    `/cgi-bin/musics.fcg?_=${Date.now()}&sign=${sign}`,
+    `/cgi-bin/musics.fcg?_=${Date.now()}&sign=${getSecuritySign(paramsBody)}`,
     paramsBody
   );
 export const postMusicu = <P, R>(paramsBody: P) =>

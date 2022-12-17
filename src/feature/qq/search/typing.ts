@@ -1,4 +1,72 @@
+import { SongInfo } from "../song/typing";
+// export interface Song {
+//   // act: 3;
+//   // action: [Object];
+//   album: {
+//     id: number;
+//     // mid: "001ExeaG1J1EfG";
+//     name: string;
+//     // pmid: "001ExeaG1J1EfG_1";
+//     // subtitle: "";
+//     // time_public: "";
+//     // title: "夜色钢琴曲";
+//   };
+//   // bpm: 83;
+//   // content: "";
+//   // desc: "";
+//   // desc_hilight: "";
+//   docid: string;
+//   // eq: 0;
+//   // es: "";
+//   // file: [Object];
+//   // fnote: 4009;
+//   // genre: 0;
+//   grp: Array<Song>;
+//   // hotness: [Object];
+//   // href3: "";
+//   id: number;
+//   // index_album: 27;
+//   // index_cd: 0;
+//   interval: number; // seconds
+//   // isonly: 0;
+//   // ksong: [Object];
+//   // label: "0";
+//   language: number; // 9
+//   // lyric: "";
+//   // lyric_hilight: "";
+//   // mid: "0038H6er2K4oDl";
+//   // mv: [Object];
+//   name: string;
+//   // newStatus: 2;
+//   // ov: 0;
+//   // pay: [Object];
+//   // protect: 10;
+//   // sa: 2064;
+//   singer: Array<{
+//     id: number;
+//     // mid: "000NSBcL3v5mJj";
+//     name: string;
+//     // pmid: "";
+//     // title: "赵海洋";
+//     // type: 0;
+//     // uin: 0;
+//   }>;
+//   // status: 0;
+//   // subtitle: "";
+//   // tag: 10;
+//   // tid: 0;
+//   time_public: string;
+//   title: string;
+//   // title_hilight: "瞬间的永恒 (钢琴曲)";
+//   // type: 0;
+//   // url: "";
+//   // version: 0;
+//   // volume: [Object];
+//   // vs: [Array];
+// }
+
 export interface SearchResponse {
+  code: number;
   data: {
     album: {
       count: number;
@@ -58,6 +126,7 @@ export interface SearchResponse {
   };
 }
 export interface SearchTypeResponse {
+  code: number;
   req_0: {
     data: {
       body: {
@@ -108,71 +177,7 @@ export interface SearchTypeResponse {
           }>;
         };
         song: {
-          list: Array<{
-            // act: 3;
-            // action: [Object];
-            album: {
-              id: number;
-              // mid: "001ExeaG1J1EfG";
-              name: string;
-              // pmid: "001ExeaG1J1EfG_1";
-              // subtitle: "";
-              // time_public: "";
-              // title: "夜色钢琴曲";
-            };
-            // bpm: 83;
-            // content: "";
-            // desc: "";
-            // desc_hilight: "";
-            docid: string;
-            // eq: 0;
-            // es: "";
-            // file: [Object];
-            // fnote: 4009;
-            // genre: 0;
-            // grp: [];
-            // hotness: [Object];
-            // href3: "";
-            id: number;
-            // index_album: 27;
-            // index_cd: 0;
-            interval: number; // seconds
-            // isonly: 0;
-            // ksong: [Object];
-            // label: "0";
-            language: number; // 9
-            // lyric: "";
-            // lyric_hilight: "";
-            // mid: "0038H6er2K4oDl";
-            // mv: [Object];
-            name: string;
-            // newStatus: 2;
-            // ov: 0;
-            // pay: [Object];
-            // protect: 10;
-            // sa: 2064;
-            singer: Array<{
-              id: number;
-              // mid: "000NSBcL3v5mJj";
-              name: string;
-              // pmid: "";
-              // title: "赵海洋";
-              // type: 0;
-              // uin: 0;
-            }>;
-            // status: 0;
-            // subtitle: "";
-            // tag: 10;
-            // tid: 0;
-            time_public: string;
-            title: string;
-            // title_hilight: "瞬间的永恒 (钢琴曲)";
-            // type: 0;
-            // url: "";
-            // version: 0;
-            // volume: [Object];
-            // vs: [Array];
-          }>;
+          list: Array<SongInfo>;
         };
         songlist: {
           list: Array<{

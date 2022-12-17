@@ -1,11 +1,12 @@
+import { SongInfo } from "../song/typing";
 export interface ToplistGroup {
   groupId: number;
   groupName: string;
   type: number;
-  toplist: Toplist[];
+  toplist: ToplistGeneral[];
 }
 
-export interface Toplist {
+export interface ToplistGeneral {
   topId: number; // 排行榜id
   topType: 0;
   updateType: 1;
@@ -40,11 +41,12 @@ export interface Toplist {
   mbHeadLogoUrl: string;
   topAlbumURL: string;
 }
-export interface CommonRequest {
-  sign: string;
-  _: number;
-}
+// export interface CommonRequest {
+//   sign: string;
+//   _: number;
+// }
 export interface ToplistAllResponse {
+  code: number;
   req_0: {
     data: {
       group: ToplistGroup[];
@@ -52,6 +54,7 @@ export interface ToplistAllResponse {
   };
 }
 export interface ToplistDetailResponse {
+  code: number;
   req_0: {
     data: {
       data: {
@@ -72,7 +75,7 @@ export interface ToplistDetailResponse {
         };
         listenNum: number;
         totalNum: number;
-        song: {
+        song: Array<{
           rank: number;
           // rankType: 1;
           // rankValue: "4";
@@ -87,43 +90,9 @@ export interface ToplistDetailResponse {
           // uuidCnt: 0;
           cover: string;
           // mvid: 0;
-        }[];
+        }>;
       };
-      songInfoList: {
-        id: number;
-        type: number;
-        // mid: "000UO3jv0UcS3m";
-        name: string;
-        title: string;
-        subtitle: string;
-        singer: [
-          {
-            id: number;
-            // mid: "003u5H9x1vACGo";
-            name: string;
-            title: string;
-            type: number;
-            uin: number;
-            // pmid: "";
-          }
-        ];
-        album: {
-          id: number;
-          // mid: "003MhhHz05Kc8g";
-          name: string;
-          title: string;
-          subtitle: string;
-          time_public: string;
-          // pmid: "003MhhHz05Kc8g_1";
-        };
-        mv: {
-          id: number;
-          vid: string;
-          name: string;
-          title: string;
-          // vt: 0;
-        };
-      }[];
+      songInfoList: Array<SongInfo>;
     };
   };
 }

@@ -1,4 +1,6 @@
-export interface Toplist {
+import { SongItem } from "./song";
+
+export interface ToplistGeneral {
   id: number; // 排行榜id
   // topType: 0;
   // updateType: number;
@@ -39,13 +41,13 @@ export interface ToplistGroup {
   id: number;
   name: string;
   // type: number;
-  toplists: Array<Toplist>;
+  toplist: Array<ToplistGeneral>;
 }
-export interface ToplistAllResponse {
+export interface ToplistAll {
   groups: Array<ToplistGroup>;
 }
 
-export interface ToplistDetailResponse {
+export interface ToplistDetail {
   id: number;
   // topType: number;
   // updateType: number;
@@ -79,43 +81,11 @@ export interface ToplistDetailResponse {
   //   cover: string;
   //   // mvid: 0;
   // }[];
-  songList: Array<{
-    id: number;
-    type: number;
-    // mid: "000UO3jv0UcS3m";
-    name: string;
-    // title: string;
-    // subtitle: string;
-    singer: Array<{
-      id: number;
-      // mid: "003u5H9x1vACGo";
-      name: string;
-      // title: string;
-      type: number;
-      uin: number;
-      // pmid: "";
-    }>;
-    album: {
-      id: number;
-      // mid: "003MhhHz05Kc8g";
-      name: string;
-      // title: string;
-      // subtitle: string;
-      publicTime: number;
-      // pmid: "003MhhHz05Kc8g_1";
-    };
-    mv: {
-      id: number;
-      vid: string;
-      name: string;
-      // title: string;
-      // vt: 0;
-    };
-  }>;
+  songlist: Array<SongItem>;
 }
 export interface ToplistAllApi {
-  (): Promise<ToplistAllResponse>;
+  (): Promise<ToplistAll>;
 }
 export interface ToplistDetailApi {
-  (id: number): Promise<ToplistDetailResponse>;
+  (id: string, offset: number, num?: number): Promise<ToplistDetail>;
 }

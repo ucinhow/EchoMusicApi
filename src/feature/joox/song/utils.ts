@@ -1,8 +1,15 @@
-import { Song as RawSong } from "./typing";
-import { Song } from "@/common/typing";
+import { TrackResponse, TrackItem } from "./typing";
+import {
+  SongDetail,
+  SongItem,
+  SongLyric,
+  SongPlayUrl,
+  Source,
+} from "@/common/typing";
 import { convertImage } from "../common";
-import moment from "moment";
+// import moment from "moment";
 import { simplify } from "simplify-chinese";
+import { parseTimestamp } from "@/common/utils";
 const convertLyric = (lyric: string) => {
   const decodedLyric = simplify(Buffer.from(lyric, "base64").toString());
   const res: [number, string][] = [];
@@ -23,21 +30,54 @@ const convertLyric = (lyric: string) => {
   return res;
 };
 
-export const serializeSong = (data: RawSong): Song => ({
-  albumId: data.album_id,
-  albumName: simplify(data.album_name),
-  singerList: data.artist_list.map((item) => ({
-    id: item.id,
-    name: simplify(item.name),
-  })),
-  // genre: data.genre,
+// export const serializeSong = (data: RawSong): Song => ({
+//   albumId: data.album_id,
+//   albumName: simplify(data.album_name),
+//   singerList: data.artist_list.map((item) => ({
+//     id: item.id,
+//     name: simplify(item.name),
+//   })),
+//   // genre: data.genre,
+//   id: data.id,
+//   pic: convertImage(data.images),
+//   lyric: convertLyric(data.lrc_content), // base64 require decode
+//   lyricExist: Boolean(data.lrc_exist), // 1 for exist
+//   name: simplify(data.name),
+//   duration: data.play_duration * 1000, // seconds
+//   publicTime: moment(data.public_time, "YYYY-MM-DD").valueOf(),
+//   playable: data.is_playable,
+//   playUrl: data.play_url_list,
+// });
+
+export const searializeSongItem = (data: TrackItem): SongItem => ({
+  name: data.name,
+  singerName: data.artist_list.map((a) => a.name),
+  albumName: data.album_name,
+  duration: data.play_duration,
+  [Source.joox]: {
+    id: data.id,
+    singerId: data.artist_list.map((a) => a.id),
+    albumId: data.album_id,
+    playable: data.is_playable,
+  },
+});
+
+export const searializeSongDetail = (data: TrackResponse): SongDetail => ({
   id: data.id,
-  pic: convertImage(data.images),
-  lyric: convertLyric(data.lrc_content), // base64 require decode
-  lyricExist: Boolean(data.lrc_exist), // 1 for exist
-  name: simplify(data.name),
-  duration: data.play_duration * 1000, // seconds
-  publicTime: moment(data.public_time, "YYYY-MM-DD").valueOf(),
-  playable: data.is_playable,
-  playUrl: data.play_url_list,
+  name: data.name,
+  picUrl: convertImage(data.images),
+  singer: data.artist_list.map((a) => ({ name: a.name, id: a.id })),
+  publicTime: parseTimestamp(data.public_time),
+  duration: data.play_duration,
+  intro: "",
+  album: { name: data.album_name, id: data.album_id },
+});
+
+export const searializeSongUrl = (data: TrackResponse): SongPlayUrl => ({
+  url: data.play_url_list,
+});
+
+export const searializeSongLyric = (data: TrackResponse): SongLyric => ({
+  lyric: data.lrc_content,
+  lyricExist: Boolean(data.lrc_exist),
 });

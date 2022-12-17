@@ -1,4 +1,4 @@
-import { post, commParams, getSecuritySign } from "../common";
+import { postMusics, commParams, getSecuritySign } from "../common";
 import { SingerListResponse } from "./typing";
 import { serializeSingerList } from "./utils";
 const allSingerParams = {
@@ -18,7 +18,6 @@ const allSingerParams = {
 };
 
 export const querySingerList = () =>
-  post<typeof allSingerParams, SingerListResponse>(
-    allSingerParams,
-    getSecuritySign(allSingerParams)
-  ).then((res) => serializeSingerList(res.data));
+  postMusics<typeof allSingerParams, SingerListResponse>(allSingerParams).then(
+    (res) => serializeSingerList(res.data)
+  );

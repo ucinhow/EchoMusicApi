@@ -1,17 +1,17 @@
 import {
-  SearchResponse as RawSearchResponse,
+  SearchResponse,
   SearchTypeResponse as RawSearchTypeResponse,
 } from "./typing";
 import {
-  SearchData,
   SearchType,
   SearchTypeData,
-  // SearchTypeResponse,
+  SuggestSearch,
 } from "@/common/typing/search";
 import { Source } from "@/common/typing/common";
 import { SearchType as QQSearchType } from "./typing";
 import { parseTimestamp } from "@/common/utils";
-export const serializeSearch = (data: RawSearchResponse): SearchData => {
+import { searializeSongItemList } from "../song/utils";
+export const serializeSearch = (data: SearchResponse): SuggestSearch => {
   const temp = data.data;
   return {
     album: temp.album.itemlist,
@@ -22,26 +22,8 @@ export const serializeSearch = (data: RawSearchResponse): SearchData => {
     // },
     song: temp.song.itemlist,
     singer: temp.singer.itemlist,
-    src: Source.qq,
   };
 };
-
-export const createSearchTypeParams = (
-  key: string,
-  page = 1,
-  type: SearchType = SearchType.song
-) => ({
-  req_1: {
-    method: "DoSearchForQQMusicDesktop",
-    module: "music.search.SearchCgiService",
-    param: {
-      num_per_page: 100,
-      page_num: page,
-      query: key,
-      search_type: convertType(type),
-    },
-  },
-});
 
 export function convertType(type: QQSearchType): SearchType;
 export function convertType(type: SearchType): QQSearchType;
@@ -71,8 +53,8 @@ export function convertType(type: QQSearchType | SearchType) {
 
 export const serializeSearchType = (
   data: RawSearchTypeResponse,
-  type: SearchType,
-  page: number
+  type: SearchType
+  // page: number
 ): SearchTypeData => {
   const temp = data.req_0.data;
   const res: SearchTypeData = {
@@ -89,11 +71,11 @@ export const serializeSearchType = (
         res.data.push(
           ...temp.body.album.list.map((item) => ({
             name: item.albumName,
-            singerName: item.singer_list.map((s) => s.name),
+            singerName: item.singer_list.map((s) => s.name.toString()),
             publicTime: parseTimestamp(item.publicTime),
             [Source.qq]: {
               id: item.albumID.toString(),
-              pic: item.albumPic,
+              picUrl: item.albumPic,
               singerId: item.singer_list.map((s) => s.id.toString()),
             },
           }))
@@ -117,20 +99,7 @@ export const serializeSearchType = (
     // }
     case SearchType.song: {
       if (temp.body.song) {
-        res.data.push(
-          ...temp.body.song.list.map((item) => ({
-            name: item.name,
-            singerName: item.singer.map((s) => s.name),
-            albumName: item.album.name,
-            duration: item.interval,
-            [Source.qq]: {
-              id: item.id.toString(),
-              singerId: item.singer.map((s) => s.id.toString()),
-              albumId: item.album.id.toString(),
-            },
-          }))
-        );
-        // res.sum = temp.meta.estimate_sum;
+        res.data = searializeSongItemList(temp.body.song.list);
       }
       break;
     }
@@ -140,12 +109,10 @@ export const serializeSearchType = (
           ...temp.body.songlist.list.map((item) => ({
             id: item.dissid,
             name: item.dissname,
-            pic: item.imgurl,
-            // src: Source.qq,
+            picUrl: item.imgurl,
           }))
         );
       }
-      // res.sum = temp.meta.estimate_sum;
       break;
     }
   }

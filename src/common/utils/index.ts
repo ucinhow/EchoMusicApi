@@ -1,2 +1,4 @@
-export * from "./mergeSearch";
+export * from "./merge";
 export * from "./format";
+export * from "./other";
+export * from "./complete";

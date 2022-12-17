@@ -1,7 +1,7 @@
 import { serializeToplistAll, serializeToplistDetail } from "./utils";
 import { ToplistAllResponse, ToplistDetailResponse } from "./typing";
 import { postMusics, commParams, getSecuritySign } from "../common";
-import { ToplistAllApi, ToplistDetailApi } from "@/common/typing";
+// import { ToplistAllApi, ToplistDetailApi } from "@/common/typing/toplist";
 import moment from "moment";
 const toplistAllParams = {
   req_0: {
@@ -12,11 +12,11 @@ const toplistAllParams = {
   comm: { ...commParams, cv: 1770 },
 };
 
-const createDetailParams = (id: number, num = 300) => ({
+const createDetailParams = (id: string, offset: number, num?: number) => ({
   req_0: {
     module: "musicToplist.ToplistInfoServer",
     method: "GetDetail",
-    param: { topid: id, num, period: moment().format("YYYY-MM-DD") },
+    param: { topid: id, offset, num, period: moment().format("YYYY-MM-DD") },
   },
   comm: {
     ...commParams,
@@ -24,18 +24,24 @@ const createDetailParams = (id: number, num = 300) => ({
   },
 });
 
-export const queryToplistAll: ToplistAllApi = () =>
-  postMusics<typeof toplistAllParams, ToplistAllResponse>(
-    toplistAllParams,
-    getSecuritySign(toplistAllParams)
-  ).then((res) => serializeToplistAll(res.data));
+export const queryToplistAll = () =>
+  postMusics<typeof toplistAllParams, ToplistAllResponse>(toplistAllParams);
 
-export const queryToplistDetail: ToplistDetailApi = async (id: number) => {
-  const params = createDetailParams(id);
+export const toplistAll = async () =>
+  queryToplistAll().then((res) => serializeToplistAll(res.data));
+
+export const queryToplistDetail = async (
+  id: string,
+  offset: number,
+  num?: number
+) => {
+  const params = createDetailParams(id, offset, num);
   return postMusics<
     ReturnType<typeof createDetailParams>,
     ToplistDetailResponse
-  >(params, getSecuritySign(params)).then((res) =>
+  >(params);
+};
+export const toplistDetail = async (id: string, offset: number, num?: number) =>
+  queryToplistDetail(id, offset, num).then((res) =>
     serializeToplistDetail(res.data)
   );
-};

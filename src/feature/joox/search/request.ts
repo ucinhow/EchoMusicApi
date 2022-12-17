@@ -7,10 +7,10 @@ interface SearchParams {
   lang: "zh_CN"; // Joox doesn't support simplfied chinese, it will still response tranditional chinese.
   keyword: string;
 }
-type SearchTypeParams = SearchParams & { type: ItemType };
+// type SearchTypeParams = SearchParams & { type: ItemType };
 
 export const search = (keyword: string) =>
-  get<SearchParams, SearchResponse>("/openjoox/v3/search", {
+  get<SearchResponse>("/openjoox/v3/search", {
     params: {
       country: "hk",
       lang: "zh_cn",
@@ -25,7 +25,7 @@ export const search = (keyword: string) =>
  * @return SearchTypeData
  */
 export const searchType = (key: string, type: SearchType = SearchType.song) =>
-  get<SearchTypeParams, SearchTypeResponse>("/openjoox/v3/search_type", {
+  get<SearchTypeResponse>("/openjoox/v3/search_type", {
     params: {
       country: "hk",
       lang: "zh_cn",

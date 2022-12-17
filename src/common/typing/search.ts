@@ -1,5 +1,9 @@
-import { Source } from "./common";
-
+// import { Source } from "./common";
+// import { SongItem } from "./song";
+import { SrcMeta } from "./common";
+import { SongItem } from "./song";
+import { SonglistItem } from "./songlist";
+import { AlbumItem } from "./album";
 export enum SearchType {
   songlist = 1,
   album = 2,
@@ -8,63 +12,75 @@ export enum SearchType {
   // lyric = 5,
 }
 
-// Type of Search All Api
+// Type of Search Suggestion Api
 
-type Field = {
+type SSSrcMeta = SrcMeta<{
   id: string;
-  pic: string;
-  name: string;
-  singer: string;
-};
+  picUrl: string;
+}>;
 
-type SrcInfo = {
-  [K in keyof typeof Source]?: Pick<Field, "id" | "pic">;
-};
-
-// interface Mv {
-//   id: string;
-//   name: string;
-//   singer: string;
-//   vid: string;
-// }
-export type AlbumItem = SrcInfo & Pick<Field, "name" | "singer">;
-export type SingerItem = SrcInfo & Pick<Field, "name">;
-export type SonglistItem = SrcInfo & Pick<Field, "name">;
-export type SongItem = SrcInfo & Pick<Field, "name" | "singer">;
-export type SearchData = {
-  album?: Array<Field>;
-  singer?: Array<Omit<Field, "singer">>;
-  song?: Array<Omit<Field, "pic">>;
-  songlist?: Array<Omit<Field, "singer">>;
-  src: Source;
-};
-export interface SearchResponse {
-  album?: Array<AlbumItem>;
-  // mv?: {
-  //   itemList: Array<Mv>;
-  //   title: string;
-  // };
-  singer?: Array<SingerItem>;
-  song?: Array<SongItem>;
-  songlist?: Array<SonglistItem>;
+export interface SSData {
+  album: SSSrcMeta & {
+    name: string;
+    singer: string;
+  };
+  singer: SSSrcMeta & {
+    name: string;
+  };
+  songlist: SSSrcMeta & {
+    name: string;
+  };
+  song: SSSrcMeta & {
+    name: string;
+    singer: string;
+  };
 }
+
+export interface SuggestSearch {
+  album?: Array<SSData["album"]>;
+  singer?: Array<SSData["singer"]>;
+  songlist?: Array<SSData["songlist"]>;
+  song?: Array<SSData["song"]>;
+}
+
+// export type AlbumItem = SrcInfo & Pick<Field, "name" | "singer">;
+// export type SingerItem = SrcInfo & Pick<Field, "name">;
+// export type SonglistItem = SrcInfo & Pick<Field, "name">;
+// export type SongItem = SrcInfo & Pick<Field, "name" | "singer">;
+// export type SearchData = {
+//   album?: Array<Field>;
+//   singer?: Array<Omit<Field, "singer">>;
+//   song?: Array<Omit<Field, "pic">>;
+//   songlist?: Array<Omit<Field, "singer">>;
+//   src: Source;
+// };
+// export interface SearchResponse {
+//   album?: Array<AlbumItem>;
+//   // mv?: {
+//   //   itemList: Array<Mv>;
+//   //   title: string;
+//   // };
+//   singer?: Array<SingerItem>;
+//   song?: Array<SongItem>;
+//   songlist?: Array<SonglistItem>;
+// }
 
 // Type of Search Type Api
 
-type TypeField = {
-  id: string;
-  singerId: Array<string>;
-  albumId: string;
-  pic: string;
-  singer: Array<{ id: string; name: string }>;
-  singerName: Array<string>;
-  albumName: string;
-  duration: number;
-  name: string;
-  publicTime: number;
-  songCount: number;
-  // src: Source;
-};
+// type TypeField = {
+//   id: string;
+//   singerId: Array<string>;
+//   albumId: string;
+//   pic: string;
+//   singer: Array<{ id: string; name: string }>;
+//   singerName: Array<string>;
+//   albumName: string;
+//   duration: number;
+//   name: string;
+//   publicTime: number;
+//   songCount: number;
+//   // src: Source;
+// };
 // export type RawSong = Pick<
 //   TypeField,
 //   "id" | "name" | "singer" | "albumId" | "albumName" | "duration"
@@ -97,32 +113,44 @@ type TypeField = {
 //   sum: number;
 // } & TypeRawData;
 
-type SrcMeta<T> = {
-  [K in keyof typeof Source]?: T;
-};
-export type Singer = Pick<TypeField, "name"> &
-  SrcMeta<Pick<TypeField, "id" | "pic">>;
+// export type Singer = Pick<TypeField, "name"> &
+//   SrcMeta<Pick<TypeField, "id" | "pic">>;
 
-export type Song = Pick<
-  TypeField,
-  "name" | "singerName" | "albumName" | "duration"
-> &
-  SrcMeta<Pick<TypeField, "id" | "singerId" | "albumId">>;
+// export type Album = Pick<TypeField, "name" | "publicTime" | "singerName"> &
+//   SrcMeta<Pick<TypeField, "id" | "singerId">>;
 
-export type Album = Pick<TypeField, "name" | "publicTime" | "singerName"> &
-  SrcMeta<Pick<TypeField, "id" | "singerId">>;
+// export type Songlist = {
+//   id: string;
+//   name: string;
+//   picUrl: string;
+// };
 
-export type Songlist = Pick<TypeField, "id" | "name" | "pic">;
-
-export type TypeData =
-  | { data: Array<Song>; type: SearchType.song }
-  | { data: Array<Album>; type: SearchType.album }
-  // | { data: Array<Singer>; type: SearchType.singer }
-  | { data: Array<Songlist>; type: SearchType.songlist };
-
-export type SearchTypeData = {
+export interface SongTypeData {
   hasMore: boolean;
-  // sum?: number;
-  // src: Source;
-  // page?: number;
-} & TypeData;
+  data: Array<SongItem>;
+  type: SearchType.song;
+}
+export interface AlbumTypeData {
+  hasMore: boolean;
+  data: Array<AlbumItem>;
+  type: SearchType.album;
+}
+export interface SonglistTypeData {
+  hasMore: boolean;
+  data: Array<SonglistItem>;
+  type: SearchType.songlist;
+}
+// export type TypeData =
+//   |
+//   | {  }
+//   // | { data: Array<Singer>; type: SearchType.singer }
+//   | {  };
+
+export type SearchTypeData = SongTypeData | AlbumTypeData | SonglistTypeData;
+export type SearchTypeResponse = SearchTypeData;
+export interface SearchTypeApi {
+  (key: string, page: number, type: SearchType): Promise<SearchTypeData>;
+}
+export interface SuggestSearchApi {
+  (key: string): Promise<SuggestSearch>;
+}

@@ -3,8 +3,13 @@ import {
   ItemType,
   SearchTypeResponse as RawSearchTypeResponse,
 } from "./typing";
-import { SearchType, SearchData, SearchTypeData } from "@/common/typing/search";
-import { Source } from "@/common/typing/common";
+import {
+  SearchType,
+  SearchTypeData,
+  Source,
+  SSData,
+  SuggestSearch,
+} from "@/common/typing";
 
 import { simplify } from "simplify-chinese";
 import { convertImage } from "../common";
@@ -36,20 +41,20 @@ export function convertType(type: ItemType | SearchType) {
   }
 }
 
-export const serializeSearch = (data: RawSearchResponse): SearchData => {
+export const serializeSearch = (data: RawSearchResponse): SuggestSearch => {
   const sections = data.section_list;
-  const res: SearchData = { src: Source.joox };
+  const res: SuggestSearch = {};
   for (const s of sections) {
     for (const item of s.item_list) {
       switch (item.type) {
         case ItemType.songlist: {
-          if (res.songlist === undefined) {
-            res.songlist = [];
-          }
+          if (res.songlist === undefined) res.songlist = [];
           res.songlist.push({
-            id: item.editor_playlist.id,
+            [Source.joox]: {
+              id: item.editor_playlist.id,
+              picUrl: convertImage(item.editor_playlist.images),
+            },
             name: simplify(item.editor_playlist.name),
-            pic: convertImage(item.editor_playlist.images),
           });
           break;
         }
@@ -58,9 +63,11 @@ export const serializeSearch = (data: RawSearchResponse): SearchData => {
             res.album = [];
           }
           res.album.push({
-            id: item.album.id,
+            [Source.joox]: {
+              id: item.album.id,
+              picUrl: convertImage(item.album.images),
+            },
             name: simplify(item.album.name),
-            pic: convertImage(item.album.images),
             singer: simplify(
               item.album.artist_list.map((a) => a.name).join(" | ")
             ),
@@ -73,7 +80,10 @@ export const serializeSearch = (data: RawSearchResponse): SearchData => {
           }
           res.song.push(
             ...item.song.map((i) => ({
-              id: i.song_info.id,
+              [Source.joox]: {
+                id: i.song_info.id,
+                picUrl: convertImage(i.song_info.images),
+              },
               name: simplify(i.song_info.name),
               singer: simplify(
                 i.song_info.artist_list.map((a) => a.name).join(" | ")
@@ -121,7 +131,7 @@ export const serializeSearchType = (
             publicTime: parseTimestamp(item.publish_date),
             [Source.joox]: {
               id: item.id,
-              pic: convertImage(item.images),
+              picUrl: convertImage(item.images),
               singerId: item.artist_list.map((a) => a.name),
             },
           }))
@@ -156,9 +166,10 @@ export const serializeSearchType = (
               duration: track.play_duration,
               [Source.joox]: {
                 id: track.id,
-                pic: convertImage(track.images),
+                picUrl: convertImage(track.images),
                 albumId: track.album_id,
                 singerId: track.artist_list.map((a) => a.id),
+                playable: track.is_playable,
               },
             }))
           );
@@ -173,7 +184,7 @@ export const serializeSearchType = (
           ...data.playlists.map((item) => ({
             id: item.id,
             name: simplify(item.name),
-            pic: convertImage(item.images),
+            picUrl: convertImage(item.images),
           }))
         );
         // res.sum = res.data.length;
