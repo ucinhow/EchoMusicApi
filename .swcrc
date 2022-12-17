@@ -4,16 +4,17 @@
       "syntax": "typescript",
       "tsx": false,
       "decorators": true,
-      "dynamicImport": true
+      "dynamicImport": true,
+      "topLevelAwait": true
     },
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     },
-    "target": "ES2022"
+    "target": "es2022"
   },
   "module": {
-    "type": "ES2022"
+    "type": "es6"
   },
   "isModule": true
 }

@@ -11,9 +11,6 @@
     "sourceType": "module",
     "project": ["./tsconfig.json"]
   },
-  "rules": {
-    // "@typescript-eslint/rule-name": "error"
-  },
   "settings": {
     "import/parsers": {
       "@typescript-eslint/parser": [".ts"]
