@@ -4,6 +4,7 @@ export const SOURCE = [Source.qq, Source.joox];
 export const INFO_SOURCE = [INFOSource.qq];
 export enum ERROR_MSG {
   ParamError = "PARAM-ERROR",
+  BannerJumpError = "BANNER-JUMP-ERROR",
 }
 export const SONGITEM_PATH = "SONGITEM";
 export const SEARCH_SONG_PATH = "SEARCH-SONG";

@@ -8,6 +8,7 @@ import {
   songLyric as qqSongLyric,
   songDetail as qqSongDetail,
   songlistRecommend as qqSonglistRecommend,
+  banner as qqBanner,
 } from "./qq";
 
 import {
@@ -57,3 +58,7 @@ export const querySonglistRecommend = {
 };
 
 // export const querySongDetail: Record<Source, SongDetailApi> = {};
+
+export const queryBanner = {
+  [INFOSource.qq]: qqBanner,
+};
