@@ -7,6 +7,7 @@ import {
   queryToplistAll,
   querySearchSuggest,
   querySearchType,
+  querySonglistRecommend,
 } from "@/feature/qq";
 const testRequestQQ = () => {
   // test("toplist all api for qq", async () => {
@@ -41,6 +42,11 @@ const testRequestQQ = () => {
   });
   test("request qq toplist all", async () => {
     const res = await queryToplistAll();
+    expect(res.data.code).toEqual(0);
+  });
+  test("request qq songlist recommend", async () => {
+    const res = await querySonglistRecommend();
+    // console.log(res.data.req_1.data);
     expect(res.data.code).toEqual(0);
   });
 };

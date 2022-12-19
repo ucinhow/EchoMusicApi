@@ -110,6 +110,7 @@ export const serializeSearchType = (
             id: item.dissid,
             name: item.dissname,
             picUrl: item.imgurl,
+            playCount: item.listennum,
           }))
         );
       }

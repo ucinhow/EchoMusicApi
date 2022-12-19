@@ -7,6 +7,7 @@ import {
   songUrl as qqSongUrl,
   songLyric as qqSongLyric,
   songDetail as qqSongDetail,
+  songlistRecommend as qqSonglistRecommend,
 } from "./qq";
 
 import {
@@ -49,6 +50,10 @@ export const queryToplistDetail = {
 
 export const querySonglistDetail = {
   [INFOSource.qq]: qqSonglistDetail,
+};
+
+export const querySonglistRecommend = {
+  [INFOSource.qq]: qqSonglistRecommend,
 };
 
 // export const querySongDetail: Record<Source, SongDetailApi> = {};

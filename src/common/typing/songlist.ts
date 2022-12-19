@@ -16,12 +16,19 @@ export interface SonglistDetail {
   // updateTime: number;
 }
 
+export type SonglistRecommend = Array<SonglistItem>;
+
 export interface SonglistItem {
   id: string;
   name: string;
   picUrl: string;
+  playCount: number;
 }
 
 export interface SonglistDetailApi {
   (id: string, offset: number, num?: number): Promise<SonglistDetail>;
+}
+
+export interface SonglistRecommendApi {
+  (): Promise<SonglistRecommend>;
 }

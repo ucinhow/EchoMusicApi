@@ -1,6 +1,6 @@
 import { SongInfo } from "../song/typing";
 
-export interface SonglistDetail {
+export interface Detail {
   dirinfo: {
     id: number;
     desc: string;
@@ -16,9 +16,35 @@ export interface SonglistDetail {
   songlist: Array<SongInfo>;
 }
 
-export interface SonglistDetailResponse {
+export interface DetailResponse {
   code: number;
   req_1: {
-    data: SonglistDetail;
+    data: Detail;
+  };
+}
+
+export interface Recommend {
+  HasMore: boolean;
+  List: Array<{
+    Playlist: {
+      basic: {
+        play_cnt: number;
+        title: string;
+        modify_time: number;
+        create_time: number;
+        desc: string;
+        cover: {
+          default_url: string;
+        };
+        dirid: number;
+      };
+    };
+  }>;
+}
+
+export interface RecommendResponse {
+  code: number;
+  req_1: {
+    data: Recommend;
   };
 }
