@@ -9,6 +9,7 @@ import {
   songDetail as qqSongDetail,
   songlistRecommend as qqSonglistRecommend,
   banner as qqBanner,
+  singerDetail as qqSingerDetail,
 } from "./qq";
 
 import {
@@ -61,4 +62,8 @@ export const querySonglistRecommend = {
 
 export const queryBanner = {
   [INFOSource.qq]: qqBanner,
+};
+
+export const querySingerDetail = {
+  [INFOSource.qq]: qqSingerDetail,
 };

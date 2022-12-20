@@ -22,3 +22,22 @@ export interface SingerListResponse {
 export interface SingerListApi {
   (): Promise<SingerListResponse>;
 }
+
+export interface SingerDetail {
+  // area: number;
+  id: string;
+  name: string;
+  picUrl: string;
+  birthday: number;
+  desc: string;
+  foreignName: string;
+  birthplace: string;
+  country: string;
+  alias: string;
+  occupation: string;
+  fansCnt: number;
+  songCnt: number;
+  albumCnt: number;
+}
+
+// export type SingerDetailResponse = SingerDetail;
