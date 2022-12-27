@@ -32,3 +32,16 @@ export interface SonglistDetailApi {
 export interface SonglistRecommendApi {
   (): Promise<SonglistRecommend>;
 }
+
+export interface SonglistCategory {
+  group: Array<{
+    id: number;
+    name: string;
+    item: Array<{ name: string; id: number }>;
+  }>;
+}
+
+export interface SonglistList {
+  list: Array<SonglistItem>;
+  totalCnt: number;
+}

@@ -10,6 +10,8 @@ import {
   songlistRecommend as qqSonglistRecommend,
   banner as qqBanner,
   singerDetail as qqSingerDetail,
+  songlistCategory as qqSonglistCategory,
+  songlistList as qqSonglistList,
 } from "./qq";
 
 import {
@@ -66,4 +68,12 @@ export const queryBanner = {
 
 export const querySingerDetail = {
   [INFOSource.qq]: qqSingerDetail,
+};
+
+export const querySonglistCategory = {
+  [INFOSource.qq]: qqSonglistCategory,
+};
+
+export const querySonglistList = {
+  [INFOSource.qq]: qqSonglistList,
 };
