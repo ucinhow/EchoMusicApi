@@ -1,8 +1,8 @@
 import { serializeToplistAll, serializeToplistDetail } from "./utils";
 import { ToplistAllResponse, ToplistDetailResponse } from "./typing";
-import { postMusics, commParams, getSecuritySign } from "../common";
-// import { ToplistAllApi, ToplistDetailApi } from "@/common/typing/toplist";
-import moment from "moment";
+import { postMusics, commParams } from "../common";
+import { format } from "date-fns";
+
 const toplistAllParams = {
   req_0: {
     module: "musicToplist.ToplistInfoServer",
@@ -12,15 +12,26 @@ const toplistAllParams = {
   comm: { ...commParams, cv: 1770 },
 };
 
-const createDetailParams = (id: string, offset: number, num?: number) => ({
-  req_0: {
+const createDetailParams = (id: number) => ({
+  req_1: {
     module: "musicToplist.ToplistInfoServer",
     method: "GetDetail",
-    param: { topid: id, offset, num, period: moment().format("YYYY-MM-DD") },
+    param: {
+      topid: id,
+      offset: 0,
+      num: 300,
+    },
   },
   comm: {
-    ...commParams,
-    cv: 80500,
+    cv: 4747474,
+    ct: 24,
+    format: "json",
+    inCharset: "utf-8",
+    outCharset: "utf-8",
+    // notice: 0,
+    platform: "yqq.json",
+    // needNewCode: 1,
+    uin: 0,
   },
 });
 
@@ -30,18 +41,12 @@ export const queryToplistAll = () =>
 export const toplistAll = async () =>
   queryToplistAll().then((res) => serializeToplistAll(res.data));
 
-export const queryToplistDetail = async (
-  id: string,
-  offset: number,
-  num?: number
-) => {
-  const params = createDetailParams(id, offset, num);
+export const queryToplistDetail = async (id: number) => {
+  const params = createDetailParams(id);
   return postMusics<
     ReturnType<typeof createDetailParams>,
     ToplistDetailResponse
   >(params);
 };
-export const toplistDetail = async (id: string, offset: number, num?: number) =>
-  queryToplistDetail(id, offset, num).then((res) =>
-    serializeToplistDetail(res.data)
-  );
+export const toplistDetail = async (id: number) =>
+  queryToplistDetail(id).then((res) => serializeToplistDetail(res.data));

@@ -1,9 +1,9 @@
 import { get, getSecretKey } from "../common";
 import { TrackResponse } from "./typing";
 import {
-  searializeSongDetail,
-  searializeSongLyric,
-  searializeSongUrl,
+  serializeSongDetail,
+  serializeSongLyric,
+  serializeSongUrl,
 } from "./utils";
 
 const params = {
@@ -24,10 +24,10 @@ export const querySong = (id: string) => {
 };
 
 export const songDetail = (id: string) =>
-  querySong(id).then((res) => searializeSongDetail(res.data));
+  querySong(id).then((res) => serializeSongDetail(res.data));
 
 export const songUrl = (id: string) =>
-  querySong(id).then((res) => searializeSongUrl(res.data));
+  querySong(id).then((res) => serializeSongUrl(res.data));
 
 export const songLyric = (id: string) =>
-  querySong(id).then((res) => searializeSongLyric(res.data));
+  querySong(id).then((res) => serializeSongLyric(res.data));

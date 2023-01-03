@@ -2,8 +2,8 @@ import { SonglistDetail } from "@/common/typing";
 import { DetailResponse } from "./typing";
 import { convertImage } from "../common";
 import { parseTimestamp } from "@/common/utils";
-import { searializeSongItem } from "../song/utils";
-export const searializeDetail = (data: DetailResponse): SonglistDetail => {
+// import { serializeSongItem } from "../song/utils";
+export const serializeDetail = (data: DetailResponse): SonglistDetail => {
   const temp = data.playlists;
   return {
     id: temp.id,
@@ -12,7 +12,7 @@ export const searializeDetail = (data: DetailResponse): SonglistDetail => {
     // playCount: temp.
     desc: temp.description,
     total: temp.track_count,
-    songlist: temp.tracks.items.map(searializeSongItem),
+    // songlist: temp.tracks.items.map(serializeSongItem),
     createTime: parseTimestamp(temp.publish_date),
   };
 };

@@ -1,9 +1,10 @@
-import { ERROR_MSG } from "@/common/constant";
+import { DEVELOPMENT_ENV, ERROR_MSG } from "@/common/constant";
 import { Banners, DataType } from "@/common/typing";
+import config from "@/config";
 import { BannerResponse, JumpType } from "./typing";
 
-export const searializeBanner = (res: BannerResponse): Banners => {
-  const data = res.req_1.data.shelf.v_niche.v_card;
+export const serializeBanner = (res: BannerResponse): Banners => {
+  const data = res.req_1.data.shelf.v_niche?.[0]?.v_card || [];
   return data.map((item) => {
     let id = "";
     let type = DataType.song;
@@ -21,7 +22,12 @@ export const searializeBanner = (res: BannerResponse): Banners => {
         id = item.id.match(reg)?.[0]?.slice(4) || "";
         type = DataType.album;
         break;
+      case JumpType.mv:
+        id = item.subid;
+        type = DataType.mv;
+        break;
       default:
+        config.env === DEVELOPMENT_ENV && console.log(item.jumptype, item);
         throw new Error(ERROR_MSG.BannerJumpError);
     }
     return {

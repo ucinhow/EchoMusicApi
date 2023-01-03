@@ -30,7 +30,7 @@ export interface SSData {
   songlist: SSSrcMeta & {
     name: string;
   };
-  song: SSSrcMeta & {
+  song: SrcMeta<{ id: string }> & {
     name: string;
     singer: string;
   };
@@ -130,15 +130,30 @@ export interface SongTypeData {
   data: Array<SongItem>;
   type: SearchType.song;
 }
+export interface SearchSong {
+  hasMore: boolean;
+  data: Array<SongItem>;
+  nextPage: number;
+}
 export interface AlbumTypeData {
   hasMore: boolean;
   data: Array<AlbumItem>;
   type: SearchType.album;
 }
+export interface SearchAlbum {
+  hasMore: boolean;
+  data: Array<AlbumItem>;
+  nextPage: number;
+}
 export interface SonglistTypeData {
   hasMore: boolean;
   data: Array<SonglistItem>;
   type: SearchType.songlist;
+}
+export interface SearchSonglist {
+  hasMore: boolean;
+  data: Array<SonglistItem>;
+  nextPage: number;
 }
 // export type TypeData =
 //   |

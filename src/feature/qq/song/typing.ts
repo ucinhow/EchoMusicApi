@@ -1,7 +1,7 @@
 export interface SongInfo {
   id: number;
   type: number;
-  // mid: "000UO3jv0UcS3m";
+  mid: string;
   name: string;
   title: string;
   subtitle: string;
@@ -30,7 +30,7 @@ export interface SongInfo {
   ];
   album: {
     id: number;
-    // mid: "003MhhHz05Kc8g";
+    mid: string;
     name: string;
     title: string;
     subtitle: string;
@@ -94,12 +94,14 @@ interface SongDetail {
 
 export interface SongUrlResponse {
   req_1: {
+    code: number;
     data: SongUrlData;
   };
 }
 
 export interface SongDetailResponse {
   req_1: {
+    code: number;
     data: SongDetail;
     info: {
       intro: {

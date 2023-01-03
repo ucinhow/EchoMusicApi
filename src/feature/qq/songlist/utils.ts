@@ -5,14 +5,14 @@ import {
   RecommendResponse,
 } from "./typing";
 import {
+  SongItem,
   SonglistCategory,
   SonglistDetail,
-  SonglistItem,
   SonglistList,
   SonglistRecommend,
 } from "@/common/typing";
-import { searializeSongItemList } from "../song/utils";
-export const searializeDetail = (res: DetailResponse): SonglistDetail => {
+import { serializeSongItemList } from "../song/utils";
+export const serializeDetail = (res: DetailResponse): SonglistDetail => {
   const { data } = res.req_1;
   const { dirinfo } = data;
   return {
@@ -23,11 +23,11 @@ export const searializeDetail = (res: DetailResponse): SonglistDetail => {
     desc: dirinfo.desc,
     total: dirinfo.songnum,
     createTime: dirinfo.ctime * 1000,
-    songlist: searializeSongItemList(data.songlist || []),
+    // songlist: serializeSongItemList(data.songlist || []),
   };
 };
 
-export const searializeRecommend = (
+export const serializeRecommend = (
   res: RecommendResponse
 ): SonglistRecommend => {
   const data = res.req_1.data.List;
@@ -64,4 +64,9 @@ export const serializeList = (res: CategoryContentResponse): SonglistList => {
       picUrl: i.basic.cover.default_url,
     })),
   };
+};
+
+export const serializeItems = (res: DetailResponse): SongItem[] => {
+  const data = res.req_1.data.songlist;
+  return serializeSongItemList(data);
 };

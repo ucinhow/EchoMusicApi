@@ -7,7 +7,7 @@ export interface SonglistDetail {
   playCount?: number;
   desc: string;
   total: number;
-  songlist: Array<SongItem>;
+  // songlist: Array<SongItem>;
   // creator: {
   //   nickname: string;
   //   picUrl: string;

@@ -1,4 +1,4 @@
-import moment from "moment";
+import { parse } from "date-fns";
 
 export const parseTimestamp = (str: string): number =>
-  moment(str, "YYYY-MM-DD").valueOf();
+  parse(str, "yyyy-MM-dd", new Date()).valueOf();

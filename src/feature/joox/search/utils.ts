@@ -1,11 +1,15 @@
 import {
-  SearchResponse as RawSearchResponse,
+  SearchResponse,
   ItemType,
-  SearchTypeResponse as RawSearchTypeResponse,
+  SearchTypeResponse,
+  SearchSongResponse,
+  Track,
 } from "./typing";
 import {
+  SearchSong,
   SearchType,
   SearchTypeData,
+  SongItem,
   Source,
   SSData,
   SuggestSearch,
@@ -41,7 +45,7 @@ export function convertType(type: ItemType | SearchType) {
   }
 }
 
-export const serializeSearch = (data: RawSearchResponse): SuggestSearch => {
+export const serializeSearch = (data: SearchResponse): SuggestSearch => {
   const sections = data.section_list;
   const res: SuggestSearch = {};
   for (const s of sections) {
@@ -109,8 +113,48 @@ export const serializeSearch = (data: RawSearchResponse): SuggestSearch => {
   return res;
 };
 
+export const serializeTrack = (data: Track): SongItem => ({
+  name: simplify(data.name).replaceAll(" ", ""),
+  singerName: data.artist_list.map((a) => simplify(a.name)),
+  albumName: simplify(data.album_name),
+  duration: data.play_duration,
+  [Source.joox]: {
+    id: data.id,
+    // picUrl: convertImage(data.images),
+    albumId: data.album_id,
+    singerId: data.artist_list.map((a) => a.id),
+    playable: data.is_playable,
+  },
+});
+
+export const serializeSearchSong = (res: SearchSongResponse): SearchSong => {
+  const ret: SearchSong = {
+    hasMore: false,
+    data: [],
+    nextPage: 1,
+  };
+  if (res.tracks) {
+    res.tracks.forEach((item) => {
+      ret.data = item.map(serializeTrack);
+    });
+  }
+  return ret;
+};
+
+export const pickSuggestSong = (data: SearchResponse): SongItem[] => {
+  // const sections = data.section_list
+  const ret: SongItem[] = [];
+  for (const section of data.section_list) {
+    for (const item of section.item_list) {
+      if (item.type !== ItemType.song) break;
+      ret.push(...item.song.map(({ song_info }) => serializeTrack(song_info)));
+    }
+  }
+  return ret;
+};
+
 export const serializeSearchType = (
-  data: RawSearchTypeResponse,
+  data: SearchTypeResponse,
   type: SearchType
 ): SearchTypeData => {
   const res: SearchTypeData = {
@@ -185,6 +229,7 @@ export const serializeSearchType = (
             id: item.id,
             name: simplify(item.name),
             picUrl: convertImage(item.images),
+            playCount: 0,
           }))
         );
         // res.sum = res.data.length;

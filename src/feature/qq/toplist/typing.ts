@@ -48,6 +48,7 @@ export interface ToplistGeneral {
 export interface ToplistAllResponse {
   code: number;
   req_0: {
+    code: number;
     data: {
       group: ToplistGroup[];
     };
@@ -55,7 +56,8 @@ export interface ToplistAllResponse {
 }
 export interface ToplistDetailResponse {
   code: number;
-  req_0: {
+  req_1: {
+    code: number;
     data: {
       data: {
         topId: number;

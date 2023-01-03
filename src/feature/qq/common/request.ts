@@ -45,3 +45,14 @@ export const instanceC = axios.create({
 });
 // export const;
 // export default instance;
+export const webComm = {
+  cv: 4747474,
+  ct: 24,
+  format: "json",
+  inCharset: "utf-8",
+  outCharset: "utf-8",
+  notice: 0,
+  platform: "yqq.json",
+  // needNewCode: 1,
+  uin: 0,
+};

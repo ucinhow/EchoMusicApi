@@ -1,7 +1,7 @@
 import { ToplistAllResponse, ToplistDetailResponse } from "./typing";
 import { ToplistAll, ToplistDetail } from "@/common/typing/toplist";
 import { parseTimestamp } from "@/common/utils";
-import { searializeSongItemList } from "../song/utils";
+import { serializeSongItemList } from "../song/utils";
 export const serializeToplistAll = (data: ToplistAllResponse): ToplistAll => {
   const groups = data.req_0.data.group;
   return {
@@ -24,7 +24,7 @@ export const serializeToplistAll = (data: ToplistAllResponse): ToplistAll => {
 export const serializeToplistDetail = (
   data: ToplistDetailResponse
 ): ToplistDetail => {
-  const temp = data.req_0.data;
+  const temp = data.req_1.data;
   return {
     id: temp.data.topId,
     name: temp.data.title,
@@ -32,6 +32,6 @@ export const serializeToplistDetail = (
     updateTime: parseTimestamp(temp.data.updateTime),
     playCount: temp.data.listenNum,
     total: temp.data.totalNum,
-    songlist: searializeSongItemList(temp.songInfoList),
+    songlist: serializeSongItemList(temp.songInfoList),
   };
 };

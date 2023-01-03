@@ -41,7 +41,7 @@ export interface SongDetail {
   singer: Array<{ name: string; id: string }>;
   publicTime: number;
   duration: number;
-  intro: string;
+  // intro: string;
   album: {
     name: string;
     id: string;

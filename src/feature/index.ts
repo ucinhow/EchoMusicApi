@@ -1,5 +1,8 @@
 import {
-  searchType as qqSearchType,
+  // searchType as qqSearchType,
+  searchSong as qqSearchSong,
+  searchAlbum as qqSearchAlbum,
+  searchSonglist as qqSearchSonglist,
   searchSuggest as qqSuggestSearch,
   toplistAll as qqToplistAll,
   songlistDetail as qqSonglistDetail,
@@ -12,24 +15,39 @@ import {
   singerDetail as qqSingerDetail,
   songlistCategory as qqSonglistCategory,
   songlistList as qqSonglistList,
+  songlistItems as qqSonglistItems,
+  albumDetail as qqAlbumDetail,
 } from "./qq";
 
 import {
-  searchType as jooxSearchType,
-  search as jooxSuggestSearch,
+  searchSong as jooxSearchSong,
+  songUrl as jooxSongUrl,
+  songLyric as jooxSongLyric,
 } from "./joox";
 
-import { Source, INFOSource, SearchType, SearchTypeApi } from "@/common/typing";
+import { Source, INFOSource } from "@/common/typing";
 
-export const searchType: Record<Source, SearchTypeApi> = {
-  [Source.qq]: qqSearchType,
-  [Source.joox]: (key: string, page: number, type: SearchType) =>
-    jooxSearchType(key, type),
+// export const searchType: Record<Source, SearchTypeApi> = {
+//   [Source.qq]: qqSearchType,
+//   [Source.joox]: (key: string, page: number, type: SearchType) =>
+//     jooxSearchType(key, type),
+// };
+export const searchSong = {
+  [Source.qq]: qqSearchSong,
+  [Source.joox]: (key: string, page: number) => jooxSearchSong(key),
+};
+
+export const searchSonglist = {
+  [INFOSource.qq]: qqSearchSonglist,
+};
+
+export const searchAlbum = {
+  [INFOSource.qq]: qqSearchAlbum,
 };
 
 export const suggestSearch = {
-  [Source.qq]: qqSuggestSearch,
-  [Source.joox]: jooxSuggestSearch,
+  [INFOSource.qq]: qqSuggestSearch,
+  // [Source.joox]: jooxSuggestSearch,
 };
 
 export const querySongDetail = {
@@ -37,11 +55,13 @@ export const querySongDetail = {
 };
 
 export const querySongUrl = {
-  [INFOSource.qq]: qqSongUrl,
+  [Source.qq]: qqSongUrl,
+  [Source.joox]: jooxSongUrl,
 };
 
 export const querySongLyric = {
-  [INFOSource.qq]: qqSongLyric,
+  [Source.qq]: qqSongLyric,
+  [Source.joox]: jooxSongLyric,
 };
 
 export const queryToplistAll = {
@@ -54,6 +74,10 @@ export const queryToplistDetail = {
 
 export const querySonglistDetail = {
   [INFOSource.qq]: qqSonglistDetail,
+};
+
+export const querySonglistItems = {
+  [INFOSource.qq]: qqSonglistItems,
 };
 
 export const querySonglistRecommend = {
@@ -76,4 +100,8 @@ export const querySonglistCategory = {
 
 export const querySonglistList = {
   [INFOSource.qq]: qqSonglistList,
+};
+
+export const queryAlbumDetail = {
+  [INFOSource.qq]: qqAlbumDetail,
 };

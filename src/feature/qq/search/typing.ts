@@ -73,7 +73,7 @@ export interface SearchResponse {
       itemlist: Array<{
         // docid: "2418779";
         id: string;
-        // mid: "000lrXyA0MlEEo";
+        mid: string;
         name: string;
         pic: string;
         singer: string;
@@ -101,7 +101,7 @@ export interface SearchResponse {
       itemlist: Array<{
         // docid: "1399808";
         id: string;
-        // mid: "003RGAyU46oc94";
+        mid: string;
         name: string;
         pic: string;
         singer: string;
@@ -115,7 +115,7 @@ export interface SearchResponse {
       itemlist: Array<{
         // docid: "205357640";
         id: string;
-        // mid: "004Uln1G2Aunqw";
+        mid: string;
         name: string;
         singer: string;
       }>;
@@ -127,7 +127,8 @@ export interface SearchResponse {
 }
 export interface SearchTypeResponse {
   code: number;
-  req_0: {
+  req_1: {
+    code: number;
     data: {
       body: {
         album: {
@@ -224,6 +225,109 @@ export interface SearchTypeResponse {
     };
   };
 }
+
+export interface SearchSongResponse {
+  code: number;
+  req_1: {
+    code: number;
+    data: {
+      body: {
+        song: {
+          list: Array<SongInfo>;
+        };
+      };
+      meta: {
+        curpage: number;
+        estimate_sum: number;
+        nextpage: number;
+        perpage: number;
+        query: string;
+      };
+    };
+  };
+}
+
+export interface SearchAlbumResponse {
+  code: number;
+  req_1: {
+    code: number;
+    data: {
+      body: {
+        album: {
+          list: Array<{
+            albumID: number;
+            // albumMID: "004TvSd03uUezv";
+            albumName: string;
+            // albumName_hilight: "<em>交换余生</em>";
+            albumPic: string;
+            // catch_song: "";
+            docid: string; //  "12075792732946847581";
+            publicTime: string;
+            singerID: number;
+            // singerMID: "001BLpXF2DyJe2";
+            singerName: string;
+            // singerName_hilight: "林俊杰";
+            // singerTransName: "";
+            // singerTransName_hilight: "";
+            singer_list: Array<{
+              id: number;
+              // mid: "001BLpXF2DyJe2";
+              name: string;
+              // pmid: "";
+              // title: "林俊杰";
+              // type: 0;
+              // uin: 0;
+            }>;
+            song_count: number;
+            // type: 0;
+          }>;
+        };
+      };
+      meta: {
+        curpage: number;
+        estimate_sum: number;
+        nextpage: number;
+        perpage: number;
+        query: string;
+      };
+    };
+  };
+}
+
+export interface SearchSonglistResponse {
+  code: number;
+  req_1: {
+    code: number;
+    data: {
+      body: {
+        songlist: {
+          list: Array<{
+            // copyrightnum: 0;
+            createtime: string; // "2021-01-18"
+            // creator: [Object];
+            // diss_status: 400;
+            dissid: string;
+            dissname: string;
+            docid: string;
+            imgurl: string;
+            introduction: string;
+            listennum: number;
+            modifytime: string;
+            song_count: number;
+          }>;
+        };
+      };
+      meta: {
+        curpage: number;
+        estimate_sum: number;
+        nextpage: number;
+        perpage: number;
+        query: string;
+      };
+    };
+  };
+}
+
 export enum SearchType {
   song = 0,
   singer = 1,

@@ -10,3 +10,5 @@ export const SONGITEM_PATH = "SONGITEM";
 export const SEARCH_SONG_PATH = "SEARCH-SONG";
 export const SEARCH_ALBUM_PATH = "SEARCH-ALBUM";
 export const SEARCH_SONGLIST_PATH = "SEARCH-SONGLIST";
+
+export const DEVELOPMENT_ENV = "development";

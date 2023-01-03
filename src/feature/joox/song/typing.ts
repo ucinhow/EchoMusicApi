@@ -31,7 +31,7 @@ export interface TrackResponse {
   //   track_vip_action_control: 0;
   //   vip_flag: 0;
   is_playable: boolean;
-  //   error: "";
+  error: string;
   play_url_list: Array<string>;
 }
 

@@ -1,5 +1,5 @@
-import { postMusics, commParams } from "../common";
-// import { searializeDetail } from "../songlist/utils";
+import { postMusics, commParams, webComm } from "../common";
+// import { serializeDetail } from "../songlist/utils";
 import { SingerDetailResponse, SingerListResponse } from "./typing";
 import { serializeSingerList, serializeDetail } from "./utils";
 const allSingerParams = {
@@ -19,6 +19,7 @@ const allSingerParams = {
 };
 
 const createDetailParam = (id: string) => ({
+  comm: webComm,
   req_1: {
     method: "GetSingerDetail",
     param: {
@@ -51,7 +52,7 @@ const createDetailParam = (id: string) => ({
   req_4: {
     method: "cgi_qry_concern_num",
     module: "Concern.ConcernSystemServer",
-    param: { vec_userinfo: [{ userid: id }] },
+    param: { vec_userinfo: [{ userid: id, usertype: 1 }] },
   },
 });
 

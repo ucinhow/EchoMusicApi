@@ -7,7 +7,6 @@ import {
   Source,
 } from "@/common/typing";
 import { convertImage } from "../common";
-// import moment from "moment";
 import { simplify } from "simplify-chinese";
 import { parseTimestamp } from "@/common/utils";
 const convertLyric = (lyric: string) => {
@@ -49,7 +48,7 @@ const convertLyric = (lyric: string) => {
 //   playUrl: data.play_url_list,
 // });
 
-export const searializeSongItem = (data: TrackItem): SongItem => ({
+export const serializeSongItem = (data: TrackItem): SongItem => ({
   name: data.name,
   singerName: data.artist_list.map((a) => a.name),
   albumName: data.album_name,
@@ -62,7 +61,7 @@ export const searializeSongItem = (data: TrackItem): SongItem => ({
   },
 });
 
-export const searializeSongDetail = (data: TrackResponse): SongDetail => ({
+export const serializeSongDetail = (data: TrackResponse): SongDetail => ({
   id: data.id,
   name: data.name,
   picUrl: convertImage(data.images),
@@ -73,11 +72,11 @@ export const searializeSongDetail = (data: TrackResponse): SongDetail => ({
   album: { name: data.album_name, id: data.album_id },
 });
 
-export const searializeSongUrl = (data: TrackResponse): SongPlayUrl => ({
+export const serializeSongUrl = (data: TrackResponse): SongPlayUrl => ({
   url: data.play_url_list,
 });
 
-export const searializeSongLyric = (data: TrackResponse): SongLyric => ({
+export const serializeSongLyric = (data: TrackResponse): SongLyric => ({
   lyric: data.lrc_content,
   lyricExist: Boolean(data.lrc_exist),
 });

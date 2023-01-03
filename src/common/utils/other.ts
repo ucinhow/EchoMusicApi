@@ -1,10 +1,11 @@
 import md5 from "md5";
 import { Source, SongItem, INFOSource } from "../typing";
-import { ERROR_MSG } from "../constant";
+import { ERROR_MSG, SOURCE } from "../constant";
+
+// type Noop = (...args: any[]) => any;
+
 export const calcSongItemKey = (song: SongItem): string => {
-  return md5(
-    song.name + song.singerName.join("|") + song.albumName + song.duration
-  );
+  return md5(song.name + song.singerName.join("|") + song.albumName);
 };
 
 export const traverseByHorizon = <T>(
@@ -50,3 +51,24 @@ export const initINFOSrc = (str?: string | string[]): INFOSource => {
       throw new Error(ERROR_MSG.ParamError);
   }
 };
+
+export interface Task {
+  (...args: any[]): Promise<void> | void;
+}
+
+export const limitAsyncExec = async (callbacks: Task[], limit: number) => {
+  if (!callbacks.length) return [];
+  let i = 0;
+  const run = async (): Promise<void> => {
+    if (i === callbacks.length) return Promise.resolve();
+    await Promise.resolve(callbacks[i++]());
+    return run();
+  };
+  const pmsList = new Array(limit)
+    .fill(1)
+    .map(() => Promise.resolve().then(run));
+  return Promise.all(pmsList);
+};
+
+export const getSrcComplement = (src: Source | INFOSource) =>
+  SOURCE.filter((s) => s !== src);

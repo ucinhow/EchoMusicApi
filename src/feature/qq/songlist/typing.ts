@@ -19,6 +19,7 @@ export interface Detail {
 export interface DetailResponse {
   code: number;
   req_1: {
+    code: number;
     data: Detail;
   };
 }
@@ -45,6 +46,7 @@ export interface Recommend {
 export interface RecommendResponse {
   code: number;
   req_1: {
+    code: number;
     data: Recommend;
   };
 }
@@ -59,6 +61,7 @@ export interface Category {
 export interface CategoryResponse {
   code: number;
   req_1: {
+    code: number;
     data: Category;
   };
 }
@@ -85,6 +88,7 @@ export interface CategoryContent {
 export interface CategoryContentResponse {
   code: number;
   req_1: {
+    code: number;
     data: CategoryContent;
   };
 }

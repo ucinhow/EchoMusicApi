@@ -6,16 +6,16 @@ import {
   SongLyricResponse,
 } from "./typing";
 import {
-  searializeSongDetail,
-  searializeSongLyric,
-  searializeSongUrl,
+  serializeSongDetail,
+  serializeSongLyric,
+  serializeSongUrl,
 } from "./utils";
-const createPlayUrlParam = (mids: string[]) => ({
+const createPlayUrlParam = (mid: string) => ({
   req_1: {
     module: "vkey.GetVkeyServer",
     method: "CgiGetVkey",
     param: {
-      songmid: mids,
+      songmid: [mid],
       guid: "0",
       uin: "0",
     },
@@ -39,13 +39,13 @@ const createLyricParam = (mid: string) => ({
   uin: "0",
 });
 
-export const queryPlayUrl = (mids: string[]) =>
+export const queryPlayUrl = (mid: string) =>
   postMusics<ReturnType<typeof createPlayUrlParam>, SongUrlResponse>(
-    createPlayUrlParam(mids)
+    createPlayUrlParam(mid)
   );
 
-export const songUrl = (mids: string[]) =>
-  queryPlayUrl(mids).then((res) => searializeSongUrl(res.data));
+export const songUrl = (mid: string) =>
+  queryPlayUrl(mid).then((res) => serializeSongUrl(res.data));
 
 export const querySongDetail = (mid: string) =>
   postMusics<ReturnType<typeof createDetailParam>, SongDetailResponse>(
@@ -53,7 +53,7 @@ export const querySongDetail = (mid: string) =>
   );
 
 export const songDetail = (mid: string) =>
-  querySongDetail(mid).then((res) => searializeSongDetail(res.data));
+  querySongDetail(mid).then((res) => serializeSongDetail(res.data));
 
 export const querySongLyric = (mid: string) =>
   instanceC.get<SongLyricResponse, AxiosResponse<SongLyricResponse>>(
@@ -64,4 +64,29 @@ export const querySongLyric = (mid: string) =>
   );
 
 export const songLyric = (mid: string) =>
-  querySongLyric(mid).then((res) => searializeSongLyric(res.data));
+  querySongLyric(mid).then((res) => serializeSongLyric(res.data));
+
+// const createRecommendParam = {
+//   req_0: {
+//     module: "music.srfDissInfo.aiDissInfo",
+//     method: "uniform_get_Dissinfo",
+//     param: {
+//       disstid: 4818806256,
+//       userinfo: 1,
+//       tag: 1,
+//       is_pc: 1,
+//       guid: "506d534be4f8ba7e6da3974f95950d0a408c4e7a",
+//     },
+//   },
+//   comm: {
+//     g_tk: 481128122,
+//     uin: "1768417845",
+//     format: "json",
+//     ct: 6,
+//     cv: 80505,
+//     platform: "wk_v17",
+//     uid: "4970169723",
+//     guid: "506d534be4f8ba7e6da3974f95950d0a408c4e7a",
+//   },
+// };
+// export const querySongRecommend = () => postMusics();

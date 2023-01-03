@@ -28,7 +28,7 @@ type Section = {
   item_list: Array<Item>;
 };
 type Singer = { id: string; name: string; images: Array<Image> };
-type Track = {
+export type Track = {
   album_id: string;
   id: string;
   name: string;
@@ -68,4 +68,10 @@ export interface SearchTypeResponse {
   albums?: Array<Album>;
   artists?: Array<Singer>;
   tracks?: Array<Array<Track>>;
+}
+
+export interface SearchSongResponse {
+  has_more: boolean;
+  tracks: Array<Array<Track>>;
+  error_code: number;
 }

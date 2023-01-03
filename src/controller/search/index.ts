@@ -1,13 +1,11 @@
 import Router from "@koa/router";
 import { suggestSearch } from "@/feature";
 import { mergeSSItem } from "@/common/utils";
-// import cache, { CacheData } from "@/controller/search/cache";
 import { SearchType, SearchTypeResponse } from "@/common/typing";
-import { searchSong, searchSonglist, searchAlbum } from "./searchData";
-import { SOURCE } from "@/common/constant";
-// import { searchType } from "@/feature";
-// import { INFO_SOURCE } from "@/common/constant";
-// const multiSrc = [Source.qq, Source.joox];
+import searchSong from "./searchSong";
+import searchAlbum from "./searchAlbum";
+import searchSonglist from "./searchSonglist";
+import { ERROR_MSG, INFO_SOURCE } from "@/common/constant";
 
 const initSearchType = (num: number): SearchType => {
   switch (num) {
@@ -26,23 +24,19 @@ const initSearchType = (num: number): SearchType => {
 const router = new Router();
 // todo: router logic is not completed.
 router.get("/type", async (ctx, next) => {
-  await next();
+  // await next();
   const { key } = ctx.query;
   const page = Number(ctx.query.page) || 1;
   const size = Number(ctx.query.size) || 20;
   const type = initSearchType(Number(ctx.query.type));
-  if (typeof key !== "string") {
-    ctx.res.statusCode = 400;
-    ctx.res.end();
-    return;
-  }
-  // let data: SearchTypeData;
+  if (typeof key !== "string") throw new Error(ERROR_MSG.ParamError);
+
   const rsp: SearchTypeResponse = { data: [], hasMore: false, type };
   switch (type) {
     case SearchType.song: {
-      const result = await searchSong(key, page, size);
-      rsp.data = result.data;
-      rsp.hasMore = result.hasMore;
+      const { data, hasMore } = await searchSong(key, page, size);
+      rsp.data = data;
+      rsp.hasMore = hasMore;
       break;
     }
 
@@ -60,25 +54,21 @@ router.get("/type", async (ctx, next) => {
       break;
     }
   }
-
-  ctx.response.body = rsp;
-  ctx.res.statusCode = 200;
-  ctx.res.end();
+  const body = JSON.stringify(rsp);
+  ctx.status = 200;
+  ctx.body = body;
 });
 
-router.get("/", async (ctx, next) => {
+router.get("/suggest", async (ctx, next) => {
   await next();
   const { key } = ctx.query;
-  if (typeof key !== "string") {
-    ctx.res.statusCode = 400;
-    ctx.message = "invalid params type: 'key'";
-    ctx.res.end();
-    return;
-  }
-  const pmsList = SOURCE.map((src) => suggestSearch[src](key));
-  ctx.response.body = mergeSSItem(await Promise.all(pmsList));
-  ctx.res.statusCode = 200;
-  ctx.res.end();
+  if (typeof key !== "string") throw new Error(ERROR_MSG.ParamError);
+
+  const pmsList = INFO_SOURCE.map((src) => suggestSearch[src](key));
+  const res = mergeSSItem(await Promise.all(pmsList));
+  const body = JSON.stringify(res);
+  ctx.status = 200;
+  ctx.body = body;
 });
 
 export default router;

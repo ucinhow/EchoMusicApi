@@ -1,13 +1,13 @@
 interface Banner {
   shelf: {
-    v_niche: {
+    v_niche: Array<{
       v_card: Array<{
         cover: string;
         jumptype: number;
         id: string;
         subid: string;
       }>;
-    };
+    }>;
   };
 }
 
@@ -22,4 +22,5 @@ export enum JumpType {
   songlist = 10014,
   album = 10002,
   albumBuy = 3001,
+  mv = 10012,
 }

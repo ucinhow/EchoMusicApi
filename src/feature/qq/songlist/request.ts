@@ -6,12 +6,30 @@ import {
   RecommendResponse,
 } from "./typing";
 import {
-  searializeDetail,
-  searializeRecommend,
+  serializeDetail,
+  serializeRecommend,
   serializeCategory,
+  serializeItems,
   serializeList,
 } from "./utils";
-const createDetailParam = (id: string, offset: number, num?: number) => ({
+
+const createDetailParam = (id: number) => ({
+  req_1: {
+    module: "music.srfDissInfo.aiDissInfo",
+    method: "uniform_get_Dissinfo",
+    param: {
+      disstid: id,
+      // userinfo: 1,
+      // tag: 1,
+      // orderlist: 1,
+      song_begin: 0,
+      song_num: 10,
+      onlysonglist: 0,
+      // enc_host_uin: "",
+    },
+  },
+});
+const createItemParam = (id: number, offset: number, num?: number) => ({
   req_1: {
     module: "music.srfDissInfo.aiDissInfo",
     method: "uniform_get_Dissinfo",
@@ -22,7 +40,7 @@ const createDetailParam = (id: string, offset: number, num?: number) => ({
       // orderlist: 1,
       song_begin: offset,
       song_num: num,
-      onlysonglist: 0,
+      onlysonglist: 1,
       // enc_host_uin: "",
     },
   },
@@ -52,15 +70,13 @@ const createListParam = (cateId: number, page: number, size: number = 20) => ({
   },
 });
 
-export const querySonglistDetail = (id: string, offset: number, num?: number) =>
+export const querySonglistDetail = (id: number) =>
   postMusics<ReturnType<typeof createDetailParam>, DetailResponse>(
-    createDetailParam(id, offset, num)
+    createDetailParam(id)
   );
 
-export const songlistDetail = (id: string, offset: number, num?: number) =>
-  querySonglistDetail(id, offset, num).then((res) =>
-    searializeDetail(res.data)
-  );
+export const songlistDetail = (id: string) =>
+  querySonglistDetail(Number(id)).then((res) => serializeDetail(res.data));
 
 export const querySonglistRecommend = () =>
   postMusics<ReturnType<typeof createRecommendParam>, RecommendResponse>(
@@ -68,7 +84,7 @@ export const querySonglistRecommend = () =>
   );
 
 export const songlistRecommend = () =>
-  querySonglistRecommend().then((res) => searializeRecommend(res.data));
+  querySonglistRecommend().then((res) => serializeRecommend(res.data));
 
 export const querySonglistCategory = () =>
   postMusics<typeof cataParam, CategoryResponse>(cataParam);
@@ -83,3 +99,13 @@ export const querySonglistList = (cateId: number, page: number, size: number) =>
 
 export const songlistList = (cateId: number, page: number, size: number) =>
   querySonglistList(cateId, page, size).then((res) => serializeList(res.data));
+
+export const querySonglistItems = (id: number, offset: number, num?: number) =>
+  postMusics<ReturnType<typeof createItemParam>, DetailResponse>(
+    createItemParam(id, offset, num)
+  );
+
+export const songlistItems = (id: string, offset: number, num?: number) =>
+  querySonglistItems(Number(id), offset, num).then((res) =>
+    serializeItems(res.data)
+  );

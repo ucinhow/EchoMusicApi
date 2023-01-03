@@ -1,4 +1,5 @@
 import { SrcMeta } from "./common";
+import { SongItem } from "./song";
 
 export type AlbumItem = SrcMeta<{
   id: string;
@@ -9,3 +10,13 @@ export type AlbumItem = SrcMeta<{
   publicTime: number;
   singerName: Array<string>;
 };
+
+export interface AlbumDetail {
+  id: string;
+  name: string;
+  picUrl: string;
+  publicTime: number;
+  desc: string;
+  singer: Array<{ id: string; name: string }>;
+  songlist: Array<SongItem>;
+}
