@@ -8,14 +8,16 @@ export const queryToplistAll = () =>
 export const toplistAll = () =>
   queryToplistAll().then((res) => serializeToplistMenu(res.data));
 
-export const queryToplistDetail = (id: number) =>
+export const queryToplistDetail = (id: number, page: number, size: number) =>
   get<ToplistDetailResponse>("/api/www/bang/bang/musicList", {
     params: {
       bangId: id,
-      pn: 1,
-      rn: 30,
+      pn: page,
+      rn: size,
     },
   });
 
-export const toplistDetail = (id: number) =>
-  queryToplistDetail(id).then((res) => serializeToplistDetail(res.data, id));
+export const toplistDetail = (id: number, page: number, size: number) =>
+  queryToplistDetail(id, page, size).then((res) =>
+    serializeToplistDetail(res.data, id)
+  );

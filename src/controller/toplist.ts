@@ -19,11 +19,19 @@ router.get("/all", async (ctx, next) => {
 
 router.get("/detail", async (ctx, next) => {
   // await next();
-  const { src, id: _id_ } = ctx.query;
-  if (!isStr(src) || !isSource(src) || !isStr(_id_))
+  const { src, id: _id_, page: _page_ = "1", size: _size_ = "20" } = ctx.query;
+  if (
+    !isStr(src) ||
+    !isSource(src) ||
+    !isStr(_id_) ||
+    !isStr(_page_) ||
+    !isStr(_size_)
+  )
     throw new Error(ERROR_MSG.ParamError);
+  const page = str2Decimal(_page_);
+  const size = str2Decimal(_size_);
   const id = str2Decimal(_id_);
-  const detail = await queryToplistDetail[src](id);
+  const detail = await queryToplistDetail[src](id, page, size);
   detail.songlist = await completeListSongMeta(
     detail.songlist,
     getSrcComplement(src)
