@@ -12,14 +12,14 @@ const toplistAllParams = {
   comm: { ...commParams, cv: 1770 },
 };
 
-const createDetailParams = (id: number) => ({
+const createDetailParams = (id: number, page: number, size: number) => ({
   req_1: {
     module: "musicToplist.ToplistInfoServer",
     method: "GetDetail",
     param: {
       topid: id,
-      offset: 0,
-      num: 300,
+      offset: (page - 1) * size,
+      num: size,
     },
   },
   comm: {
@@ -41,12 +41,18 @@ export const queryToplistAll = () =>
 export const toplistAll = async () =>
   queryToplistAll().then((res) => serializeToplistAll(res.data));
 
-export const queryToplistDetail = async (id: number) => {
-  const params = createDetailParams(id);
+export const queryToplistDetail = async (
+  id: number,
+  page: number,
+  size: number
+) => {
+  const params = createDetailParams(id, page, size);
   return postMusics<
     ReturnType<typeof createDetailParams>,
     ToplistDetailResponse
   >(params);
 };
-export const toplistDetail = async (id: number) =>
-  queryToplistDetail(id).then((res) => serializeToplistDetail(res.data));
+export const toplistDetail = async (id: number, page: number, size: number) =>
+  queryToplistDetail(id, page, size).then((res) =>
+    serializeToplistDetail(res.data)
+  );

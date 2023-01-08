@@ -33,7 +33,7 @@ const testRequestQQ = () => {
     expect(res.data.req_1.code).toEqual(0);
   });
   test("request qq toplist detail", async () => {
-    const res = await queryToplistDetail(26);
+    const res = await queryToplistDetail(26, 1, 30);
     expect(res.data.req_1.code).toEqual(0);
   });
   test("request qq toplist all", async () => {
