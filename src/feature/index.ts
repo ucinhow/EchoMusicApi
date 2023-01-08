@@ -15,7 +15,6 @@ import {
   singerDetail as qqSingerDetail,
   songlistCategory as qqSonglistCategory,
   songlistList as qqSonglistList,
-  songlistItems as qqSonglistItems,
   albumDetail as qqAlbumDetail,
 } from "./qq";
 
@@ -25,83 +24,114 @@ import {
   songLyric as jooxSongLyric,
 } from "./joox";
 
-import { Source, INFOSource } from "@/common/typing";
+import {
+  searchSong as kwSearchSong,
+  searchAlbum as kwSearchAlbum,
+  searchSonglist as kwSearchSonglist,
+  songUrl as kwSongUrl,
+  songLyric as kwSongLyric,
+  songDetail as kwSongDetail,
+  albumDetail as kwAlbumDetail,
+  singerDetail as kwSingerDetail,
+  banner as kwBanner,
+  toplistAll as kwToplistAll,
+  toplistDetail as kwToplistDetail,
+  songlistDetail as kwSonglistDetail,
+  songlistCategory as kwSonglistCategory,
+  songlistList as kwSonglistList,
+  songlistRecommend as kwSonglistRecommend,
+} from "./kuwo";
 
-// export const searchType: Record<Source, SearchTypeApi> = {
-//   [Source.qq]: qqSearchType,
-//   [Source.joox]: (key: string, page: number, type: SearchType) =>
-//     jooxSearchType(key, type),
-// };
+import { Source, PlaySource } from "@/common/typing";
+import { str2Decimal } from "@/common/utils";
+
 export const searchSong = {
-  [Source.qq]: qqSearchSong,
-  [Source.joox]: (key: string, page: number) => jooxSearchSong(key),
+  [PlaySource.qq]: qqSearchSong,
+  [PlaySource.joox]: (key: string, page: number) => jooxSearchSong(key),
+  [PlaySource.kw]: (key: string, page: number) => kwSearchSong(key, page, 50),
 };
 
 export const searchSonglist = {
-  [INFOSource.qq]: qqSearchSonglist,
+  [Source.qq]: qqSearchSonglist,
+  [Source.kw]: (key: string, page: number) => kwSearchSonglist(key, page, 50),
 };
 
 export const searchAlbum = {
-  [INFOSource.qq]: qqSearchAlbum,
+  [Source.qq]: qqSearchAlbum,
+  [Source.kw]: (key: string, page: number) => kwSearchAlbum(key, page, 50),
 };
 
 export const suggestSearch = {
-  [INFOSource.qq]: qqSuggestSearch,
+  [Source.qq]: qqSuggestSearch,
   // [Source.joox]: jooxSuggestSearch,
 };
 
 export const querySongDetail = {
-  [INFOSource.qq]: qqSongDetail,
+  [Source.qq]: qqSongDetail,
+  [Source.kw]: (id: string) => kwSongDetail(str2Decimal(id)),
 };
 
 export const querySongUrl = {
-  [Source.qq]: qqSongUrl,
-  [Source.joox]: jooxSongUrl,
+  [PlaySource.qq]: qqSongUrl,
+  [PlaySource.joox]: jooxSongUrl,
+  [PlaySource.kw]: (id: string) => kwSongUrl(str2Decimal(id)),
 };
 
 export const querySongLyric = {
-  [Source.qq]: qqSongLyric,
-  [Source.joox]: jooxSongLyric,
+  [PlaySource.qq]: qqSongLyric,
+  [PlaySource.joox]: jooxSongLyric,
+  [PlaySource.kw]: (id: string) => kwSongLyric(str2Decimal(id)),
 };
 
 export const queryToplistAll = {
-  [INFOSource.qq]: qqToplistAll,
+  [Source.qq]: qqToplistAll,
+  [Source.kw]: kwToplistAll,
 };
 
 export const queryToplistDetail = {
-  [INFOSource.qq]: qqToplistDetail,
+  [Source.qq]: qqToplistDetail,
+  [Source.kw]: kwToplistDetail,
 };
 
 export const querySonglistDetail = {
-  [INFOSource.qq]: qqSonglistDetail,
+  [Source.qq]: (id: string, page: number, size: number) =>
+    qqSonglistDetail(str2Decimal(id), page, size),
+  [Source.kw]: (id: string, page: number, size: number) =>
+    kwSonglistDetail(str2Decimal(id), page, size),
 };
 
-export const querySonglistItems = {
-  [INFOSource.qq]: qqSonglistItems,
-};
+// export const querySonglistItems = {
+//   [Source.qq]: qqSonglistItems,
+// };
 
 export const querySonglistRecommend = {
-  [INFOSource.qq]: qqSonglistRecommend,
+  [Source.qq]: qqSonglistRecommend,
+  [Source.kw]: kwSonglistRecommend,
 };
 
 // export const querySongDetail: Record<Source, SongDetailApi> = {};
 
-export const queryBanner = {
-  [INFOSource.qq]: qqBanner,
-};
-
-export const querySingerDetail = {
-  [INFOSource.qq]: qqSingerDetail,
-};
-
 export const querySonglistCategory = {
-  [INFOSource.qq]: qqSonglistCategory,
+  [Source.qq]: qqSonglistCategory,
+  [Source.kw]: kwSonglistCategory,
 };
 
 export const querySonglistList = {
-  [INFOSource.qq]: qqSonglistList,
+  [Source.qq]: qqSonglistList,
+  [Source.kw]: kwSonglistList,
 };
 
 export const queryAlbumDetail = {
-  [INFOSource.qq]: qqAlbumDetail,
+  [Source.qq]: qqAlbumDetail,
+  [Source.kw]: (id: string) => kwAlbumDetail(str2Decimal(id), 1, 100),
+};
+
+export const queryBanner = {
+  [Source.qq]: qqBanner,
+  [Source.kw]: kwBanner,
+};
+
+export const querySingerDetail = {
+  [Source.qq]: qqSingerDetail,
+  [Source.kw]: (id: string) => kwSingerDetail(str2Decimal(id)),
 };

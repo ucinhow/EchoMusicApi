@@ -21,6 +21,11 @@ server.on("error", (err, ctx) => {
     if (err.message === ERROR_MSG.ParamError) {
       ctx.status = 400;
       ctx.message = "ClientError: invalid params";
+    } else if (err.message === ERROR_MSG.KuwoTokenError) {
+      ctx.status = 500;
+      ctx.message = "ServerError: request data error";
+      config.env === DEVELOPMENT_ENV &&
+        console.log("ServerError: kuwo csrf token error");
     } else {
       ctx.status = 500;
       config.env === DEVELOPMENT_ENV &&
