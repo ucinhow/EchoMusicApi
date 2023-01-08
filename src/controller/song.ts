@@ -1,15 +1,14 @@
 import Router from "@koa/router";
-import { initINFOSrc, initSrc } from "@/common/utils";
 import { querySongDetail, querySongLyric, querySongUrl } from "@/feature";
 import { ERROR_MSG } from "@/common/constant";
+import { isSource, isStr, isPlaySource } from "@/common/utils";
 
 const router = new Router();
-// todo: router logic is not completed.
 router.get("/detail", async (ctx, next) => {
-  await next();
-  const src = initINFOSrc(ctx.query.src);
-  const { id } = ctx.query;
-  if (typeof id !== "string") throw new Error(ERROR_MSG.ParamError);
+  // await next();
+  const { id, src } = ctx.query;
+  if (!isStr(id) || !isStr(src) || !isSource(src))
+    throw new Error(ERROR_MSG.ParamError);
   const res = await querySongDetail[src](id);
   const body = JSON.stringify(res);
   ctx.status = 200;
@@ -17,9 +16,9 @@ router.get("/detail", async (ctx, next) => {
 });
 
 router.get("/url", async (ctx) => {
-  const src = initSrc(ctx.query.src);
-  const { id } = ctx.query;
-  if (typeof id !== "string") throw new Error(ERROR_MSG.ParamError);
+  const { id, src } = ctx.query;
+  if (!isStr(id) || !isStr(src) || !isPlaySource(src))
+    throw new Error(ERROR_MSG.ParamError);
   const res = await querySongUrl[src](id);
   const body = JSON.stringify(res);
   ctx.res.statusCode = 200;
@@ -27,9 +26,9 @@ router.get("/url", async (ctx) => {
 });
 
 router.get("/lyric", async (ctx) => {
-  const src = initSrc(ctx.query.src);
-  const { id } = ctx.query;
-  if (typeof id !== "string") throw new Error(ERROR_MSG.ParamError);
+  const { id, src } = ctx.query;
+  if (!isStr(id) || !isStr(src) || !isPlaySource(src))
+    throw new Error(ERROR_MSG.ParamError);
   const res = await querySongLyric[src](id);
   const body = JSON.stringify(res);
   ctx.status = 200;

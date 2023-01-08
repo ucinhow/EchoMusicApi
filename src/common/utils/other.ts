@@ -1,6 +1,6 @@
 import md5 from "md5";
-import { Source, SongItem, INFOSource } from "../typing";
-import { ERROR_MSG, SOURCE } from "../constant";
+import { Source, SongItem, PlaySource, SearchType } from "../typing";
+import { PLAYSOURCE, SEARCHTYPE, SOURCE } from "../constant";
 
 // type Noop = (...args: any[]) => any;
 
@@ -30,27 +30,11 @@ export const traverseByHorizon = <T>(
   }
 };
 
-export const initSrc = (str?: string | string[]): Source => {
-  const temp = `${str}`;
-  switch (temp) {
-    case Source.joox:
-      return Source.joox;
-    case Source.qq:
-      return Source.qq;
-    default:
-      throw new Error(ERROR_MSG.ParamError);
-  }
-};
+export const isSource = (str: string): str is Source =>
+  Boolean(~SOURCE.findIndex((src) => src === str));
 
-export const initINFOSrc = (str?: string | string[]): INFOSource => {
-  const temp = `${str}`;
-  switch (temp) {
-    case INFOSource.qq:
-      return INFOSource.qq;
-    default:
-      throw new Error(ERROR_MSG.ParamError);
-  }
-};
+export const isPlaySource = (str: string): str is PlaySource =>
+  Boolean(~PLAYSOURCE.findIndex((src) => src === str));
 
 export interface Task {
   (...args: any[]): Promise<void> | void;
@@ -70,5 +54,11 @@ export const limitAsyncExec = async (callbacks: Task[], limit: number) => {
   return Promise.all(pmsList);
 };
 
-export const getSrcComplement = (src: Source | INFOSource) =>
-  SOURCE.filter((s) => s !== src);
+export const getSrcComplement = (src: Source | PlaySource) =>
+  PLAYSOURCE.filter((s) => s !== src);
+
+export const isStr = (p: string[] | string | undefined): p is string =>
+  typeof p === "string";
+
+export const isSearchType = (num: number): num is SearchType =>
+  Boolean(~SEARCHTYPE.findIndex((type) => type === num));

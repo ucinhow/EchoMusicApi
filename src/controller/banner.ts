@@ -1,15 +1,14 @@
 import Router from "@koa/router";
-import { INFO_SOURCE } from "@/common/constant";
-import { Banners } from "@/common/typing";
+import { SOURCE } from "@/common/constant";
+import { Banner } from "@/common/typing";
 import { queryBanner } from "@/feature";
 
 const router = new Router();
 
-// todo: router logic is not completed.
 router.get("/", async (ctx, next) => {
   //   await next();
-  const pmsList: Promise<Banners>[] = [];
-  INFO_SOURCE.forEach((src) => {
+  const pmsList: Promise<Banner[]>[] = [];
+  SOURCE.forEach((src) => {
     pmsList.push(queryBanner[src]());
   });
   const data = await Promise.all(pmsList);

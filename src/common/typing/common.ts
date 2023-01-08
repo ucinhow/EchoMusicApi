@@ -1,10 +1,19 @@
-export const enum Source {
+export enum PlaySource {
+  qq = "qq",
+  joox = "joox",
+  kw = "kw",
+}
+
+export enum Source {
+  qq = "qq",
+  kw = "kw",
+}
+
+export enum SearchSuggestSource {
   qq = "qq",
   // netease = "netease",
-  // kugou = "kugou",
-  joox = "joox",
-  // all = "ALL",
 }
+
 export type SrcMeta<T> = {
   [K in keyof typeof Source]?: T;
 };
@@ -18,12 +27,3 @@ export enum DataType {
   mv = 6,
   // user = 7,
 }
-
-export const enum INFOSource {
-  qq = "qq",
-  // netease = Source.
-}
-
-export type INFOSrcMeta<T> = {
-  [K in keyof typeof INFOSource]?: T;
-};

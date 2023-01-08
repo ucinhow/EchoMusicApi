@@ -2,12 +2,12 @@ import { SongItem } from "../typing";
 import searchSong from "@/controller/search/searchSong";
 import { calcSongItemKey, limitAsyncExec } from "./other";
 import { songItemCache } from "../cache";
-import { SOURCE } from "../constant";
+import { PLAYSOURCE } from "../constant";
 
 // todo: complete list song with cache logic
 export const completeListSongMeta = async (
   list: SongItem[],
-  srcList = SOURCE
+  srcList = PLAYSOURCE
 ): Promise<SongItem[]> => {
   const ret = new Array<SongItem>(list.length);
   const taskList = list.map((item, idx) => async () => {
@@ -30,40 +30,4 @@ export const completeListSongMeta = async (
   });
   await limitAsyncExec(taskList, 30);
   return ret;
-  // return Promise.all(pmsList);
-  // const srcStr = src.toString();
-  // const srcList = SOURCE.filter((i) => i !== srcStr);
-  // const pmsList: Promise<SearchSong>[] = [];
-  // const map = new Map<string, SongItem>();
-  // const res: SongItem[] = [];
-  // for (const song of list) {
-  //   const key = calcSongItemKey(song);
-  //   if (await searchSongCache.has(key)) {
-  //     res.push(...(await searchSongCache.get(key)).data);
-  //   } else {
-  //     map.set(key, song);
-  //     const searchStr = `${song.name} ${song.singerName.join(" ")} ${
-  //       song.albumName
-  //     }`;
-  //     srcList.forEach((s) => {
-  //       pmsList.push(searchSong(searchStr, 1, 20));
-  //     });
-  //   }
-  // }
-  // const resList = await Promise.all(pmsList);
-  // const datas = resList.map((res) => res.data);
-  // traverseByHorizon(datas, (item, _, cut) => {
-  //   const key = calcSongItemKey(item);
-  //   if (map.has(key)) {
-  //     const temp = map.get(key)!;
-  //     map.set(key, {
-  //       ...temp,
-  //       ...item,
-  //     });
-  //     cut();
-  //   }
-  // });
-  // res.push(...map.values());
-  // cacheSongItems(res);
-  // return res;
 };

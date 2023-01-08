@@ -1,14 +1,16 @@
 import Router from "@koa/router";
 import { queryToplistAll, queryToplistDetail } from "@/feature";
-import { getSrcComplement, initINFOSrc } from "@/common/utils/other";
+import { getSrcComplement, isSource, isStr } from "@/common/utils/other";
 import { completeListSongMeta } from "@/common/utils/complete";
 import { ERROR_MSG } from "@/common/constant";
+import { str2Decimal } from "@/common/utils";
 
 const router = new Router();
 // todo: router logic is not completed.
 router.get("/all", async (ctx, next) => {
-  await next();
-  const src = initINFOSrc(ctx.query.src);
+  // await next();
+  const { src } = ctx.query;
+  if (!isStr(src) || !isSource(src)) throw new Error(ERROR_MSG.ParamError);
   const res = await queryToplistAll[src]();
   const body = JSON.stringify(res);
   ctx.status = 200;
@@ -16,13 +18,11 @@ router.get("/all", async (ctx, next) => {
 });
 
 router.get("/detail", async (ctx, next) => {
-  await next();
-  const src = initINFOSrc(ctx.query.src);
-  const id = Number(ctx.query.id);
-
-  // const num = Number(ctx.query.num) || 100;
-  // const offset = Number(ctx.query.offset) || 0;
-  // if (typeof id !== "string") throw new Error(ERROR_MSG.ParamError);
+  // await next();
+  const { src, id: _id_ } = ctx.query;
+  if (!isStr(src) || !isSource(src) || !isStr(_id_))
+    throw new Error(ERROR_MSG.ParamError);
+  const id = str2Decimal(_id_);
   const detail = await queryToplistDetail[src](id);
   detail.songlist = await completeListSongMeta(
     detail.songlist,

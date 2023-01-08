@@ -1,5 +1,3 @@
-import { SongItem } from "./song";
-
 export interface SonglistDetail {
   id: string;
   name: string;
@@ -12,7 +10,7 @@ export interface SonglistDetail {
   //   nickname: string;
   //   picUrl: string;
   // };
-  createTime: number;
+  createTime?: number;
   // updateTime: number;
 }
 
@@ -35,13 +33,13 @@ export interface SonglistRecommendApi {
 
 export interface SonglistCategory {
   group: Array<{
-    id: number;
+    id: string;
     name: string;
-    item: Array<{ name: string; id: number }>;
+    item: Array<{ name: string; id: string }>;
   }>;
 }
 
 export interface SonglistList {
   list: Array<SonglistItem>;
-  totalCnt: number;
+  total: number;
 }

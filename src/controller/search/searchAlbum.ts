@@ -1,4 +1,4 @@
-import { INFO_SOURCE } from "@/common/constant";
+import { SOURCE } from "@/common/constant";
 import { SearchAlbum } from "@/common/typing";
 import { searchAlbum as search } from "@/feature";
 import { mergeAlbumItem } from "@/common/utils";
@@ -17,10 +17,10 @@ const searchAlbum = async (input: string, page: number, size: number) => {
     };
   } else {
     const dataList: SearchAlbum[][] = await Promise.all(
-      INFO_SOURCE.map(async (src) => {
+      SOURCE.map(async (src, idx) => {
         let len = cacheLen;
-        if (!srcMeta[src].hasMore) return [];
-        let nextPage = srcMeta[src].nextPage;
+        if (!srcMeta[idx].hasMore) return [];
+        let nextPage = srcMeta[idx].nextPage;
         const ret = [];
         while (len < end) {
           const searchTypeData = await search[src](input, nextPage++);
@@ -43,15 +43,12 @@ const searchAlbum = async (input: string, page: number, size: number) => {
     const newHasMore = Boolean(~datas.findIndex(({ hasMore }) => hasMore));
     const newData = cacheData.concat(mergeAlbumItem(listArr));
     const newSrcMeta = { ...srcMeta };
-    INFO_SOURCE.forEach((src, i) => {
-      newSrcMeta[src] = {
-        nextPage: datas[i].nextPage,
-        hasMore: datas[i].hasMore,
-      };
-    });
+    SOURCE.map((src, i) => ({
+      nextPage: datas[i].nextPage,
+      hasMore: datas[i].hasMore,
+    }));
     const newCache = new AlbumCache(newHasMore, newData, newSrcMeta);
     AlbumCache.set(input, newCache);
-    // cache.set(input, SEARCH_ALBUM_PATH, newCache);
     return {
       hasMore: newHasMore || newData.length > end,
       data: newData.slice(start, end),

@@ -6,4 +6,4 @@ export interface Banner {
   picUrl: string;
 }
 
-export type Banners = Array<Banner>;
+// export type BannerList = Array<Banner>;

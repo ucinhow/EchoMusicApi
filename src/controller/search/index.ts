@@ -1,35 +1,33 @@
 import Router from "@koa/router";
 import { suggestSearch } from "@/feature";
-import { mergeSSItem } from "@/common/utils";
+import { isStr, mergeSSItem, isSearchType, str2Decimal } from "@/common/utils";
 import { SearchType, SearchTypeResponse } from "@/common/typing";
 import searchSong from "./searchSong";
 import searchAlbum from "./searchAlbum";
 import searchSonglist from "./searchSonglist";
-import { ERROR_MSG, INFO_SOURCE } from "@/common/constant";
-
-const initSearchType = (num: number): SearchType => {
-  switch (num) {
-    case SearchType.album:
-      return SearchType.album;
-    // case SearchType.singer:
-    //   return SearchType.singer;
-    case SearchType.songlist:
-      return SearchType.songlist;
-    case SearchType.song:
-    default:
-      return SearchType.song;
-  }
-};
+import { ERROR_MSG, SEARCH_SUGGEST_SOURCE } from "@/common/constant";
 
 const router = new Router();
-// todo: router logic is not completed.
+
 router.get("/type", async (ctx, next) => {
   // await next();
-  const { key } = ctx.query;
-  const page = Number(ctx.query.page) || 1;
-  const size = Number(ctx.query.size) || 20;
-  const type = initSearchType(Number(ctx.query.type));
-  if (typeof key !== "string") throw new Error(ERROR_MSG.ParamError);
+  const {
+    key,
+    page: _page_ = "1",
+    size: _size_ = "20",
+    type: _type_,
+  } = ctx.query;
+  if (
+    !isStr(key) ||
+    !isStr(_page_) ||
+    !isStr(_size_) ||
+    !isStr(_type_) ||
+    isSearchType(str2Decimal(_type_))
+  )
+    throw new Error(ERROR_MSG.ParamError);
+  const page = str2Decimal(_page_);
+  const size = str2Decimal(_size_);
+  const type = str2Decimal(_type_);
 
   const rsp: SearchTypeResponse = { data: [], hasMore: false, type };
   switch (type) {
@@ -60,11 +58,10 @@ router.get("/type", async (ctx, next) => {
 });
 
 router.get("/suggest", async (ctx, next) => {
-  await next();
+  // await next();
   const { key } = ctx.query;
-  if (typeof key !== "string") throw new Error(ERROR_MSG.ParamError);
-
-  const pmsList = INFO_SOURCE.map((src) => suggestSearch[src](key));
+  if (!isStr(key)) throw new Error(ERROR_MSG.ParamError);
+  const pmsList = SEARCH_SUGGEST_SOURCE.map((src) => suggestSearch[src](key));
   const res = mergeSSItem(await Promise.all(pmsList));
   const body = JSON.stringify(res);
   ctx.status = 200;

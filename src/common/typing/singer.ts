@@ -34,7 +34,7 @@ export interface SingerDetail {
   birthplace: string;
   country: string;
   alias: string;
-  occupation: string;
+  // occupation: string;
   fansCnt: number;
   songCnt: number;
   albumCnt: number;

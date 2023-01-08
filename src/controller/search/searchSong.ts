@@ -1,5 +1,4 @@
-// import { SongCache } from "./cache";
-import { SOURCE } from "@/common/constant";
+import { PLAYSOURCE } from "@/common/constant";
 import { SearchSong } from "@/common/typing";
 import { searchSong as search } from "@/feature";
 import { mergeSongItem } from "@/common/utils";
@@ -8,9 +7,8 @@ const searchSong = async (
   input: string,
   page: number,
   size: number,
-  srcList = SOURCE
+  srcList = PLAYSOURCE
 ) => {
-  // get cache data if there is a cache, a empty structure otherwise.
   const { data: cacheData, srcMeta } = await SongCache.get(input);
   const end = page * size;
   const start = (page - 1) * size;
@@ -23,10 +21,10 @@ const searchSong = async (
     };
   } else {
     const dataList: SearchSong[][] = await Promise.all(
-      srcList.map(async (src) => {
+      srcList.map(async (src, idx) => {
         let len = cacheLen;
-        if (!srcMeta[src].hasMore) return [];
-        let nextPage = srcMeta[src].nextPage;
+        if (!srcMeta[idx].hasMore) return [];
+        let nextPage = srcMeta[idx].nextPage;
         const ret = [];
         while (len < end) {
           const searchTypeData = await search[src](input, nextPage++);
@@ -49,13 +47,10 @@ const searchSong = async (
     const songItems = mergeSongItem(datas.map((d) => d.data));
     const newHasMore = Boolean(~datas.findIndex(({ hasMore }) => hasMore));
     const newData = cacheData.concat(songItems);
-    const newSrcMeta = { ...srcMeta };
-    srcList.forEach((src, i) => {
-      newSrcMeta[src] = {
-        nextPage: datas[i].nextPage,
-        hasMore: datas[i].hasMore,
-      };
-    });
+    const newSrcMeta = srcList.map((src, i) => ({
+      nextPage: datas[i].nextPage,
+      hasMore: datas[i].hasMore,
+    }));
     const newCache = new SongCache(newHasMore, newData, newSrcMeta);
     SongCache.set(input, newCache);
     return {

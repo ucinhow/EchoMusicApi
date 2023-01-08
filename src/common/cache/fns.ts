@@ -1,19 +1,15 @@
 import cache from ".";
 import {
+  PLAYSOURCE,
   SEARCH_ALBUM_PATH,
   SEARCH_SONGLIST_PATH,
   SEARCH_SONG_PATH,
   SONGITEM_PATH,
+  SOURCE,
 } from "../constant";
 import { calcSongItemKey } from "../utils";
 
-import {
-  SongItem,
-  AlbumItem,
-  SonglistItem,
-  SrcMeta,
-  INFOSrcMeta,
-} from "@/common/typing";
+import { SongItem, AlbumItem, SonglistItem } from "@/common/typing";
 
 export class SongCache {
   hasMore;
@@ -22,10 +18,7 @@ export class SongCache {
   constructor(
     hasMore = true,
     data: Array<SongItem> = [],
-    srcMeta: Required<SrcMeta<{ nextPage: number; hasMore: boolean }>> = {
-      qq: { nextPage: 1, hasMore: true },
-      joox: { nextPage: 1, hasMore: true },
-    }
+    srcMeta = PLAYSOURCE.map(() => ({ nextPage: 1, hasMore: true }))
   ) {
     this.hasMore = hasMore;
     this.data = data;
@@ -48,9 +41,7 @@ export class AlbumCache {
   constructor(
     hasMore: boolean = true,
     data: Array<AlbumItem> = [],
-    srcMeta: Required<INFOSrcMeta<{ nextPage: number; hasMore: boolean }>> = {
-      qq: { nextPage: 1, hasMore: true },
-    }
+    srcMeta = SOURCE.map(() => ({ nextPage: 1, hasMore: true }))
   ) {
     this.hasMore = hasMore;
     this.data = data;
@@ -72,9 +63,7 @@ export class SonglistCache {
   constructor(
     hasMore: boolean = true,
     data: Array<SonglistItem> = [],
-    srcMeta: Required<INFOSrcMeta<{ nextPage: number; hasMore: boolean }>> = {
-      qq: { nextPage: 1, hasMore: true },
-    }
+    srcMeta = SOURCE.map(() => ({ nextPage: 1, hasMore: true }))
   ) {
     this.hasMore = hasMore;
     this.data = data;

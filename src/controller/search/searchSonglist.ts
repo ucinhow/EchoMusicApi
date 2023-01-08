@@ -1,11 +1,10 @@
-import { INFO_SOURCE } from "@/common/constant";
+import { SOURCE } from "@/common/constant";
 import { SearchSonglist } from "@/common/typing";
 import { searchSonglist as search } from "@/feature";
 import { mergeSonglistItem } from "@/common/utils";
 import { SonglistCache } from "@/common/cache";
 
 const searchSonglist = async (input: string, page: number, size: number) => {
-  // get cache data if there is a cache, a empty structure otherwise.
   const { data: cacheData, srcMeta } = await SonglistCache.get(input);
   const end = page * size;
   const start = (page - 1) * size;
@@ -17,12 +16,11 @@ const searchSonglist = async (input: string, page: number, size: number) => {
       data: cacheData.slice(start, end),
     };
   } else {
-    // const dataList: SonglistTypeData[][] = [];
     const dataList: SearchSonglist[][] = await Promise.all(
-      INFO_SOURCE.map(async (src) => {
+      SOURCE.map(async (src, idx) => {
         let len = cacheLen;
-        if (!srcMeta[src].hasMore) return [];
-        let nextPage = srcMeta[src].nextPage;
+        if (!srcMeta[idx].hasMore) return [];
+        let nextPage = srcMeta[idx].nextPage;
         const ret = [];
         while (len < end) {
           const searchTypeData = await search[src](input, nextPage++);
@@ -42,13 +40,10 @@ const searchSonglist = async (input: string, page: number, size: number) => {
     const listArr = datas.map((d) => d.data);
     const newHasMore = Boolean(~datas.findIndex(({ hasMore }) => hasMore));
     const newData = cacheData.concat(mergeSonglistItem(listArr));
-    const newSrcMeta = { ...srcMeta };
-    INFO_SOURCE.forEach((src, i) => {
-      newSrcMeta[src] = {
-        nextPage: datas[i].nextPage,
-        hasMore: datas[i].hasMore,
-      };
-    });
+    const newSrcMeta = SOURCE.map((src, i) => ({
+      nextPage: datas[i].nextPage,
+      hasMore: datas[i].hasMore,
+    }));
     const newCache = new SonglistCache(newHasMore, newData, newSrcMeta);
     SonglistCache.set(input, newCache);
     return {

@@ -1,4 +1,9 @@
 import { Source } from "./common";
+import { PlaySource } from "./common";
+
+export type SongSrcMeta<T> = {
+  [K in keyof typeof PlaySource]?: T;
+};
 
 export interface Track {
   albumId: string;
@@ -41,7 +46,6 @@ export interface SongDetail {
   singer: Array<{ name: string; id: string }>;
   publicTime: number;
   duration: number;
-  // intro: string;
   album: {
     name: string;
     id: string;
@@ -50,13 +54,13 @@ export interface SongDetail {
 }
 
 export interface SongPlayUrl {
-  url: Array<string>;
+  url: string;
   // playable: string;
 }
 
 export interface SongLyric {
   lyricExist: boolean;
-  lyric: string;
+  lyric: [number, string][]; // [ms, 'lyric']
 }
 export interface SongUrlApi {
   (ids: string[]): Promise<SongPlayUrl>;
