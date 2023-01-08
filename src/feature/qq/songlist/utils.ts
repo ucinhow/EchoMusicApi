@@ -46,9 +46,9 @@ export const serializeCategory = (res: CategoryResponse): SonglistCategory => {
   const data = res.req_1.data.v_group;
   return {
     group: data.map((item) => ({
-      id: item.group_id,
+      id: item.group_id.toString(),
       name: item.group_name,
-      item: item.v_item.map((i) => ({ name: i.name, id: i.id })),
+      item: item.v_item.map((i) => ({ name: i.name, id: i.id.toString() })),
     })),
   };
 };
@@ -56,7 +56,7 @@ export const serializeCategory = (res: CategoryResponse): SonglistCategory => {
 export const serializeList = (res: CategoryContentResponse): SonglistList => {
   const data = res.req_1.data.content;
   return {
-    totalCnt: data.total_cnt,
+    total: data.total_cnt,
     list: data.v_item.map((i) => ({
       name: i.basic.title,
       id: i.basic.dirid.toString(),

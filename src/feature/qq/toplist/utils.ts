@@ -7,14 +7,11 @@ export const serializeToplistAll = (data: ToplistAllResponse): ToplistAll => {
   return {
     groups: groups.map((group) => ({
       name: group.groupName,
-      id: group.groupId,
       toplist: group.toplist.map((item) => ({
         id: item.topId,
         name: item.title,
         intro: item.intro,
         updateTime: parseTimestamp(item.updateTime),
-        playCount: Number(item.listenNum),
-        total: Number(item.totalNum),
         picUrl: item.frontPicUrl,
       })),
     })),

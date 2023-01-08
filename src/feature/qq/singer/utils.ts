@@ -39,9 +39,9 @@ export const serializeDetail = (res: SingerDetailResponse): SingerDetail => {
   const birthplaceReg =
     /<item><key><![CDATA[出生地]]><\/key><value><![CDATA[(?<birthplace>.+)]]><\/value><\/item>/;
   const birthplace = birthplaceReg.exec(data.wiki)?.groups?.birthplace || "";
-  const occupationReg =
-    /<item><key><![CDATA[职业]]><\/key><value><![CDATA[(?<occupation>.+)]]><\/value><\/item>/;
-  const occupation = occupationReg.exec(data.wiki)?.groups?.occupation || "";
+  // const occupationReg =
+  //   /<item><key><![CDATA[职业]]><\/key><value><![CDATA[(?<occupation>.+)]]><\/value><\/item>/;
+  // const occupation = occupationReg.exec(data.wiki)?.groups?.occupation || "";
   return {
     // area: data.ex_info.area,
     id: data.basic_info.singer_mid,
@@ -57,6 +57,5 @@ export const serializeDetail = (res: SingerDetailResponse): SingerDetail => {
       res.req_4.data.map_singer_num?.[data.basic_info.singer_mid]?.user_fansnum,
     songCnt: res.req_3.data.totalNum,
     albumCnt: res.req_2.data.total,
-    occupation,
   };
 };

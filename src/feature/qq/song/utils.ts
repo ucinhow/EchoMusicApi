@@ -10,9 +10,27 @@ import {
   SongLyric,
   SongPlayUrl,
 } from "@/common/typing/song";
-import { parseTimestamp } from "@/common/utils";
+import { parseTimestamp, str2Decimal } from "@/common/utils";
 import { Source } from "@/common/typing/common";
 import { parsePicUrl } from "../common";
+
+export const formatLyric = (base64Str: string): [number, string][] => {
+  const str = Buffer.from(base64Str, "base64").toString();
+  const start = str.search(/\[00:00\.00\]/);
+  const lyric = str.slice(start);
+  const list = lyric.split("\n");
+  return list.map((item) => {
+    const [timeStr, text] = item.split("]");
+    let time = 0;
+    time +=
+      str2Decimal(timeStr.slice(1, 3)) * 60 * 1000 +
+      str2Decimal(timeStr.slice(5, 7)) * 1000 +
+      str2Decimal(timeStr.slice(8, 10)) * 10;
+
+    return [time, text];
+  });
+};
+
 export const serializeSongDetail = (res: SongDetailResponse): SongDetail => {
   const data = res.req_1.data.track_info;
   return {
@@ -22,19 +40,20 @@ export const serializeSongDetail = (res: SongDetailResponse): SongDetail => {
     singer: data.singer.map((s) => ({ name: s.name, id: s.id.toString() })),
     publicTime: parseTimestamp(data.time_public),
     duration: data.interval,
-    // intro: info.intro.content?.[0].value || "",
     album: { name: data.album.name, id: data.album.id.toString() },
   };
 };
 
 export const serializeSongUrl = (res: SongUrlResponse): SongPlayUrl => ({
-  url: res.req_1.data.midurlinfo.map((i) => i.purl),
+  url: res.req_1.data.midurlinfo[0].purl,
 });
 
-export const serializeSongLyric = (res: SongLyricResponse): SongLyric => ({
-  lyric: res.lyric || "",
-  lyricExist: Boolean(res.lyric),
-});
+export const serializeSongLyric = (res: SongLyricResponse): SongLyric => {
+  return {
+    lyric: res.lyric ? formatLyric(res.lyric) : [[0, ""]],
+    lyricExist: Boolean(res.lyric),
+  };
+};
 
 export const serializeSongItem = (item: SongInfo) => ({
   name: item.name,

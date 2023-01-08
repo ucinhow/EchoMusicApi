@@ -65,28 +65,3 @@ export const querySongLyric = (mid: string) =>
 
 export const songLyric = (mid: string) =>
   querySongLyric(mid).then((res) => serializeSongLyric(res.data));
-
-// const createRecommendParam = {
-//   req_0: {
-//     module: "music.srfDissInfo.aiDissInfo",
-//     method: "uniform_get_Dissinfo",
-//     param: {
-//       disstid: 4818806256,
-//       userinfo: 1,
-//       tag: 1,
-//       is_pc: 1,
-//       guid: "506d534be4f8ba7e6da3974f95950d0a408c4e7a",
-//     },
-//   },
-//   comm: {
-//     g_tk: 481128122,
-//     uin: "1768417845",
-//     format: "json",
-//     ct: 6,
-//     cv: 80505,
-//     platform: "wk_v17",
-//     uid: "4970169723",
-//     guid: "506d534be4f8ba7e6da3974f95950d0a408c4e7a",
-//   },
-// };
-// export const querySongRecommend = () => postMusics();

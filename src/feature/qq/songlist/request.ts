@@ -13,7 +13,7 @@ import {
   serializeList,
 } from "./utils";
 
-const createDetailParam = (id: number) => ({
+const createDetailParam = (id: number, page: number, size: number) => ({
   req_1: {
     module: "music.srfDissInfo.aiDissInfo",
     method: "uniform_get_Dissinfo",
@@ -22,8 +22,8 @@ const createDetailParam = (id: number) => ({
       // userinfo: 1,
       // tag: 1,
       // orderlist: 1,
-      song_begin: 0,
-      song_num: 10,
+      song_begin: (page - 1) * size,
+      song_num: size,
       onlysonglist: 0,
       // enc_host_uin: "",
     },
@@ -70,13 +70,13 @@ const createListParam = (cateId: number, page: number, size: number = 20) => ({
   },
 });
 
-export const querySonglistDetail = (id: number) =>
+export const querySonglistDetail = (id: number, page: number, size: number) =>
   postMusics<ReturnType<typeof createDetailParam>, DetailResponse>(
-    createDetailParam(id)
+    createDetailParam(id, page, size)
   );
 
-export const songlistDetail = (id: string) =>
-  querySonglistDetail(Number(id)).then((res) => serializeDetail(res.data));
+export const songlistDetail = (id: number, page: number, size: number) =>
+  querySonglistDetail(id, page, size).then((res) => serializeDetail(res.data));
 
 export const querySonglistRecommend = () =>
   postMusics<ReturnType<typeof createRecommendParam>, RecommendResponse>(
@@ -100,12 +100,12 @@ export const querySonglistList = (cateId: number, page: number, size: number) =>
 export const songlistList = (cateId: number, page: number, size: number) =>
   querySonglistList(cateId, page, size).then((res) => serializeList(res.data));
 
-export const querySonglistItems = (id: number, offset: number, num?: number) =>
-  postMusics<ReturnType<typeof createItemParam>, DetailResponse>(
-    createItemParam(id, offset, num)
-  );
+// export const querySonglistItems = (id: number, offset: number, num?: number) =>
+//   postMusics<ReturnType<typeof createItemParam>, DetailResponse>(
+//     createItemParam(id, offset, num)
+//   );
 
-export const songlistItems = (id: string, offset: number, num?: number) =>
-  querySonglistItems(Number(id), offset, num).then((res) =>
-    serializeItems(res.data)
-  );
+// export const songlistItems = (id: string, offset: number, num?: number) =>
+//   querySonglistItems(Number(id), offset, num).then((res) =>
+//     serializeItems(res.data)
+//   );

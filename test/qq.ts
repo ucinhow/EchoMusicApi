@@ -11,7 +11,6 @@ import {
   querySonglistDetail,
   querySonglistCategory,
   querySonglistList,
-  querySonglistItems,
   querySongDetail,
   queryPlayUrl,
   querySongLyric,
@@ -46,7 +45,7 @@ const testRequestQQ = () => {
     expect(res.data.req_1.code).toEqual(0);
   });
   test("request qq songlist detail", async () => {
-    const res = await querySonglistDetail(8615354308);
+    const res = await querySonglistDetail(8615354308, 1, 30);
     expect(res.data.req_1.code).toBe(0);
   });
   test("request qq songlist category", async () => {
@@ -57,10 +56,10 @@ const testRequestQQ = () => {
     const res = await querySonglistList(3317, 1, 30);
     expect(res.data.req_1.code).toBe(0);
   });
-  test("request qq songlist songitems", async () => {
-    const res = await querySonglistItems(8615354308, 0, 30);
-    expect(res.data.req_1.code).toBe(0);
-  });
+  // test("request qq songlist songitems", async () => {
+  //   const res = await querySonglistItems(8615354308, 0, 30);
+  //   expect(res.data.req_1.code).toBe(0);
+  // });
   test("request qq banner", async () => {
     const res = await queryBanner();
     expect(res.data.req_1.code).toEqual(0);

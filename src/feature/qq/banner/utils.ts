@@ -1,9 +1,9 @@
 import { DEVELOPMENT_ENV, ERROR_MSG } from "@/common/constant";
-import { Banners, DataType } from "@/common/typing";
+import { Banner, DataType } from "@/common/typing";
 import config from "@/config";
 import { BannerResponse, JumpType } from "./typing";
 
-export const serializeBanner = (res: BannerResponse): Banners => {
+export const serializeBanner = (res: BannerResponse): Array<Banner> => {
   const data = res.req_1.data.shelf.v_niche?.[0]?.v_card || [];
   return data.map((item) => {
     let id = "";
