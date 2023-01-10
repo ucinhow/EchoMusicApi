@@ -1,6 +1,6 @@
 import { DEVELOPMENT_ENV, ERROR_MSG } from "@/common/constant";
 import { Banner, DataType } from "@/common/typing";
-import config from "@/config";
+import config from "@/common/config";
 import { BannerResponse, JumpType } from "./typing";
 
 export const serializeBanner = (res: BannerResponse): Array<Banner> => {

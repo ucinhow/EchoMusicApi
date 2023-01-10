@@ -1,5 +1,5 @@
 import { createClient } from "redis";
-import config from "@/config";
+import config from "@/common/config";
 import { add } from "date-fns";
 import { DEVELOPMENT_ENV } from "../constant";
 

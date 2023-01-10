@@ -1,4 +1,4 @@
-import config from "@/config";
+import config from "@/common/config";
 import MapCache from "./mapCache";
 import redisCache from "./redisCache";
 

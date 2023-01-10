@@ -4,7 +4,7 @@ import logger from "koa-logger";
 import router from "@/controller/route";
 import { AxiosError } from "axios";
 import { DEVELOPMENT_ENV, ERROR_MSG } from "./common/constant";
-import config from "./config";
+import config from "./common/config";
 
 const server = new Koa();
 server.use(bodyparser());
