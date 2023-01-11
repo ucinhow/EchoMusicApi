@@ -1,8 +1,8 @@
 import { ToplistAll, ToplistDetail } from "@/common/typing";
 import { ToplistMenuResponse, ToplistDetailResponse } from "./typing";
 import { parse } from "date-fns";
-import { parseTimestamp } from "@/common/utils";
-import { serializeMusicItem } from "../song/utils";
+import { parseTimestamp, str2Decimal } from "@/common/utils";
+import { serializeItemList, serializeMusicItem } from "../song/utils";
 
 const str2ms = (str: string) =>
   parse(str, "MM月dd日更新", new Date()).valueOf();
@@ -34,7 +34,7 @@ export const serializeToplistDetail = async (
     intro: "",
     updateTime: parseTimestamp(data.pub),
     playCount: 0,
-    total: parseInt(data.num, 10),
-    songlist: await Promise.all(data.musicList.map(serializeMusicItem)),
+    total: str2Decimal(data.num),
+    songlist: await serializeItemList(data.musicList),
   };
 };

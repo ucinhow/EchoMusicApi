@@ -5,6 +5,7 @@ import {
   SonglistRecommend,
 } from "@/common/typing";
 import { str2Decimal } from "@/common/utils";
+import { serializeItemList } from "../song/utils";
 import {
   CategoryResponse,
   DetailResponse,
@@ -12,7 +13,9 @@ import {
   RecommendResponse,
 } from "./typing";
 
-export const serializeDetail = (res: DetailResponse): SonglistDetail => {
+export const serializeDetail = async (
+  res: DetailResponse
+): Promise<SonglistDetail> => {
   const {
     id,
     name,
@@ -20,6 +23,7 @@ export const serializeDetail = (res: DetailResponse): SonglistDetail => {
     listencnt: playCount,
     info: desc,
     total,
+    musicList,
   } = res.data;
   return {
     id: id.toString(),
@@ -28,6 +32,7 @@ export const serializeDetail = (res: DetailResponse): SonglistDetail => {
     playCount,
     desc,
     total,
+    songlist: await serializeItemList(musicList),
   };
 };
 

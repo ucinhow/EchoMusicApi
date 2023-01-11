@@ -13,7 +13,8 @@ const convertType = (type: string) => {
 
 export const serializeBanner = (res: BannerResponse): Banner[] => {
   const { data } = res;
-  return data.map(({ pic, url }) => {
+  const list = data.filter(({ id }) => id !== 1);
+  return list.map(({ pic, url }) => {
     const [type, id] = url.slice(url.startsWith("https") ? 20 : 19).split("/");
     return {
       picUrl: pic,

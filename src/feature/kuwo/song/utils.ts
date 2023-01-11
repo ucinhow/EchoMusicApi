@@ -1,21 +1,27 @@
 import { LyricResponse, MusicItem, DetailResponse } from "./typing";
 import { SongDetail, SongItem, SongLyric, SongPlayUrl } from "@/common/typing";
 import { querySearchSinger } from "../search/request";
-import { str2Decimal } from "@/common/utils";
+import { limitAsyncExec, str2Decimal } from "@/common/utils";
 export const completeArtistId = async (artist: string, artistId: number) => {
   const nameList = artist.split("&");
-  const idList = await Promise.all(
-    nameList.map(async (name, idx) => {
-      if (idx === 0) return artistId;
-      const resList = await querySearchSinger(name, 1, 20).then(
-        (res) => res.data.data.list
-      );
-      for (const res of resList) {
-        if (res.name === name) return res.id;
+  const idList = new Array<number>(nameList.length);
+  const taskList = nameList.map((name, idx) => async () => {
+    if (idx === 0) {
+      idList[idx] = artistId;
+      return;
+    }
+    const resList = await querySearchSinger(name, 1, 5).then(
+      (res) => res.data.data.list
+    );
+    for (const res of resList) {
+      if (res.name === name) {
+        idList[idx] = res.id;
+        return;
       }
-      return -1;
-    })
-  );
+    }
+    idList[idx] = -1;
+  });
+  await limitAsyncExec(taskList, 1);
   return [nameList, idList.map((id) => (id === -1 ? "" : id.toString()))];
 };
 
@@ -26,18 +32,28 @@ export const serializeMusicItem = async (
     item.artist,
     item.artistid
   );
+  const { name, album: albumName, duration, albumid } = item;
   return {
-    name: item.name,
+    name,
     singerName,
-    albumName: item.album,
-    duration: item.duration,
+    albumName,
+    duration,
     kw: {
       id: item.rid.toString(),
       singerId,
-      albumId: item.albumid.toString(),
+      albumId: albumid.toString(),
       playable: true,
     },
   };
+};
+
+export const serializeItemList = async (itemList: MusicItem[]) => {
+  const ret = new Array<SongItem>(itemList.length);
+  const taskList = itemList.map((item, idx) => async () => {
+    ret[idx] = await serializeMusicItem(item);
+  });
+  await limitAsyncExec(taskList, 2);
+  return ret;
 };
 
 export const serializeSongUrl = (url: string): SongPlayUrl => ({ url });

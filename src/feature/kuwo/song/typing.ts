@@ -1,5 +1,5 @@
 export interface MusicItem {
-  musicrid: "MUSIC_247519552";
+  musicrid: string;
   // barrage: "0";
   // ad_type: "";
   artist: string;

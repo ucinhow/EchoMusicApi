@@ -1,39 +1,49 @@
-import { ERROR_MSG } from "@/common/constant";
-import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
-import { TOKEN_ERROR_MSG } from "./constant";
-export const instance = axios.create({
-  baseURL: "http://kuwo.cn",
-  timeout: 10000,
-  headers: {
-    Referer: "http://www.kuwo.cn/",
-    Accept: "application/json",
-    Connection: "keep-alive",
-    "User-Agent":
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
-  },
-});
+import axios, { AxiosResponse, AxiosRequestConfig, AxiosInstance } from "axios";
 
-const reg = /kw_token=(\w+);/;
+const commHeaders = {
+  Connection: "keep-alive",
+  "User-Agent":
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
+};
 
-const setInstanceToken = () =>
-  instance.get("/").then((res) => {
-    const cookie = res.headers["set-cookie"]?.[0] || "";
-    const token = reg.exec(cookie)?.[1] || "";
-    instance.defaults.headers["Cookie"] = cookie;
-    instance.defaults.headers["csrf"] = token;
+export const createCommInstance = () =>
+  axios.create({
+    baseURL: "http://www.kuwo.cn/",
+    timeout: 10000,
+    headers: commHeaders,
+    withCredentials: true,
   });
 
-setInstanceToken();
+export const setInstanceToken = (instance: AxiosInstance, url: string) =>
+  instance.get(url).then((res) => {
+    const cookieIdx = (res.headers["set-cookie"] || []).findIndex((cookie) =>
+      cookie.startsWith("kw_token")
+    );
+    const cookie = ~cookieIdx
+      ? res.headers["set-cookie"]?.[cookieIdx] || ""
+      : "";
+    const keyAndValue = cookie.slice(0, cookie.indexOf(";"));
+    const token = keyAndValue.split("=")[1];
+    instance.defaults.headers["csrf"] = token;
+    instance.defaults.headers["Cookie"] = keyAndValue;
+  });
 
-instance.interceptors.response.use(async (response) => {
-  if (response.data.message === TOKEN_ERROR_MSG) {
-    await setInstanceToken();
-    return instance.get(response.request.path).catch(() => {
-      throw new Error(ERROR_MSG.KuwoTokenError);
-    });
-  }
-  return response;
-});
+const baseInstance = createCommInstance();
+
+await setInstanceToken(baseInstance, "/");
+
+// baseInstance.interceptors.response.use(async (response) => {
+//   if (response.data.message === TOKEN_ERROR_MSG)
+//     throw new Error(ERROR_MSG.KuwoTokenError);
+//   const cookies = response.headers["set-cookie"];
+//   if (cookies) {
+//     baseInstance.defaults.headers["Cookie"] = cookies.join("; ");
+//     const idx = cookies.findIndex((val) => val.startsWith("kw_token"));
+//     const temp = cookies[idx].slice(0, cookies[idx].indexOf(";")).split("=")[1];
+//     baseInstance.defaults.headers["csrf"] = temp;
+//   }
+//   return response;
+// });
 
 export const get = <R>(path: string, config: AxiosRequestConfig) =>
-  instance.get<any, AxiosResponse<R>>(path, config);
+  baseInstance.get<any, AxiosResponse<R>>(path, config);

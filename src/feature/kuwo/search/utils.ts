@@ -4,7 +4,7 @@ import {
   SearchMusicResponse,
   SearchPlaylistResponse,
 } from "./typing";
-import { completeArtistId, serializeMusicItem } from "../song/utils";
+import { completeArtistId, serializeItemList } from "../song/utils";
 import { parseTimestamp } from "@/common/utils";
 export const serializeSearchSong = async (
   res: SearchMusicResponse,
@@ -14,7 +14,7 @@ export const serializeSearchSong = async (
   const { data } = res;
   return {
     hasMore: (page - 1) * size + data.list.length < data.total,
-    data: await Promise.all(data.list.map(serializeMusicItem)),
+    data: await serializeItemList(data.list),
     nextPage: page + 1,
   };
 };
