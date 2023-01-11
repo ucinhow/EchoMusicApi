@@ -1,23 +1,27 @@
-import { SongItem } from "../typing";
+import { PlaySource, SongItem, Source } from "../typing";
 import searchSong from "@/controller/search/searchSong";
-import { calcSongItemKey, limitAsyncExec } from "./other";
+import { calcSongItemKey, getSrcComplement, limitAsyncExec } from "./other";
 import { songItemCache } from "../cache";
-import { PLAYSOURCE } from "../constant";
 
 // todo: complete list song with cache logic
 export const completeListSongMeta = async (
   list: SongItem[],
-  srcList = PLAYSOURCE
+  currentSrc: PlaySource | Source
 ): Promise<SongItem[]> => {
   const ret = new Array<SongItem>(list.length);
   const taskList = list.map((item, idx) => async () => {
     const key = calcSongItemKey(item);
     if (await songItemCache.has(key)) {
-      ret[idx] = await songItemCache.get(key);
+      ret[idx] = { ...item, ...(await songItemCache.get(key)) };
       return;
     }
     const searchStr = `${item.name} ${item.singerName.join(" ")}`;
-    const { data } = await searchSong(searchStr, 1, 20, srcList);
+    const { data } = await searchSong(
+      searchStr,
+      1,
+      10,
+      getSrcComplement(currentSrc)
+    );
     const map = new Map<string, SongItem>();
     map.set(key, item);
     data.forEach((i) => {
@@ -28,6 +32,6 @@ export const completeListSongMeta = async (
     });
     ret[idx] = map.get(key)!;
   });
-  await limitAsyncExec(taskList, 30);
+  await limitAsyncExec(taskList, 5);
   return ret;
 };

@@ -1,12 +1,14 @@
 import md5 from "md5";
-import { Source, SongItem, PlaySource, SearchType } from "../typing";
+import { Source, SongItem, PlaySource, SearchType, AlbumItem } from "../typing";
 import { PLAYSOURCE, SEARCHTYPE, SOURCE } from "../constant";
 
 // type Noop = (...args: any[]) => any;
 
-export const calcSongItemKey = (song: SongItem): string => {
-  return md5(song.name + song.singerName.join("|") + song.albumName);
-};
+export const calcSongItemKey = (song: SongItem): string =>
+  md5(`${song.name}.${song.singerName.join("&")}.${song.albumName}`);
+
+export const calcAlbumItemKey = (album: AlbumItem): string =>
+  md5(`${album.name}.${album.singerName.join("&")}.${album.publicTime}`);
 
 export const traverseByHorizon = <T>(
   lists: T[][],
@@ -30,17 +32,14 @@ export const traverseByHorizon = <T>(
   }
 };
 
-export const isSource = (str: string): str is Source =>
-  Boolean(~SOURCE.findIndex((src) => src === str));
-
-export const isPlaySource = (str: string): str is PlaySource =>
-  Boolean(~PLAYSOURCE.findIndex((src) => src === str));
-
-export interface Task {
-  (...args: any[]): Promise<void> | void;
+export interface Task<Rt> {
+  (...args: any[]): Promise<Rt> | void;
 }
 
-export const limitAsyncExec = async (callbacks: Task[], limit: number) => {
+export const limitAsyncExec = async (
+  callbacks: Task<void>[],
+  limit: number
+) => {
   if (!callbacks.length) return [];
   let i = 0;
   const run = async (): Promise<void> => {
@@ -62,3 +61,9 @@ export const isStr = (p: string[] | string | undefined): p is string =>
 
 export const isSearchType = (num: number): num is SearchType =>
   Boolean(~SEARCHTYPE.findIndex((type) => type === num));
+
+export const isSource = (str: string): str is Source =>
+  Boolean(~SOURCE.findIndex((src) => src === str));
+
+export const isPlaySource = (str: string): str is PlaySource =>
+  Boolean(~PLAYSOURCE.findIndex((src) => src === str));

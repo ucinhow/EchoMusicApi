@@ -18,6 +18,10 @@ export type SrcMeta<T> = {
   [K in keyof typeof Source]?: T;
 };
 
+export type PlaySrcMeta<T> = {
+  [K in keyof typeof PlaySource]?: T;
+};
+
 export enum DataType {
   songlist = 1,
   album = 2,

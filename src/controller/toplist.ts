@@ -32,10 +32,7 @@ router.get("/detail", async (ctx, next) => {
   const size = str2Decimal(_size_);
   const id = str2Decimal(_id_);
   const detail = await queryToplistDetail[src](id, page, size);
-  detail.songlist = await completeListSongMeta(
-    detail.songlist,
-    getSrcComplement(src)
-  );
+  detail.songlist = await completeListSongMeta(detail.songlist, src);
   const body = JSON.stringify(detail);
   ctx.status = 200;
   ctx.body = body;

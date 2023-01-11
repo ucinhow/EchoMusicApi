@@ -1,3 +1,4 @@
+import { SongItem } from "./song";
 export interface SonglistDetail {
   id: string;
   name: string;
@@ -5,7 +6,7 @@ export interface SonglistDetail {
   playCount?: number;
   desc: string;
   total: number;
-  // songlist: Array<SongItem>;
+  songlist: Array<SongItem>;
   // creator: {
   //   nickname: string;
   //   picUrl: string;

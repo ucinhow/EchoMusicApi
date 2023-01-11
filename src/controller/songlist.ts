@@ -40,7 +40,7 @@ router.get("/recommend", async (ctx, next) => {
   ctx.body = body;
 });
 
-router.get("/cat", async (ctx, next) => {
+router.get("/category", async (ctx, next) => {
   // await next();
   const { src } = ctx.query;
   if (!isStr(src) || !isSource(src)) throw new Error(ERROR_MSG.ParamError);

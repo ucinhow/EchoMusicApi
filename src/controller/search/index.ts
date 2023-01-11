@@ -22,7 +22,7 @@ router.get("/type", async (ctx, next) => {
     !isStr(_page_) ||
     !isStr(_size_) ||
     !isStr(_type_) ||
-    isSearchType(str2Decimal(_type_))
+    !isSearchType(str2Decimal(_type_))
   )
     throw new Error(ERROR_MSG.ParamError);
   const page = str2Decimal(_page_);

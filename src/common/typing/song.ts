@@ -1,9 +1,4 @@
-import { Source } from "./common";
-import { PlaySource } from "./common";
-
-export type SongSrcMeta<T> = {
-  [K in keyof typeof PlaySource]?: T;
-};
+import { PlaySrcMeta } from "./common";
 
 export interface Track {
   albumId: string;
@@ -30,14 +25,12 @@ export type SongItem = {
   singerName: Array<string>;
   albumName: string;
   duration: number; // seconds
-} & {
-  [K in keyof typeof Source]?: {
-    id: string;
-    singerId: Array<string>;
-    albumId: string;
-    playable: boolean;
-  };
-};
+} & PlaySrcMeta<{
+  id: string;
+  singerId: Array<string>;
+  albumId: string;
+  playable: boolean;
+}>;
 
 export interface SongDetail {
   id: string;

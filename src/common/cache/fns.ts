@@ -9,7 +9,32 @@ import {
 } from "../constant";
 import { calcSongItemKey } from "../utils";
 
-import { SongItem, AlbumItem, SonglistItem } from "@/common/typing";
+import {
+  SongItem,
+  AlbumItem,
+  SonglistItem,
+  PlaySource,
+  Source,
+  SrcMeta,
+  PlaySrcMeta,
+} from "@/common/typing";
+
+interface MetaType {
+  nextPage: number;
+  hasMore: boolean;
+}
+
+const createInitSrcMeta = () => {
+  const obj: Record<string, MetaType> = {};
+  SOURCE.forEach((src) => (obj[src] = { nextPage: 1, hasMore: true }));
+  return obj as Required<SrcMeta<MetaType>>;
+};
+
+const createInitPlaySrcMeta = () => {
+  const obj: Record<string, MetaType> = {};
+  PLAYSOURCE.forEach((src) => (obj[src] = { nextPage: 1, hasMore: true }));
+  return obj as Required<PlaySrcMeta<MetaType>>;
+};
 
 export class SongCache {
   hasMore;
@@ -18,7 +43,7 @@ export class SongCache {
   constructor(
     hasMore = true,
     data: Array<SongItem> = [],
-    srcMeta = PLAYSOURCE.map(() => ({ nextPage: 1, hasMore: true }))
+    srcMeta = createInitPlaySrcMeta()
   ) {
     this.hasMore = hasMore;
     this.data = data;
@@ -41,7 +66,7 @@ export class AlbumCache {
   constructor(
     hasMore: boolean = true,
     data: Array<AlbumItem> = [],
-    srcMeta = SOURCE.map(() => ({ nextPage: 1, hasMore: true }))
+    srcMeta = createInitSrcMeta()
   ) {
     this.hasMore = hasMore;
     this.data = data;
@@ -63,7 +88,7 @@ export class SonglistCache {
   constructor(
     hasMore: boolean = true,
     data: Array<SonglistItem> = [],
-    srcMeta = SOURCE.map(() => ({ nextPage: 1, hasMore: true }))
+    srcMeta = createInitSrcMeta()
   ) {
     this.hasMore = hasMore;
     this.data = data;

@@ -7,7 +7,7 @@ import {
 } from "@/common/typing";
 import md5 from "md5";
 import { songItemCache } from "../cache";
-import { traverseByHorizon } from "./other";
+import { calcAlbumItemKey, calcSongItemKey, traverseByHorizon } from "./other";
 
 /**
  * @description: function to merge suggest search data items from multi source.
@@ -70,9 +70,7 @@ export const mergeSSItem = (datas: SuggestSearch[]): SuggestSearch => {
 export const mergeSongItem = (datas: SongItem[][]) => {
   const map = new Map<string, SongItem>();
   traverseByHorizon<SongItem>(datas, (item) => {
-    const key = md5(
-      item.name + item.duration + item.albumName + item.singerName.join("|")
-    );
+    const key = calcSongItemKey(item);
     const temp = map.has(key) ? map.get(key)! : {};
     map.set(key, {
       ...temp,
@@ -87,7 +85,7 @@ export const mergeSongItem = (datas: SongItem[][]) => {
 export const mergeAlbumItem = (datas: AlbumItem[][]) => {
   const map = new Map<string, AlbumItem>();
   traverseByHorizon<AlbumItem>(datas, (item) => {
-    const key = md5(item.name + item.publicTime + item.singerName.join("|"));
+    const key = calcAlbumItemKey(item);
     const temp = map.has(key) ? map.get(key)! : {};
     map.set(key, {
       ...temp,
