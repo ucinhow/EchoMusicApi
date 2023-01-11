@@ -12,11 +12,6 @@ const instance = axios.create({
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
   },
 });
-// export const commHeaders = ;
-// export const post = <P, R>(paramsBody: P, sign: string) =>
-//   instance.post<R, AxiosResponse<R>, P>(
-//     `/cgi-bin/musics.fcg?_=${Date.now()}&sign=${sign}`,
-//     paramsBody
-//   );
+
 export const get = <R>(path: string, config: AxiosRequestConfig) =>
   instance.get<any, AxiosResponse<R>>(path, config);
