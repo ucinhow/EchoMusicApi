@@ -12,7 +12,7 @@ export const querySearchSuggest = (keyword: string) =>
   });
 
 export const querySearchSong = (key: string) =>
-  get<SearchSongResponse>("/openjoox/v2/search_type", {
+  get<SearchSongResponse>("openjoox/v2/search_type", {
     params: {
       country: "hk",
       lang: "zh_cn",

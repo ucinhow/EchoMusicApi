@@ -1,4 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { addRetryInterceptor } from "@/common/utils";
+
 const instance = axios.create({
   baseURL: "https://api-jooxtt.sanook.com",
   headers: {
@@ -12,6 +14,6 @@ const instance = axios.create({
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
   },
 });
-
+addRetryInterceptor(instance);
 export const get = <R>(path: string, config: AxiosRequestConfig) =>
   instance.get<any, AxiosResponse<R>>(path, config);

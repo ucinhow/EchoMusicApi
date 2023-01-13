@@ -1,6 +1,5 @@
 import { SearchResponse, ItemType, SearchSongResponse, Track } from "./typing";
 import { PlaySource, SearchSong, SearchType, SongItem } from "@/common/typing";
-
 import { simplify } from "simplify-chinese";
 
 export function convertType(type: ItemType): SearchType;
@@ -39,7 +38,7 @@ export const serializeTrack = (data: Track): SongItem => ({
     // picUrl: convertImage(data.images),
     albumId: data.album_id,
     singerId: data.artist_list.map((a) => a.id),
-    playable: data.is_playable,
+    playable: data.is_playable && data.vip_flag === 0,
   },
 });
 

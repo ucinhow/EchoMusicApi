@@ -29,38 +29,38 @@ export interface TrackResponse {
   //   track_free_action_control: 17;
   //   track_label_flag: 1;
   //   track_vip_action_control: 0;
-  //   vip_flag: 0;
+  vip_flag: number; // 0;
   is_playable: boolean;
   error: string;
   play_url_list: Array<string>;
 }
 
-export interface TrackItem {
-  album_id: string;
-  album_name: string;
-  artist_list: Array<{
-    id: string;
-    name: string;
-  }>;
-  // genre: "Pop";
-  // has_hifi: number // 1;
-  // has_hq: 0;
-  id: string;
-  images: Array<Image>;
-  // isrc: "eqc2HYVs6TI1AwfCpN_2pA==";
-  // label: "";
-  //   language: "Mandarin";
-  lrc_exist: number; // 1
-  name: string;
-  play_duration: number; // seconds
-  // qrc_exist: 1;
-  // source_name: "";
-  // supplier: "TME";
-  // track_free_action_control: 41;
-  // track_label_flag: 0;
-  // track_vip_action_control: 0;
-  // vip_flag: 0;
-  is_playable: boolean;
-}
+// interface TrackItem {
+//   album_id: string;
+//   album_name: string;
+//   artist_list: Array<{
+//     id: string;
+//     name: string;
+//   }>;
+//   // genre: "Pop";
+//   // has_hifi: number // 1;
+//   // has_hq: 0;
+//   id: string;
+//   images: Array<Image>;
+//   // isrc: "eqc2HYVs6TI1AwfCpN_2pA==";
+//   // label: "";
+//   //   language: "Mandarin";
+//   lrc_exist: number; // 1
+//   name: string;
+//   play_duration: number; // seconds
+//   // qrc_exist: 1;
+//   // source_name: "";
+//   // supplier: "TME";
+//   // track_free_action_control: 41;
+//   // track_label_flag: 0;
+//   // track_vip_action_control: 0;
+//   vip_flag: number; // 0;
+//   is_playable: boolean;
+// }
 
 // export interface TrackResponse {}

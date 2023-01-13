@@ -18,7 +18,7 @@ const params = {
 
 export const querySong = (id: string) => {
   const secret = getSecretKey(params, id);
-  return get<TrackResponse>("/openjoox2/v1/track/" + id, {
+  return get<TrackResponse>("openjoox2/v1/track/" + id, {
     params: { ...params, secret },
   });
 };

@@ -67,3 +67,6 @@ export const isSource = (str: string): str is Source =>
 
 export const isPlaySource = (str: string): str is PlaySource =>
   Boolean(~PLAYSOURCE.findIndex((src) => src === str));
+
+export const sleep = (ms: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(() => resolve(), ms));

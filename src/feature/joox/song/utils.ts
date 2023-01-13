@@ -1,11 +1,5 @@
-import { TrackResponse, TrackItem } from "./typing";
-import {
-  PlaySource,
-  SongDetail,
-  SongItem,
-  SongLyric,
-  SongPlayUrl,
-} from "@/common/typing";
+import { TrackResponse } from "./typing";
+import { SongDetail, SongLyric, SongPlayUrl } from "@/common/typing";
 import { convertImage } from "../common";
 import { simplify } from "simplify-chinese";
 import { parseTimestamp } from "@/common/utils";
@@ -29,18 +23,18 @@ const convertLyric = (lyric: string) => {
   return res;
 };
 
-export const serializeSongItem = (data: TrackItem): SongItem => ({
-  name: data.name,
-  singerName: data.artist_list.map((a) => a.name),
-  albumName: data.album_name,
-  duration: data.play_duration,
-  [PlaySource.joox]: {
-    id: data.id,
-    singerId: data.artist_list.map((a) => a.id),
-    albumId: data.album_id,
-    playable: data.is_playable,
-  },
-});
+// const serializeSongItem = (data: TrackItem): SongItem => ({
+//   name: data.name,
+//   singerName: data.artist_list.map((a) => a.name),
+//   albumName: data.album_name,
+//   duration: data.play_duration,
+//   [PlaySource.joox]: {
+//     id: data.id,
+//     singerId: data.artist_list.map((a) => a.id),
+//     albumId: data.album_id,
+//     playable: data.is_playable && data.vip_flag === 0,
+//   },
+// });
 
 export const serializeSongDetail = (data: TrackResponse): SongDetail => ({
   id: data.id,

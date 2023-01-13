@@ -20,15 +20,11 @@ type Item =
       type: ItemType.song;
       song: Array<{ song_info: Track }>;
     };
-// | {
-//     type: ItemType.singer;
-//     singer: Singer;
-//   };
 type Section = {
   item_list: Array<Item>;
 };
 type Singer = { id: string; name: string; images: Array<Image> };
-export type Track = {
+export interface Track {
   album_id: string;
   id: string;
   name: string;
@@ -39,11 +35,11 @@ export type Track = {
   }>;
   play_duration: number;
   images: Array<Image>;
-  // vip_flag: 0;
+  vip_flag: number; // 0;
   is_playable: boolean;
   // track_free_action_control: 41;
-};
-type Album = {
+}
+interface Album {
   id: string;
   name: string;
   images: Array<Image> | null;
@@ -52,12 +48,12 @@ type Album = {
     id: string;
     name: string;
   }>;
-};
-type Songlist = {
+}
+interface Songlist {
   id: string;
   name: string;
   images: Array<Image>;
-};
+}
 export interface SearchResponse {
   section_list: Array<Section>;
 }
