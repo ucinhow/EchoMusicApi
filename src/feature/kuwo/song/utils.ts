@@ -52,7 +52,7 @@ export const serializeItemList = async (itemList: MusicItem[]) => {
   const taskList = itemList.map((item, idx) => async () => {
     ret[idx] = await serializeMusicItem(item);
   });
-  await limitAsyncExec(taskList, 2);
+  await limitAsyncExec(taskList, 4);
   return ret;
 };
 
