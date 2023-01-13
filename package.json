@@ -8,7 +8,8 @@
     "test-api": "jest test/api.ts --detectOpenHandles",
     "dev": "nodemon",
     "build": "rm -rf dist/* && swc src --out-dir dist",
-    "start": "rm -rf dist/* && swc src --out-dir dist && node --experimental-specifier-resolution=node dist/app.js"
+    "start": "node --experimental-specifier-resolution=node dist/app.js",
+    "start:docker": "docker build --tag echo-music-api . && docker run -d -p 3001:3001 echo-music-api"
   },
   "keywords": [],
   "author": "",
