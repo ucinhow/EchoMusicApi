@@ -7,6 +7,7 @@ import {
 } from "@/common/typing";
 import md5 from "md5";
 import { songItemCache } from "../cache";
+import { PLAYSOURCE } from "../constant";
 import { calcAlbumItemKey, calcSongItemKey, traverseByHorizon } from "./other";
 
 /**
@@ -71,10 +72,17 @@ export const mergeSongItem = (datas: SongItem[][]) => {
   const map = new Map<string, SongItem>();
   traverseByHorizon<SongItem>(datas, (item) => {
     const key = calcSongItemKey(item);
-    const temp = map.has(key) ? map.get(key)! : {};
-    map.set(key, {
-      ...temp,
-      ...item,
+    const temp = map.get(key);
+    PLAYSOURCE.forEach((src) => {
+      if (!(src in item)) return;
+      if (
+        temp === undefined ||
+        (src in temp &&
+          temp[src]?.playable !== true &&
+          item[src]?.playable === true)
+      ) {
+        map.set(key, { ...temp, ...item });
+      }
     });
   });
   const ret = Array.from(map.values());
