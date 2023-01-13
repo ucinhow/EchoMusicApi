@@ -13,8 +13,7 @@ import {
 } from "@/common/typing";
 import { serializeSongItemList } from "../song/utils";
 export const serializeDetail = (res: DetailResponse): SonglistDetail => {
-  const { data } = res.req_1;
-  const { dirinfo } = data;
+  const { dirinfo } = res.req_1.data;
   return {
     id: dirinfo.id.toString(),
     name: dirinfo.title,
@@ -23,7 +22,7 @@ export const serializeDetail = (res: DetailResponse): SonglistDetail => {
     desc: dirinfo.desc,
     total: dirinfo.songnum,
     createTime: dirinfo.ctime * 1000,
-    // songlist: serializeSongItemList(data.songlist || []),
+    songlist: serializeSongItemList(res.req_1.data.songlist || []),
   };
 };
 

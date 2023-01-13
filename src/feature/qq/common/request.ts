@@ -5,13 +5,12 @@ const instanceU = axios.create({
   baseURL: "https://u.y.qq.com",
   timeout: 10000,
   headers: {
-    Origin: "https://i.y.qq.com",
-    Referer: "https://i.y.qq.com",
+    Origin: "https://y.qq.com",
+    // Referer: "https://y.qq.com",
     Accept: "application/json",
     Connection: "keep-alive",
     "User-Agent":
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
-    "Content-Type": "text/plain",
   },
 });
 
@@ -55,4 +54,6 @@ export const webComm = {
   platform: "yqq.json",
   // needNewCode: 1,
   uin: 0,
+  g_tk_new_20200303: 5381,
+  g_tk: 5381,
 };

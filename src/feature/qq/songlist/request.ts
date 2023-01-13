@@ -9,7 +9,6 @@ import {
   serializeDetail,
   serializeRecommend,
   serializeCategory,
-  serializeItems,
   serializeList,
 } from "./utils";
 
@@ -19,29 +18,9 @@ const createDetailParam = (id: number, page: number, size: number) => ({
     method: "uniform_get_Dissinfo",
     param: {
       disstid: id,
-      // userinfo: 1,
-      // tag: 1,
-      // orderlist: 1,
       song_begin: (page - 1) * size,
       song_num: size,
       onlysonglist: 0,
-      // enc_host_uin: "",
-    },
-  },
-});
-const createItemParam = (id: number, offset: number, num?: number) => ({
-  req_1: {
-    module: "music.srfDissInfo.aiDissInfo",
-    method: "uniform_get_Dissinfo",
-    param: {
-      disstid: id,
-      // userinfo: 1,
-      // tag: 1,
-      // orderlist: 1,
-      song_begin: offset,
-      song_num: num,
-      onlysonglist: 1,
-      // enc_host_uin: "",
     },
   },
 });
@@ -99,13 +78,3 @@ export const querySonglistList = (cateId: number, page: number, size: number) =>
 
 export const songlistList = (cateId: number, page: number, size: number) =>
   querySonglistList(cateId, page, size).then((res) => serializeList(res.data));
-
-// export const querySonglistItems = (id: number, offset: number, num?: number) =>
-//   postMusics<ReturnType<typeof createItemParam>, DetailResponse>(
-//     createItemParam(id, offset, num)
-//   );
-
-// export const songlistItems = (id: string, offset: number, num?: number) =>
-//   querySonglistItems(Number(id), offset, num).then((res) =>
-//     serializeItems(res.data)
-//   );
