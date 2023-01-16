@@ -9,8 +9,7 @@ import { ERROR_MSG, SEARCH_SUGGEST_SOURCE } from "@/common/constant";
 
 const router = new Router();
 
-router.get("/type", async (ctx, next) => {
-  // await next();
+router.get("/type", async (ctx) => {
   const {
     key,
     page: _page_ = "1",
@@ -57,8 +56,7 @@ router.get("/type", async (ctx, next) => {
   ctx.body = body;
 });
 
-router.get("/suggest", async (ctx, next) => {
-  // await next();
+router.get("/suggest", async (ctx) => {
   const { key } = ctx.query;
   if (!isStr(key)) throw new Error(ERROR_MSG.ParamError);
   const pmsList = SEARCH_SUGGEST_SOURCE.map((src) => suggestSearch[src](key));

@@ -5,8 +5,7 @@ import { queryBanner } from "@/feature";
 
 const router = new Router();
 
-router.get("/", async (ctx, next) => {
-  //   await next();
+router.get("/", async (ctx) => {
   const pmsList: Promise<Banner[]>[] = [];
   SOURCE.forEach((src) => {
     pmsList.push(queryBanner[src]());

@@ -6,9 +6,8 @@ import { ERROR_MSG } from "@/common/constant";
 import { str2Decimal } from "@/common/utils";
 
 const router = new Router();
-// todo: router logic is not completed.
-router.get("/all", async (ctx, next) => {
-  // await next();
+
+router.get("/all", async (ctx) => {
   const { src } = ctx.query;
   if (!isStr(src) || !isSource(src)) throw new Error(ERROR_MSG.ParamError);
   const res = await queryToplistAll[src]();
@@ -17,8 +16,7 @@ router.get("/all", async (ctx, next) => {
   ctx.body = body;
 });
 
-router.get("/detail", async (ctx, next) => {
-  // await next();
+router.get("/detail", async (ctx) => {
   const { src, id: _id_, page: _page_ = "1", size: _size_ = "20" } = ctx.query;
   if (
     !isStr(src) ||

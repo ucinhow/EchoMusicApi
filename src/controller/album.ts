@@ -1,16 +1,10 @@
 import Router from "@koa/router";
-import {
-  completeListSongMeta,
-  getSrcComplement,
-  isSource,
-  isStr,
-} from "@/common/utils";
+import { completeListSongMeta, isSource, isStr } from "@/common/utils";
 import { ERROR_MSG } from "@/common/constant";
 import { queryAlbumDetail } from "@/feature";
 
 const router = new Router();
-router.get("/detail", async (ctx, next) => {
-  // await next();
+router.get("/detail", async (ctx) => {
   const { id, src } = ctx.query;
   if (!isStr(id) || !isStr(src) || !isSource(src))
     throw new Error(ERROR_MSG.ParamError);

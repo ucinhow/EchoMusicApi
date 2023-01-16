@@ -10,9 +10,8 @@ import { ERROR_MSG } from "@/common/constant";
 import { str2Decimal } from "@/common/utils";
 
 const router = new Router();
-// todo: router logic is not completed.
-router.get("/detail", async (ctx, next) => {
-  // await next();
+
+router.get("/detail", async (ctx) => {
   const { src, id, page: _page_ = "1", size: _size_ = "20" } = ctx.query;
   if (
     !isStr(id) ||
@@ -30,7 +29,7 @@ router.get("/detail", async (ctx, next) => {
   ctx.body = body;
 });
 
-router.get("/recommend", async (ctx, next) => {
+router.get("/recommend", async (ctx) => {
   // await next();
   const { src } = ctx.query;
   if (!isStr(src) || !isSource(src)) throw new Error(ERROR_MSG.ParamError);
@@ -40,8 +39,7 @@ router.get("/recommend", async (ctx, next) => {
   ctx.body = body;
 });
 
-router.get("/category", async (ctx, next) => {
-  // await next();
+router.get("/menu", async (ctx) => {
   const { src } = ctx.query;
   if (!isStr(src) || !isSource(src)) throw new Error(ERROR_MSG.ParamError);
   const cat = await querySonglistCategory[src]();
@@ -50,8 +48,7 @@ router.get("/category", async (ctx, next) => {
   ctx.body = body;
 });
 
-router.get("/list", async (ctx, next) => {
-  // await next();
+router.get("/list", async (ctx) => {
   const { page: _page_ = "1", size: _size_ = "20", id: _id_, src } = ctx.query;
   if (
     !isStr(_page_) ||
@@ -69,25 +66,5 @@ router.get("/list", async (ctx, next) => {
   ctx.status = 200;
   ctx.body = body;
 });
-
-// router.get("/songItems", async (ctx, next) => {
-//   // await next();
-//   const { src, offset: _offset_ = "0", num: _num_ = "20", id } = ctx.query;
-//   if (
-//     !isStr(src) ||
-//     !isSource(src) ||
-//     !isStr(_offset_) ||
-//     !isStr(_num_) ||
-//     !isStr(id)
-//   )
-//     throw new Error(ERROR_MSG.ParamError);
-//   const offset = str2Decimal(_offset_);
-//   const num = str2Decimal(_num_);
-//   const songlist = await querySonglistItems[src](id, offset, num);
-//   const res = completeListSongMeta(songlist, getSrcComplement(src));
-//   const body = JSON.stringify({ songlist: res });
-//   ctx.status = 200;
-//   ctx.body = body;
-// });
 
 export default router;

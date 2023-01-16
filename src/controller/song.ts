@@ -4,8 +4,7 @@ import { ERROR_MSG } from "@/common/constant";
 import { isSource, isStr, isPlaySource } from "@/common/utils";
 
 const router = new Router();
-router.get("/detail", async (ctx, next) => {
-  // await next();
+router.get("/detail", async (ctx) => {
   const { id, src } = ctx.query;
   if (!isStr(id) || !isStr(src) || !isSource(src))
     throw new Error(ERROR_MSG.ParamError);
