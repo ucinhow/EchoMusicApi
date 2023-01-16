@@ -1,4 +1,4 @@
-import { createCommInstance, setInstanceToken } from "../common";
+import { createCommInstance } from "../common";
 import {
   SearchAlbumResponse,
   SearchArtistResponse,
@@ -12,11 +12,7 @@ import {
 } from "./utils";
 
 // search song logic
-const songInstance = createCommInstance();
-
-(async () => {
-  await setInstanceToken(songInstance, "/search/list?key=hello");
-})();
+const songInstance = createCommInstance("/search/list?key=hello");
 
 export const querySearchSong = (key: string, page: number, size: number) =>
   songInstance.get<SearchMusicResponse>(
@@ -41,10 +37,7 @@ export const searchSong = (key: string, page: number, size: number) =>
   );
 
 // search album logic
-const albumInstance = createCommInstance();
-
-(async () =>
-  await setInstanceToken(albumInstance, "/search/album?key=hello"))();
+const albumInstance = createCommInstance("/search/album?key=hello");
 
 export const querySearchAlbum = (key: string, page: number, size: number) =>
   albumInstance.get<SearchAlbumResponse>(
@@ -69,11 +62,7 @@ export const searchAlbum = (key: string, page: number, size: number) =>
   );
 
 // search songlist logic
-
-const songlistInstance = createCommInstance();
-
-(async () =>
-  await setInstanceToken(songlistInstance, "/search/playlist?key=hello"))();
+const songlistInstance = createCommInstance("/search/playlist?key=hello");
 
 export const querySearchSonglist = (key: string, page: number, size: number) =>
   songlistInstance.get<SearchPlaylistResponse>(
@@ -97,10 +86,7 @@ export const searchSonglist = (key: string, page: number, size: number) =>
     serializeSearchPlaylist(res.data, page, size)
   );
 
-const singerInstance = createCommInstance();
-
-(async () =>
-  await setInstanceToken(singerInstance, "/search/singers?key=hello"))();
+const singerInstance = createCommInstance("/search/singers?key=hello");
 
 export const querySearchSinger = (key: string, page: number, size: number) =>
   singerInstance.get<SearchArtistResponse>(

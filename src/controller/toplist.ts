@@ -1,6 +1,6 @@
 import Router from "@koa/router";
 import { queryToplistAll, queryToplistDetail } from "@/feature";
-import { getSrcComplement, isSource, isStr } from "@/common/utils/other";
+import { isSource, isStr } from "@/common/utils/other";
 import { completeListSongMeta } from "@/common/utils/complete";
 import { ERROR_MSG } from "@/common/constant";
 import { str2Decimal } from "@/common/utils";
