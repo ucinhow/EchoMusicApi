@@ -4,7 +4,7 @@ export default class Cache {
   map: Map<string, any> = new Map();
   expireMap: Map<string, number> = new Map();
   timer;
-  private static instance = new Cache();
+  private static instance: Cache | null = null;
   private constructor() {
     this.timer = setInterval(() => {
       for (const [key, expire] of this.expireMap.entries()) {
