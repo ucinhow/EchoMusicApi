@@ -1,35 +1,41 @@
 import { createClient } from "redis";
-import config from "@/common/config";
+import { cacheByRedis, redisUrl, password as redisPsw } from "@/common/config";
 import { add } from "date-fns";
-import { DEVELOPMENT_ENV } from "../constant";
+import { devLog } from "../utils";
 
-const cacheByRedis = config.cacheByRedis;
-const redisUrl = config.redisUrl || "redis://127.0.0.1:6379";
 const errorMsg = "ServerError: cache logic error";
-export const client = createClient({ url: redisUrl });
+export const client = createClient({
+  url: redisUrl,
+  password: redisPsw,
+});
 
-if (cacheByRedis) {
-  client
-    .connect()
-    .catch(
-      (e) =>
-        config.env === DEVELOPMENT_ENV &&
-        console.log(`ServerError: failed to connect to redis(${e})`)
-    );
-}
+(async () => {
+  if (!cacheByRedis) return;
+  try {
+    await client.connect();
+  } catch (e) {
+    devLog(`ServerError: failed to connect to redis(${e})`);
+  }
+})();
+
+const convertKey = (key: string, path?: string) =>
+  path === undefined ? key : `${path}-${key}`;
 
 const get = async (key: string, path?: string) => {
-  return await client.json.get(key, path ? { path: [path] } : {});
+  const newKey = convertKey(key, path);
+  const res = await client.json.get(newKey, { path: ["$"] });
+  return Array.isArray(res) ? res[0] : null;
 };
 const set = async (key: string, path: string, val: any) => {
+  const newKey = convertKey(key, path);
   try {
     await client
       .multi()
-      .json.set(key, path, val)
-      .expire(key, add(new Date(), { days: 1 }).valueOf() - Date.now())
+      .json.set(newKey, "$", val)
+      .expire(newKey, add(new Date(), { days: 1 }).valueOf() - Date.now())
       .exec();
   } catch (e) {
-    config.env === DEVELOPMENT_ENV && console.log(`${errorMsg}(${e})`);
+    devLog(`${errorMsg}(${e})`, (e as any).stack);
     return false;
   }
   return true;
@@ -39,25 +45,28 @@ const mset = async (data: [string, any][], path?: string) => {
   try {
     let temp = client.multi();
     data.forEach(([key, val]) => {
+      const newKey = convertKey(key, path);
       temp = temp.json
-        .set(key, path || "$", val)
-        .expire(key, add(new Date(), { days: 1 }).valueOf() - Date.now());
+        .set(newKey, "$", val)
+        .expire(newKey, add(new Date(), { days: 1 }).valueOf() - Date.now());
     });
     await temp.exec();
   } catch (e) {
-    config.env === DEVELOPMENT_ENV && console.log(`${errorMsg}(${e})`);
+    devLog(`${errorMsg}(${e})`, (e as any).stack);
     return false;
   }
   return true;
 };
 
 const has = async (key: string, path?: string) => {
-  const res = await client.json.type(key, path);
-  return "null" === res;
+  const newKey = convertKey(key, path);
+  const res = await client.json.type(newKey, "$");
+  return res !== null;
 };
 
 const del = async (key: string, path?: string) => {
-  return await client.json.del(key, path);
+  const newKey = convertKey(key, path);
+  return await client.json.del(newKey, "$");
 };
 
 const close = () => client.disconnect();
