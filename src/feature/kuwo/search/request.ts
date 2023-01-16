@@ -14,7 +14,9 @@ import {
 // search song logic
 const songInstance = createCommInstance();
 
-await setInstanceToken(songInstance, "/search/list?key=hello");
+(async () => {
+  await setInstanceToken(songInstance, "/search/list?key=hello");
+})();
 
 export const querySearchSong = (key: string, page: number, size: number) =>
   songInstance.get<SearchMusicResponse>(
@@ -41,7 +43,8 @@ export const searchSong = (key: string, page: number, size: number) =>
 // search album logic
 const albumInstance = createCommInstance();
 
-await setInstanceToken(albumInstance, "/search/album?key=hello");
+(async () =>
+  await setInstanceToken(albumInstance, "/search/album?key=hello"))();
 
 export const querySearchAlbum = (key: string, page: number, size: number) =>
   albumInstance.get<SearchAlbumResponse>(
@@ -69,7 +72,8 @@ export const searchAlbum = (key: string, page: number, size: number) =>
 
 const songlistInstance = createCommInstance();
 
-await setInstanceToken(songlistInstance, "/search/playlist?key=hello");
+(async () =>
+  await setInstanceToken(songlistInstance, "/search/playlist?key=hello"))();
 
 export const querySearchSonglist = (key: string, page: number, size: number) =>
   songlistInstance.get<SearchPlaylistResponse>(
@@ -95,7 +99,8 @@ export const searchSonglist = (key: string, page: number, size: number) =>
 
 const singerInstance = createCommInstance();
 
-await setInstanceToken(singerInstance, "/search/singers?key=hello");
+(async () =>
+  await setInstanceToken(singerInstance, "/search/singers?key=hello"))();
 
 export const querySearchSinger = (key: string, page: number, size: number) =>
   singerInstance.get<SearchArtistResponse>(

@@ -1,3 +1,4 @@
+import { addRetryInterceptor } from "@/common/utils";
 import axios, { AxiosResponse, AxiosRequestConfig, AxiosInstance } from "axios";
 
 const commHeaders = {
@@ -6,13 +7,16 @@ const commHeaders = {
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
 };
 
-export const createCommInstance = () =>
-  axios.create({
+export const createCommInstance = () => {
+  const instance = axios.create({
     baseURL: "http://www.kuwo.cn/",
     timeout: 10000,
     headers: commHeaders,
     withCredentials: true,
   });
+  addRetryInterceptor(instance);
+  return instance;
+};
 
 export const setInstanceToken = (instance: AxiosInstance, url: string) =>
   instance.get(url).then((res) => {
@@ -30,7 +34,7 @@ export const setInstanceToken = (instance: AxiosInstance, url: string) =>
 
 const baseInstance = createCommInstance();
 
-await setInstanceToken(baseInstance, "/");
+(async () => await setInstanceToken(baseInstance, "/"))();
 
 // baseInstance.interceptors.response.use(async (response) => {
 //   if (response.data.message === TOKEN_ERROR_MSG)
