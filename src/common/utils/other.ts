@@ -1,6 +1,7 @@
 import md5 from "md5";
 import { Source, SongItem, PlaySource, SearchType, AlbumItem } from "../typing";
-import { PLAYSOURCE, SEARCHTYPE, SOURCE } from "../constant";
+import { DEVELOPMENT_ENV, PLAYSOURCE, SEARCHTYPE, SOURCE } from "../constant";
+import { env } from "../config";
 
 // type Noop = (...args: any[]) => any;
 
@@ -70,3 +71,6 @@ export const isPlaySource = (str: string): str is PlaySource =>
 
 export const sleep = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(() => resolve(), ms));
+
+export const devLog = (...args: any[]) =>
+  env === DEVELOPMENT_ENV && console.log(...args);

@@ -1,7 +1,7 @@
-import { DEVELOPMENT_ENV, ERROR_MSG } from "@/common/constant";
+import { ERROR_MSG } from "@/common/constant";
 import { Banner, DataType } from "@/common/typing";
-import config from "@/common/config";
 import { BannerResponse, JumpType } from "./typing";
+import { devLog } from "@/common/utils";
 
 export const serializeBanner = (res: BannerResponse): Array<Banner> => {
   const data = res.req_1.data.shelf.v_niche?.[0]?.v_card || [];
@@ -27,7 +27,7 @@ export const serializeBanner = (res: BannerResponse): Array<Banner> => {
         type = DataType.mv;
         break;
       default:
-        config.env === DEVELOPMENT_ENV && console.log(item.jumptype, item);
+        devLog(item.jumptype, item);
         throw new Error(ERROR_MSG.BannerJumpError);
     }
     return {

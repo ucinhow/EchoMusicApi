@@ -3,8 +3,8 @@ import { koaBody as bodyparser } from "koa-body";
 import logger from "koa-logger";
 import router from "@/controller/route";
 import { isAxiosError } from "axios";
-import { DEVELOPMENT_ENV, ERROR_MSG } from "./common/constant";
-import config from "./common/config";
+import { ERROR_MSG } from "./common/constant";
+import { devLog } from "./common/utils";
 
 const server = new Koa();
 server.use(bodyparser());
@@ -13,11 +13,10 @@ server.use(router.allowedMethods()).use(router.routes());
 
 const errorHandler = (err: unknown, ctx: Context) => {
   if (isAxiosError(err)) {
-    config.env === DEVELOPMENT_ENV &&
-      console.log(
-        `ServerError: request data error(${err.message})`,
-        `${err.response?.config.baseURL}/${err.response?.config.url}`
-      );
+    devLog(
+      `ServerError: request data error(${err.message})`,
+      `${err.response?.config.baseURL}/${err.response?.config.url}`
+    );
     ctx.status = 500;
     ctx.message = "ServerError: request data error";
     return;
@@ -30,21 +29,19 @@ const errorHandler = (err: unknown, ctx: Context) => {
         return;
       }
       case ERROR_MSG.KuwoTokenError: {
-        config.env === DEVELOPMENT_ENV &&
-          console.log("ServerError: kuwo csrf token error");
+        devLog("ServerError: kuwo csrf token error");
         ctx.status = 500;
         ctx.message = "ServerError: request data error";
         return;
       }
       case ERROR_MSG.BannerJumpError: {
-        config.env === DEVELOPMENT_ENV &&
-          console.log(`ServerError: banner jump calc error`, err.stack);
+        devLog(`ServerError: banner jump calc error`, err.stack);
         ctx.status = 500;
         return;
       }
     }
   }
-  config.env === DEVELOPMENT_ENV && console.log(err);
+  devLog(err);
   ctx.status = 500;
 };
 
