@@ -2,11 +2,13 @@ import Koa, { Context } from "koa";
 import { koaBody as bodyparser } from "koa-body";
 import logger from "koa-logger";
 import router from "@/controller/route";
+import cors from "@koa/cors";
 import { isAxiosError } from "axios";
 import { ERROR_MSG } from "./common/constant";
 import { devLog } from "./common/utils";
 
 const server = new Koa();
+server.use(cors({ credentials: true }));
 server.use(bodyparser());
 server.use(logger());
 server.use(router.allowedMethods()).use(router.routes());
