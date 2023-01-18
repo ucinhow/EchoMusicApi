@@ -65,6 +65,7 @@ export interface ToplistDetailResponse {
         updateType: number;
         title: string;
         titleDetail: string;
+        frontPicUrl: string;
         // titleShare: string;
         // titleSub: string;
         intro: string;

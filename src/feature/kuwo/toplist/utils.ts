@@ -1,8 +1,9 @@
-import { ToplistAll, ToplistDetail } from "@/common/typing";
+import { ToplistAll, ToplistDetail, ToplistItem } from "@/common/typing";
 import { ToplistMenuResponse, ToplistDetailResponse } from "./typing";
 import { parse } from "date-fns";
 import { parseTimestamp, str2Decimal } from "@/common/utils";
-import { serializeItemList, serializeMusicItem } from "../song/utils";
+import { serializeItemList } from "../song/utils";
+import { metaMap } from "./request";
 
 const str2ms = (str: string) =>
   parse(str, "MM月dd日更新", new Date()).valueOf();
@@ -28,13 +29,15 @@ export const serializeToplistDetail = async (
   id: number
 ): Promise<ToplistDetail> => {
   const { data } = res;
+  const meta = (await metaMap).get(id)!;
   return {
     id,
-    name: "",
-    intro: "",
+    name: meta.name,
+    intro: meta.name,
     updateTime: parseTimestamp(data.pub),
-    playCount: 0,
+    // playCount: 0,
     total: str2Decimal(data.num),
     songlist: await serializeItemList(data.musicList),
+    picUrl: data.img,
   };
 };

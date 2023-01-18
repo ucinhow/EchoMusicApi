@@ -21,14 +21,23 @@ export const serializeToplistAll = (data: ToplistAllResponse): ToplistAll => {
 export const serializeToplistDetail = (
   data: ToplistDetailResponse
 ): ToplistDetail => {
-  const temp = data.req_1.data;
+  const {
+    topId: id,
+    title: name,
+    intro,
+    updateTime,
+    // listenNum: playCount,
+    totalNum: total,
+    frontPicUrl: picUrl,
+  } = data.req_1.data.data;
   return {
-    id: temp.data.topId,
-    name: temp.data.title,
-    intro: temp.data.intro,
-    updateTime: parseTimestamp(temp.data.updateTime),
-    playCount: temp.data.listenNum,
-    total: temp.data.totalNum,
-    songlist: serializeSongItemList(temp.songInfoList),
+    id,
+    name,
+    intro,
+    updateTime: parseTimestamp(updateTime),
+    // playCount,
+    total,
+    songlist: serializeSongItemList(data.req_1.data.songInfoList),
+    picUrl,
   };
 };

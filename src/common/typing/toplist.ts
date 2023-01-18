@@ -24,9 +24,10 @@ export interface ToplistDetail {
   name: string;
   intro: string;
   updateTime: number;
-  playCount: number;
+  // playCount: number;
   total: number;
   songlist: Array<SongItem>;
+  picUrl: string;
 }
 export interface ToplistAllApi {
   (): Promise<ToplistAll>;
