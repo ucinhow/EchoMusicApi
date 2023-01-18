@@ -26,13 +26,13 @@ export const toplistDetail = (id: number, page: number, size: number) =>
   );
 
 export const metaMap = new Promise<Map<number, ToplistItem>>((resolve) => {
-  const map = new Map<number, ToplistItem>();
   setTimeout(() => {
     toplistAll().then(({ groups }) => {
+      const map = new Map<number, ToplistItem>();
       for (const { toplist } of groups) {
         toplist.forEach((t) => map.set(t.id, t));
       }
+      resolve(map);
     });
-    resolve(map);
   }, 1000);
 });

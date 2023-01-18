@@ -14,7 +14,7 @@ export const serializeToplistMenu = (res: ToplistMenuResponse): ToplistAll => {
     groups: list.map((item) => ({
       name: item.name,
       toplist: item.list.map((t) => ({
-        id: parseInt(t.id),
+        id: str2Decimal(t.sourceid),
         name: t.name,
         intro: t.intro,
         updateTime: str2ms(t.pub),
