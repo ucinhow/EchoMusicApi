@@ -1,5 +1,11 @@
 import { AxiosResponse } from "axios";
-import { SearchResponse, SearchTypeResponse, SearchType } from "./typing";
+import {
+  SearchResponse,
+  SearchType,
+  SearchSongResponse,
+  SearchAlbumResponse,
+  SearchSonglistResponse,
+} from "./typing";
 import {
   serializeSearch,
   serializeSearchSong,
@@ -42,31 +48,23 @@ type SearchTypeParams = ReturnType<typeof createSearchTypeParams>;
  * @description: qq source searchType request, it will return upto 100 results if request success.
  * @return SearchTypeData
  */
-export const querySearchType = (key: string, page: number, type: SearchType) =>
-  postMusicu<SearchTypeParams, SearchTypeResponse>(
-    createSearchTypeParams(key, page, type)
-  );
+export const querySearchType = <Rsp>(
+  key: string,
+  page: number,
+  type: SearchType
+) => postMusicu<SearchTypeParams, Rsp>(createSearchTypeParams(key, page, type));
 
 export const searchSong = (key: string, page: number) =>
-  querySearchType(key, page, SearchType.song).then((res) =>
+  querySearchType<SearchSongResponse>(key, page, SearchType.song).then((res) =>
     serializeSearchSong(res.data)
   );
 
 export const searchAlbum = (key: string, page: number) =>
-  querySearchType(key, page, SearchType.album).then((res) =>
-    serializeSearchAlbum(res.data)
+  querySearchType<SearchAlbumResponse>(key, page, SearchType.album).then(
+    (res) => serializeSearchAlbum(res.data)
   );
 
 export const searchSonglist = (key: string, page: number) =>
-  querySearchType(key, page, SearchType.songlist).then((res) =>
-    serializeSearchSonglist(res.data)
+  querySearchType<SearchSonglistResponse>(key, page, SearchType.songlist).then(
+    (res) => serializeSearchSonglist(res.data)
   );
-
-// export const searchType = (
-//   key: string,
-//   page: number,
-//   type: SearchType = SearchType.song
-// ) =>
-//   querySearchType(key, page, type).then((res) =>
-//     serializeSearchType(res.data, type)
-//   );

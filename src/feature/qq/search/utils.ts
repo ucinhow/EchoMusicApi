@@ -3,18 +3,14 @@ import {
   SearchResponse,
   SearchSonglistResponse,
   SearchSongResponse,
-  // SearchTypeResponse as RawSearchTypeResponse,
 } from "./typing";
 import {
   SearchAlbum,
   SearchSong,
-  // SearchType,
-  // SearchTypeData,
   SuggestSearch,
   Source,
   SearchSonglist,
 } from "@/common/typing";
-// import { SearchType as QQSearchType } from "./typing";
 import { parseTimestamp } from "@/common/utils";
 import { serializeSongItemList } from "../song/utils";
 export const serializeSearch = (data: SearchResponse): SuggestSearch => {
@@ -47,7 +43,7 @@ export const serializeSearch = (data: SearchResponse): SuggestSearch => {
 export const serializeSearchSong = (res: SearchSongResponse): SearchSong => {
   const { body, meta } = res.req_1.data;
   const ret: SearchSong = {
-    hasMore: meta.curpage < meta.nextpage,
+    hasMore: meta.curpage * meta.perpage < meta.sum,
     data: [],
     nextPage: 1,
   };
@@ -61,7 +57,7 @@ export const serializeSearchSong = (res: SearchSongResponse): SearchSong => {
 export const serializeSearchAlbum = (res: SearchAlbumResponse): SearchAlbum => {
   const { body, meta } = res.req_1.data;
   const ret: SearchAlbum = {
-    hasMore: meta.curpage < meta.nextpage,
+    hasMore: meta.curpage * meta.perpage < meta.sum,
     data: [],
     nextPage: 1,
   };
@@ -72,7 +68,7 @@ export const serializeSearchAlbum = (res: SearchAlbumResponse): SearchAlbum => {
         singerName: item.singer_list.map((s) => s.name.toString()),
         publicTime: parseTimestamp(item.publicTime),
         [Source.qq]: {
-          id: item.albumID.toString(),
+          id: item.albumMID,
           picUrl: item.albumPic,
           singerId: item.singer_list.map((s) => s.id.toString()),
         },
@@ -88,7 +84,7 @@ export const serializeSearchSonglist = (
 ): SearchSonglist => {
   const { body, meta } = res.req_1.data;
   const ret: SearchSonglist = {
-    hasMore: meta.curpage < meta.nextpage,
+    hasMore: meta.curpage * meta.perpage < meta.sum,
     data: [],
     nextPage: 1,
   };
@@ -99,6 +95,7 @@ export const serializeSearchSonglist = (
         name: item.dissname,
         picUrl: item.imgurl,
         playCount: item.listennum,
+        src: Source.qq,
       }))
     );
     ret.nextPage = meta.nextpage;
