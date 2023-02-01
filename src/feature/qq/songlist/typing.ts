@@ -38,6 +38,7 @@ export interface Recommend {
           default_url: string;
         };
         dirid: number;
+        tid: number;
       };
     };
   }>;
@@ -80,6 +81,7 @@ export interface CategoryContent {
           default_url: string;
         };
         creator: { nick: string; avatar: string };
+        tid: number;
       };
     }>;
   };

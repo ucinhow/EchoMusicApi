@@ -10,6 +10,7 @@ import {
   SonglistDetail,
   SonglistList,
   SonglistRecommend,
+  Source,
 } from "@/common/typing";
 import { serializeSongItemList } from "../song/utils";
 export const serializeDetail = (res: DetailResponse): SonglistDetail => {
@@ -33,10 +34,11 @@ export const serializeRecommend = (
   return data.map((item) => {
     const temp = item.Playlist.basic;
     return {
-      id: temp.dirid.toString(),
+      id: temp.tid.toString(),
       name: temp.title,
       picUrl: temp.cover.default_url,
       playCount: temp.play_cnt,
+      src: Source.qq,
     };
   });
 };
@@ -58,9 +60,10 @@ export const serializeList = (res: CategoryContentResponse): SonglistList => {
     total: data.total_cnt,
     list: data.v_item.map((i) => ({
       name: i.basic.title,
-      id: i.basic.dirid.toString(),
+      id: i.basic.tid.toString(),
       playCount: i.basic.play_cnt,
       picUrl: i.basic.cover.default_url,
+      src: Source.qq,
     })),
   };
 };

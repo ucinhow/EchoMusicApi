@@ -7,13 +7,15 @@ export const serializeToplistAll = (data: ToplistAllResponse): ToplistAll => {
   return {
     groups: groups.map((group) => ({
       name: group.groupName,
-      toplist: group.toplist.map((item) => ({
-        id: item.topId,
-        name: item.title,
-        intro: item.intro,
-        updateTime: parseTimestamp(item.updateTime),
-        picUrl: item.frontPicUrl,
-      })),
+      toplist: group.toplist
+        .filter(({ topId }) => topId !== 201) // 201 MV榜
+        .map((item) => ({
+          id: item.topId,
+          name: item.title,
+          intro: item.intro,
+          updateTime: parseTimestamp(item.updateTime),
+          picUrl: item.frontPicUrl,
+        })),
     })),
   };
 };

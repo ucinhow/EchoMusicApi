@@ -1,7 +1,6 @@
 import { serializeToplistAll, serializeToplistDetail } from "./utils";
 import { ToplistAllResponse, ToplistDetailResponse } from "./typing";
 import { postMusics, commParams } from "../common";
-import { format } from "date-fns";
 
 const toplistAllParams = {
   req_0: {

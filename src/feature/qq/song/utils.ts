@@ -45,7 +45,7 @@ export const serializeSongDetail = (res: SongDetailResponse): SongDetail => {
 };
 
 export const serializeSongUrl = (res: SongUrlResponse): SongPlayUrl => ({
-  url: res.req_1.data.midurlinfo[0].purl,
+  url: "http://dl.stream.qqmusic.qq.com/" + res.req_1.data.midurlinfo[0].purl,
 });
 
 export const serializeSongLyric = (res: SongLyricResponse): SongLyric => {
