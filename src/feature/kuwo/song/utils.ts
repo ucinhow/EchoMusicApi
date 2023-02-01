@@ -1,7 +1,7 @@
 import { LyricResponse, MusicItem, DetailResponse } from "./typing";
 import { SongDetail, SongItem, SongLyric, SongPlayUrl } from "@/common/typing";
 import { querySearchSinger } from "../search/request";
-import { limitAsyncExec, str2Decimal } from "@/common/utils";
+import { limitAsyncExec, parseSpace, str2Decimal } from "@/common/utils";
 export const completeArtistId = async (artist: string, artistId: number) => {
   const nameList = artist.split("&");
   const idList = new Array<number>(nameList.length);
@@ -21,7 +21,7 @@ export const completeArtistId = async (artist: string, artistId: number) => {
     }
     idList[idx] = -1;
   });
-  await limitAsyncExec(taskList, 1);
+  await limitAsyncExec(taskList, 2);
   return [nameList, idList.map((id) => (id === -1 ? "" : id.toString()))];
 };
 
@@ -34,9 +34,9 @@ export const serializeMusicItem = async (
   );
   const { name, album: albumName, duration, albumid } = item;
   return {
-    name,
-    singerName,
-    albumName,
+    name: parseSpace(name),
+    singerName: singerName.map((s) => parseSpace(s)),
+    albumName: parseSpace(albumName),
     duration,
     kw: {
       id: item.rid.toString(),
@@ -91,11 +91,11 @@ export const serializeDetail = (res: DetailResponse): SongDetail => {
   } = res.data;
   return {
     id: rid.toString(),
-    name,
+    name: parseSpace(name),
     picUrl,
-    singer: [{ name: artist, id: artistid.toString() }],
+    singer: [{ name: parseSpace(artist), id: artistid.toString() }],
     publicTime: 0,
     duration: duration,
-    album: { name: album, id: albumid.toString() },
+    album: { name: parseSpace(album), id: albumid.toString() },
   };
 };

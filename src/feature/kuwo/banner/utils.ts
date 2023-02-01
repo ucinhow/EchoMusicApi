@@ -6,6 +6,8 @@ const convertType = (type: string) => {
   switch (type) {
     case JumpType.playlist:
       return DataType.songlist;
+    case JumpType.album:
+      return DataType.album;
     default:
       throw new Error(ERROR_MSG.BannerJumpError);
   }

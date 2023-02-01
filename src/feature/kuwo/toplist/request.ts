@@ -9,7 +9,9 @@ export const queryToplistAll = () =>
   instance.get<ToplistMenuResponse>("/api/www/bang/bang/bangMenu", {});
 
 export const toplistAll = () =>
-  queryToplistAll().then((res) => serializeToplistMenu(res.data));
+  queryToplistAll().then((res) => {
+    return serializeToplistMenu(res.data);
+  });
 
 export const queryToplistDetail = (id: number, page: number, size: number) =>
   instance.get<ToplistDetailResponse>("/api/www/bang/bang/musicList", {

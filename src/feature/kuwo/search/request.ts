@@ -90,7 +90,7 @@ const singerInstance = createCommInstance("/search/singers?key=hello");
 
 export const querySearchSinger = (key: string, page: number, size: number) =>
   singerInstance.get<SearchArtistResponse>(
-    "/api/www/search/searchArtistBykeyWord",
+    "api/www/search/searchArtistBykeyWord",
     {
       params: {
         key,

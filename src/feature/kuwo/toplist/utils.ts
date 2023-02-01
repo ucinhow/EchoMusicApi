@@ -1,7 +1,7 @@
-import { ToplistAll, ToplistDetail, ToplistItem } from "@/common/typing";
+import { ToplistAll, ToplistDetail } from "@/common/typing";
 import { ToplistMenuResponse, ToplistDetailResponse } from "./typing";
 import { parse } from "date-fns";
-import { parseTimestamp, str2Decimal } from "@/common/utils";
+import { parseSpace, parseTimestamp, str2Decimal } from "@/common/utils";
 import { serializeItemList } from "../song/utils";
 import { metaMap } from "./request";
 
@@ -12,11 +12,11 @@ export const serializeToplistMenu = (res: ToplistMenuResponse): ToplistAll => {
   const list = res.data;
   return {
     groups: list.map((item) => ({
-      name: item.name,
+      name: parseSpace(item.name),
       toplist: item.list.map((t) => ({
         id: str2Decimal(t.sourceid),
-        name: t.name,
-        intro: t.intro,
+        name: parseSpace(t.name),
+        intro: parseSpace(t.intro),
         updateTime: str2ms(t.pub),
         picUrl: t.pic,
       })),
@@ -32,12 +32,12 @@ export const serializeToplistDetail = async (
   const meta = (await metaMap).get(id)!;
   return {
     id,
-    name: meta.name,
-    intro: meta.name,
+    name: parseSpace(meta.name),
+    intro: parseSpace(meta.name),
     updateTime: parseTimestamp(data.pub),
     // playCount: 0,
     total: str2Decimal(data.num),
     songlist: await serializeItemList(data.musicList),
-    picUrl: data.img,
+    picUrl: meta.picUrl,
   };
 };

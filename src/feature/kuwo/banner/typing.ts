@@ -1,5 +1,6 @@
 export const enum JumpType {
   playlist = "playlist_detail",
+  album = "album_detail",
 }
 
 export interface BannerResponse {

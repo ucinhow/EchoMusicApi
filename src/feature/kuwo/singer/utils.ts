@@ -1,5 +1,5 @@
 import { SingerDetail } from "@/common/typing";
-import { parseTimestamp } from "@/common/utils";
+import { parseSpace, parseTimestamp } from "@/common/utils";
 import { DetailResponse } from "./typing";
 
 export const serializeDetail = (res: DetailResponse): SingerDetail => {
@@ -18,14 +18,14 @@ export const serializeDetail = (res: DetailResponse): SingerDetail => {
   } = res.data;
   return {
     id: id.toString(),
-    name,
+    name: parseSpace(name),
     picUrl,
     birthday: parseTimestamp(birthday),
-    desc,
-    foreignName,
+    desc: parseSpace(desc),
+    foreignName: parseSpace(foreignName),
     birthplace,
-    country,
-    alias: foreignName,
+    country: parseSpace(country),
+    alias: parseSpace(foreignName),
     fansCnt,
     songCnt,
     albumCnt,

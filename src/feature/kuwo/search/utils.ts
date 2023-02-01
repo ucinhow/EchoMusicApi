@@ -1,11 +1,16 @@
-import { SearchAlbum, SearchSong, SearchSonglist } from "@/common/typing";
+import {
+  SearchAlbum,
+  SearchSong,
+  SearchSonglist,
+  Source,
+} from "@/common/typing";
 import {
   SearchAlbumResponse,
   SearchMusicResponse,
   SearchPlaylistResponse,
 } from "./typing";
 import { completeArtistId, serializeItemList } from "../song/utils";
-import { parseTimestamp } from "@/common/utils";
+import { parseSpace, parseTimestamp } from "@/common/utils";
 export const serializeSearchSong = async (
   res: SearchMusicResponse,
   page: number,
@@ -32,9 +37,9 @@ export const serializeSearchAlbum = async (
         item.albumid
       );
       return {
-        name: item.album,
+        name: parseSpace(item.album),
         publicTime: parseTimestamp(item.releaseDate),
-        singerName,
+        singerName: singerName.map((s) => parseSpace(s)),
         kw: {
           id: item.albumid.toString(),
           picUrl: item.pic,
@@ -60,9 +65,10 @@ export const serializeSearchPlaylist = (
     hasMore: (page - 1) * size + list.length < total,
     data: list.map((item) => ({
       id: item.id,
-      name: item.name,
+      name: parseSpace(item.name),
       picUrl: item.img,
       playCount: parseInt(item.listencnt),
+      src: Source.kw,
     })),
     nextPage: page + 1,
   };

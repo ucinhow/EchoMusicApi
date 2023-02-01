@@ -1,6 +1,6 @@
 import { AlbumDetail } from "@/common/typing";
-import { parseTimestamp } from "@/common/utils";
-import { serializeItemList, serializeMusicItem } from "../song/utils";
+import { parseSpace, parseTimestamp } from "@/common/utils";
+import { serializeItemList } from "../song/utils";
 import { DetailResponse } from "./typing";
 
 export const serializeDetail = async (
@@ -9,11 +9,11 @@ export const serializeDetail = async (
   const { data } = res;
   return {
     id: data.albumid.toString(),
-    name: data.album,
+    name: parseSpace(data.album),
     picUrl: data.pic,
     publicTime: parseTimestamp(data.releaseDate),
-    desc: data.albuminfo,
-    singer: [{ id: data.artistid.toString(), name: data.artist }],
+    desc: parseSpace(data.albuminfo),
+    singer: [{ id: data.artistid.toString(), name: parseSpace(data.artist) }],
     songlist: await serializeItemList(data.musicList),
   };
 };

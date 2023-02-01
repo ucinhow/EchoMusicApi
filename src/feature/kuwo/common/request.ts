@@ -23,7 +23,7 @@ const setInstanceToken = (instance: AxiosInstance, url: string) =>
 
 export const createCommInstance = (tokenUrl: string) => {
   const instance = axios.create({
-    baseURL: "http://www.kuwo.cn/",
+    baseURL: "http://www.kuwo.cn",
     timeout: 10000,
     headers: commHeaders,
     withCredentials: true,
