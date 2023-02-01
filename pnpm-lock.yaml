@@ -13,6 +13,7 @@ specifiers:
   '@types/koa__router': ^12.0.0
   '@types/md5': ^2.3.2
   '@types/node': ^18.11.18
+  '@types/opencc-js': ^1.0.0
   '@types/supertest': ^2.0.12
   '@typescript-eslint/eslint-plugin': ^5.48.1
   NeteaseCloudMusicApi: ^4.8.7
@@ -29,8 +30,8 @@ specifiers:
   koa-body: ^6.0.1
   koa-logger: ^3.2.1
   md5: ^2.3.0
+  opencc-js: ^1.0.5
   redis: ^4.5.1
-  simplify-chinese: ^1.2.0
   supertest: ^6.3.3
   typescript: '*'
 
@@ -44,8 +45,8 @@ dependencies:
   koa-body: 6.0.1
   koa-logger: 3.2.1
   md5: 2.3.0
+  opencc-js: 1.0.5
   redis: 4.5.1
-  simplify-chinese: 1.2.0
 
 devDependencies:
   '@swc/cli': 0.1.59_cr4os3zuq4gmhe2qzzjtw2pxeu
@@ -58,6 +59,7 @@ devDependencies:
   '@types/koa__router': 12.0.0
   '@types/md5': 2.3.2
   '@types/node': 18.11.18
+  '@types/opencc-js': 1.0.0
   '@types/supertest': 2.0.12
   '@typescript-eslint/eslint-plugin': 5.48.1_iukboom6ndih5an6iafl45j2fe
   chokidar: 3.5.3
@@ -1186,6 +1188,10 @@ packages:
 
   /@types/node/18.11.18:
     resolution: {integrity: sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==}
+
+  /@types/opencc-js/1.0.0:
+    resolution: {integrity: sha512-vde1AUIJIEC2WvvHuqKWu/7P6WBqbcs4sB/B6zVFTNw/mFIUgSvWlFtYdg+NEEdkxBOeehdSZmEVVheikItS3A==}
+    dev: true
 
   /@types/prettier/2.7.2:
     resolution: {integrity: sha512-KufADq8uQqo1pYKVIYzfKbJfBAc0sOeXqGbFaSpv8MRmC/zXgowNZmFcbngndGk922QDmOASEXUZCaY48gs4cg==}
@@ -4633,6 +4639,10 @@ packages:
       is-wsl: 2.2.0
     dev: true
 
+  /opencc-js/1.0.5:
+    resolution: {integrity: sha512-LD+1SoNnZdlRwtYTjnQdFrSVCAaYpuDqL5CkmOaHOkKoKh7mFxUicLTRVNLU5C+Jmi1vXQ3QL4jWdgSaa4sKjg==}
+    dev: false
+
   /optionator/0.8.3:
     resolution: {integrity: sha512-+IW9pACdk3XWmmTXG8m3upGUJst5XRGzxMRjXzAuJ1XnIFNvfhjjIuYkDvysnPQ7qzqVzLt78BCruntqRhWQbA==}
     engines: {node: '>= 0.8.0'}
@@ -5257,10 +5267,6 @@ packages:
   /signal-exit/3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
     dev: true
-
-  /simplify-chinese/1.2.0:
-    resolution: {integrity: sha512-RqXm1nS2I6qHenLrHrkbe/Jomrt3jL1+fHIkt7cdnyzsghJV7g/SzxdxbUyzYuXHCjCJ0T8M7WqYO2Firb3slA==}
-    dev: false
 
   /sisteransi/1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
