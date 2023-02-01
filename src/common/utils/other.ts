@@ -2,8 +2,7 @@ import md5 from "md5";
 import { Source, SongItem, PlaySource, SearchType, AlbumItem } from "../typing";
 import { DEVELOPMENT_ENV, PLAYSOURCE, SEARCHTYPE, SOURCE } from "../constant";
 import { env } from "../config";
-
-// type Noop = (...args: any[]) => any;
+import * as OpenCC from "opencc-js";
 
 export const calcSongItemKey = (song: SongItem): string =>
   md5(`${song.name}.${song.singerName.join("&")}.${song.albumName}`);
@@ -74,3 +73,8 @@ export const sleep = (ms: number): Promise<void> =>
 
 export const devLog = (...args: any[]) =>
   env === DEVELOPMENT_ENV && console.log(...args);
+
+export const parseSpace = (str: string) => str.replaceAll("&nbsp;", " ");
+
+const converter = OpenCC.Converter({ from: "hk", to: "cn" });
+export const zht2zhs = (str: string) => converter(str);

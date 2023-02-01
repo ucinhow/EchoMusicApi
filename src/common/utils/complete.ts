@@ -1,12 +1,11 @@
-import { PlaySource, SongItem, Source } from "../typing";
+import { SongItem } from "../typing";
 import searchSong from "@/controller/search/searchSong";
-import { calcSongItemKey, getSrcComplement, limitAsyncExec } from "./other";
+import { calcSongItemKey, limitAsyncExec } from "./other";
 import { songItemCache } from "../cache";
 
-// todo: complete list song with cache logic
+// todo: try to fix the problem that return with cache but not has complete src information.
 export const completeListSongMeta = async (
-  list: SongItem[],
-  currentSrc: PlaySource | Source
+  list: SongItem[]
 ): Promise<SongItem[]> => {
   const ret = new Array<SongItem>(list.length);
   const taskList = list.map((item, idx) => async () => {
@@ -16,21 +15,12 @@ export const completeListSongMeta = async (
       return;
     }
     const searchStr = `${item.name} ${item.singerName.join(" ")}`;
-    const { data } = await searchSong(
-      searchStr,
-      1,
-      10,
-      getSrcComplement(currentSrc)
-    );
-    const map = new Map<string, SongItem>();
-    map.set(key, item);
-    data.forEach((i) => {
-      const k = calcSongItemKey(i);
-      if (k !== key) return;
-      const temp = map.get(k)!;
-      map.set(k, { ...temp, ...i });
+    const { data } = await searchSong(searchStr, 1, 10);
+    const index = data.findIndex((item) => {
+      const itemKey = calcSongItemKey(item);
+      return itemKey === key;
     });
-    ret[idx] = map.get(key)!;
+    ret[idx] = ~index ? data[index] : item;
   });
   await limitAsyncExec(taskList, 5);
   return ret;

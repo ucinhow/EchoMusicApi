@@ -1,4 +1,9 @@
-import { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
+import {
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+} from "axios";
 import { sleep } from "./other";
 
 type Config = { retryCount?: number } & AxiosRequestConfig;
@@ -27,30 +32,42 @@ const shouldRetry = (status: number) => {
 };
 
 const onError =
-  (instance: AxiosInstance, retryLimit: number, retryDelay: number) =>
-  async (err: AxiosError) => {
+  (instance: AxiosInstance, retryLimit: number) => async (err: AxiosError) => {
     const config = typeConfig(err.config) || {};
     let retryCount = config.retryCount || 0;
     if (
-      retryCount < retryLimit &&
-      err.status !== undefined &&
-      shouldRetry(err.status)
+      retryCount === retryLimit ||
+      (err.status !== undefined && !shouldRetry(err.status))
     )
       return Promise.reject(err);
 
     retryCount += 1;
     config.retryCount = retryCount;
+    // retryDelay add up with the increasing of retryCount
+    const retryDelay = retryCount * 100;
     return sleep(retryDelay).then(() => instance.request(config));
   };
 
 const addRetryInterceptor = (
   instance: AxiosInstance,
-  { retryLimit = 3, retryDelay = 300 } = {}
+  { retryLimit = 5 } = {}
 ) => {
-  instance.interceptors.response.use(
-    null,
-    onError(instance, retryLimit, retryDelay)
-  );
+  const onResolve = async (res: AxiosResponse) => {
+    const config = typeConfig(res.config) || {};
+    let retryCount = config.retryCount || 0;
+    if (
+      retryCount === retryLimit ||
+      res.data.success === undefined ||
+      res.data.success === true
+    )
+      return Promise.resolve(res);
+
+    retryCount += 1;
+    config.retryCount = retryCount;
+    const retryDelay = retryCount * 100;
+    return sleep(retryDelay).then(() => instance.request(config));
+  };
+  instance.interceptors.response.use(onResolve, onError(instance, retryLimit));
 };
 
 export default addRetryInterceptor;

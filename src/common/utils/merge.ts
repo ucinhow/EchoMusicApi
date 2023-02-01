@@ -73,17 +73,11 @@ export const mergeSongItem = (datas: SongItem[][]) => {
   traverseByHorizon<SongItem>(datas, (item) => {
     const key = calcSongItemKey(item);
     const temp = map.get(key);
-    PLAYSOURCE.forEach((src) => {
-      if (!(src in item)) return;
-      if (
-        temp === undefined ||
-        (src in temp &&
-          temp[src]?.playable !== true &&
-          item[src]?.playable === true)
-      ) {
-        map.set(key, { ...temp, ...item });
-      }
-    });
+    if (temp === undefined) {
+      map.set(key, item);
+      return;
+    }
+    map.set(key, { ...temp, ...item });
   });
   const ret = Array.from(map.values());
   songItemCache.mset(ret);
