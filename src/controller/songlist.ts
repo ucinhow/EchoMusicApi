@@ -23,8 +23,8 @@ router.get("/detail", async (ctx) => {
     throw new Error(ERROR_MSG.ParamError);
   const page = str2Decimal(_page_);
   const size = str2Decimal(_size_);
-  const detail = await querySonglistDetail[src](id, page, size);
-  const body = JSON.stringify(detail);
+  const res = await querySonglistDetail[src](id, page, size);
+  const body = JSON.stringify(res);
   ctx.status = 200;
   ctx.body = body;
 });
@@ -33,8 +33,8 @@ router.get("/recommend", async (ctx) => {
   // await next();
   const { src } = ctx.query;
   if (!isStr(src) || !isSource(src)) throw new Error(ERROR_MSG.ParamError);
-  const recommend = await querySonglistRecommend[src]();
-  const body = JSON.stringify(recommend);
+  const res = await querySonglistRecommend[src]();
+  const body = JSON.stringify(res);
   ctx.status = 200;
   ctx.body = body;
 });
@@ -42,8 +42,8 @@ router.get("/recommend", async (ctx) => {
 router.get("/menu", async (ctx) => {
   const { src } = ctx.query;
   if (!isStr(src) || !isSource(src)) throw new Error(ERROR_MSG.ParamError);
-  const cat = await querySonglistCategory[src]();
-  const body = JSON.stringify(cat);
+  const res = await querySonglistCategory[src]();
+  const body = JSON.stringify(res);
   ctx.status = 200;
   ctx.body = body;
 });

@@ -6,7 +6,7 @@ import { isSource, isStr, isPlaySource } from "@/common/utils";
 const router = new Router();
 router.get("/detail", async (ctx) => {
   const { id, src } = ctx.query;
-  if (!isStr(id) || !isStr(src) || !isSource(src))
+  if (!isStr(id) || !isStr(src) || !isPlaySource(src))
     throw new Error(ERROR_MSG.ParamError);
   const res = await querySongDetail[src](id);
   const body = JSON.stringify(res);
