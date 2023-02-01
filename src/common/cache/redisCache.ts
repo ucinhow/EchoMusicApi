@@ -12,6 +12,7 @@ export const client = createClient({
 (async () => {
   if (!cacheByRedis) return;
   try {
+    client.addListener("error", (err) => console.error(err));
     await client.connect();
   } catch (e) {
     devLog(`ServerError: failed to connect to redis(${e})`);

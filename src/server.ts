@@ -17,7 +17,8 @@ const errorHandler = (err: unknown, ctx: Context) => {
   if (isAxiosError(err)) {
     devLog(
       `ServerError: request data error(${err.message})`,
-      `${err.response?.config.baseURL}/${err.response?.config.url}`
+      `${err.response?.config.baseURL}/${err.response?.config.url}`,
+      err.response?.data
     );
     ctx.status = 500;
     ctx.message = "ServerError: request data error";
@@ -26,6 +27,7 @@ const errorHandler = (err: unknown, ctx: Context) => {
   if (err instanceof Error) {
     switch (err.message) {
       case ERROR_MSG.ParamError: {
+        devLog("ClientError: invalid params");
         ctx.status = 400;
         ctx.message = "ClientError: invalid params";
         return;
