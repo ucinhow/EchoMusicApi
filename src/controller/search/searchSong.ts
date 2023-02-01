@@ -1,15 +1,14 @@
 import { PLAYSOURCE } from "@/common/constant";
-import { SearchSong } from "@/common/typing";
-import { searchSong as search } from "@/feature";
-import { mergeSongItem } from "@/common/utils";
 import { SongCache } from "@/common/cache";
+import prepareData from "./songFns";
 const searchSong = async (
   input: string,
   page: number,
   size: number,
   srcList = PLAYSOURCE
 ) => {
-  const { data: cacheData, srcMeta } = await SongCache.get(input);
+  const cache = await SongCache.get(input);
+  const { data: cacheData } = cache;
   const end = page * size;
   const start = (page - 1) * size;
   const cacheLen = cacheData.length;
@@ -20,42 +19,15 @@ const searchSong = async (
       data: cacheData.slice(start, end),
     };
   }
-  const dataList: SearchSong[][] = await Promise.all(
-    srcList.map(async (src) => {
-      let len = cacheLen;
-      if (!srcMeta[src].hasMore) return [];
-      let nextPage = srcMeta[src].nextPage;
-      const ret = [];
-      while (len < end) {
-        const searchTypeData = await search[src](input, nextPage++);
-        len += searchTypeData.data.length;
-        ret.push(searchTypeData);
-        if (!searchTypeData.hasMore) break;
-      }
-      return ret;
-    })
+  const [newData, polyHasMore] = await prepareData(
+    input,
+    cache,
+    end,
+    cacheLen,
+    srcList
   );
-  const datas = dataList.map((list) =>
-    list.reduce(
-      (acc, cur) => ({
-        ...cur,
-        data: acc.data.concat(cur.data),
-      }),
-      { hasMore: false, data: [], nextPage: 0 }
-    )
-  );
-  const songItems = mergeSongItem(datas.map((d) => d.data));
-  const newHasMore = Boolean(~datas.findIndex(({ hasMore }) => hasMore));
-  const newData = cacheData.concat(songItems);
-  const newSrcMeta = { ...srcMeta };
-  srcList.forEach((src, i) => {
-    const { nextPage, hasMore } = datas[i];
-    newSrcMeta[src] = { nextPage, hasMore };
-  });
-  const newCache = new SongCache(newHasMore, newData, newSrcMeta);
-  SongCache.set(input, newCache);
   return {
-    hasMore: newHasMore || newData.length > end,
+    hasMore: polyHasMore || newData.length > end,
     data: newData.slice(start, end),
   };
 };
