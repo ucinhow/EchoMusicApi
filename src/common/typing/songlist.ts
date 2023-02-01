@@ -1,3 +1,4 @@
+import { Source } from "./common";
 import { SongItem } from "./song";
 export interface SonglistDetail {
   id: string;
@@ -22,6 +23,7 @@ export interface SonglistItem {
   name: string;
   picUrl: string;
   playCount: number;
+  src: Source;
 }
 
 export interface SonglistDetailApi {

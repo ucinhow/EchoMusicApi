@@ -6,4 +6,8 @@ export interface Banner {
   picUrl: string;
 }
 
+export interface BannerResponse {
+  banners: Array<Banner>;
+}
+
 // export type BannerList = Array<Banner>;
