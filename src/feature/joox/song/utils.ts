@@ -1,10 +1,9 @@
-import { TrackResponse } from "./typing";
+import { LyricResponse, SongInfoResponse } from "./typing";
 import { SongDetail, SongLyric, SongPlayUrl } from "@/common/typing";
-import { convertImage } from "../common";
-import { simplify } from "simplify-chinese";
 import { parseTimestamp } from "@/common/utils";
+import { zht2zhs } from "@/common/utils";
 const convertLyric = (lyric: string) => {
-  const decodedLyric = simplify(Buffer.from(lyric, "base64").toString());
+  const decodedLyric = zht2zhs(Buffer.from(lyric, "base64").toString());
   const res: [number, string][] = [];
   const lines = decodedLyric.split("\n");
   const index = lines.findIndex((line) => /^\[.*\].+$/.test(line));
@@ -36,21 +35,42 @@ const convertLyric = (lyric: string) => {
 //   },
 // });
 
-export const serializeSongDetail = (data: TrackResponse): SongDetail => ({
-  id: data.id,
-  name: data.name,
-  picUrl: convertImage(data.images),
-  singer: data.artist_list.map((a) => ({ name: a.name, id: a.id })),
+// export const serializeSongDetail = (data: TrackResponse): SongDetail => ({
+//   id: data.id,
+//   name: data.name,
+//   picUrl: convertImage(data.images),
+//   singer: data.artist_list.map((a) => ({ name: a.name, id: a.id })),
+//   publicTime: parseTimestamp(data.public_time),
+//   duration: data.play_duration,
+//   album: { name: data.album_name, id: data.album_id },
+// });
+
+export const serializeSongDetail = (data: SongInfoResponse): SongDetail => ({
+  id: data.encodeSongId,
+  name: zht2zhs(data.msong),
+  picUrl: data.imgSrc,
+  singer: data.singer_list.map(({ id, name }) => ({
+    name: zht2zhs(Buffer.from(name, "base64").toString()),
+    id: id.toString(),
+  })),
   publicTime: parseTimestamp(data.public_time),
-  duration: data.play_duration,
-  album: { name: data.album_name, id: data.album_id },
+  duration: data.minterval,
+  album: { name: zht2zhs(data.malbum), id: data.malbumid.toString() },
 });
 
-export const serializeSongUrl = (data: TrackResponse): SongPlayUrl => ({
-  url: data.play_url_list[0],
+// export const serializeSongUrl = (data: TrackResponse): SongPlayUrl => ({
+//   url: data.play_url_list[0],
+// });
+export const serializeSongUrl = (data: SongInfoResponse): SongPlayUrl => ({
+  url: data.m4aUrl || data.mp3Url,
 });
 
-export const serializeSongLyric = (data: TrackResponse): SongLyric => ({
-  lyric: convertLyric(data.lrc_content),
-  lyricExist: Boolean(data.lrc_exist),
+// export const serializeSongLyric = (data: TrackResponse): SongLyric => ({
+//   lyric: convertLyric(data.lrc_content),
+//   lyricExist: Boolean(data.lrc_exist),
+// });
+
+export const serializeSongLyric = (data: LyricResponse): SongLyric => ({
+  lyric: convertLyric(data.lyric),
+  lyricExist: Boolean(data.lyric !== ""),
 });

@@ -1,6 +1,6 @@
 import { SearchResponse, ItemType, SearchSongResponse, Track } from "./typing";
 import { PlaySource, SearchSong, SearchType, SongItem } from "@/common/typing";
-import { simplify } from "simplify-chinese";
+import { zht2zhs } from "@/common/utils";
 
 export function convertType(type: ItemType): SearchType;
 export function convertType(type: SearchType): ItemType;
@@ -29,16 +29,16 @@ export function convertType(type: ItemType | SearchType) {
 }
 
 export const serializeTrack = (data: Track): SongItem => ({
-  name: simplify(data.name).replaceAll(" ", ""),
-  singerName: data.artist_list.map((a) => simplify(a.name)),
-  albumName: simplify(data.album_name),
+  name: zht2zhs(data.name).replaceAll(" ", ""),
+  singerName: data.artist_list.map((a) => zht2zhs(a.name)),
+  albumName: zht2zhs(data.album_name),
   duration: data.play_duration,
   [PlaySource.joox]: {
     id: data.id,
     // picUrl: convertImage(data.images),
     albumId: data.album_id,
     singerId: data.artist_list.map((a) => a.id),
-    playable: data.is_playable && data.vip_flag === 0,
+    playable: data.is_playable,
   },
 });
 
