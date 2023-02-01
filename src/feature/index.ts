@@ -22,6 +22,7 @@ import {
   searchSong as jooxSearchSong,
   songUrl as jooxSongUrl,
   songLyric as jooxSongLyric,
+  songDetail as jooxSongDetail,
 } from "./joox";
 
 import {
@@ -42,7 +43,7 @@ import {
   songlistRecommend as kwSonglistRecommend,
 } from "./kuwo";
 
-import { Source, PlaySource } from "@/common/typing";
+import { Source, PlaySource, SearchAlbum } from "@/common/typing";
 import { str2Decimal } from "@/common/utils";
 
 export const searchSong = {
@@ -56,7 +57,10 @@ export const searchSonglist = {
   [Source.kw]: (key: string, page: number) => kwSearchSonglist(key, page, 50),
 };
 
-export const searchAlbum = {
+export const searchAlbum: Record<
+  Source,
+  (key: string, page: number) => Promise<SearchAlbum>
+> = {
   [Source.qq]: qqSearchAlbum,
   [Source.kw]: (key: string, page: number) => kwSearchAlbum(key, page, 50),
 };
@@ -67,8 +71,9 @@ export const suggestSearch = {
 };
 
 export const querySongDetail = {
-  [Source.qq]: qqSongDetail,
-  [Source.kw]: (id: string) => kwSongDetail(str2Decimal(id)),
+  [PlaySource.qq]: qqSongDetail,
+  [PlaySource.kw]: (id: string) => kwSongDetail(str2Decimal(id)),
+  [PlaySource.joox]: jooxSongDetail,
 };
 
 export const querySongUrl = {
