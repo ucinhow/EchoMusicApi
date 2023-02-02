@@ -79,9 +79,7 @@ export const mergeSongItem = (datas: SongItem[][]) => {
     }
     map.set(key, { ...temp, ...item });
   });
-  const ret = Array.from(map.values());
-  songItemCache.mset(ret);
-  return ret;
+  return Array.from(map.values());
 };
 
 export const mergeAlbumItem = (datas: AlbumItem[][]) => {

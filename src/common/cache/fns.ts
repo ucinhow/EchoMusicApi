@@ -109,7 +109,8 @@ export const songItemCache = {
   mset: async (data: SongItem[]) =>
     cache.mset(
       data.map((i) => [calcSongItemKey(i), i]),
-      SONGITEM_PATH
+      SONGITEM_PATH,
+      7 * 24 * 60 * 60 * 1000
     ),
   get: async (key: string) => (await cache.get(key, SONGITEM_PATH)) as SongItem,
   has: async (key: string) => cache.has(key, SONGITEM_PATH),

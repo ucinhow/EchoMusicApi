@@ -23,18 +23,18 @@ export default class Cache {
     const newKey = path === undefined ? key : `${path}-${key}`;
     return this.map.has(newKey);
   }
-  set(key: string, val: any, path?: string) {
+  set(key: string, path: string, val: any, timeout?: number) {
     const newKey = path === undefined ? key : `${path}-${key}`;
     this.map.set(newKey, val);
     this.expireMap.set(
       newKey,
-      add(new Date(), { days: 1 }).valueOf() - Date.now()
+      timeout ? timeout : add(new Date(), { days: 1 }).valueOf() - Date.now()
     );
   }
-  mset(data: [string, any][], path?: string) {
+  mset(data: [string, any][], path?: string, timeout?: number) {
     data.forEach(([key, val]) => {
       const newKey = path === undefined ? key : `${path}-${key}`;
-      this.set(newKey, val);
+      this.set(newKey, val, undefined, timeout);
     });
   }
   del(key: string, path?: string) {

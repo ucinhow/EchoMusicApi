@@ -27,13 +27,16 @@ const get = async (key: string, path?: string) => {
   const res = await client.json.get(newKey, { path: ["$"] });
   return Array.isArray(res) ? res[0] : null;
 };
-const set = async (key: string, path: string, val: any) => {
+const set = async (key: string, path: string, val: any, timeout?: number) => {
   const newKey = convertKey(key, path);
   try {
     await client
       .multi()
       .json.set(newKey, "$", val)
-      .expire(newKey, add(new Date(), { days: 1 }).valueOf() - Date.now())
+      .expire(
+        newKey,
+        timeout ? timeout : add(new Date(), { days: 1 }).valueOf() - Date.now()
+      )
       .exec();
   } catch (e) {
     devLog(`${errorMsg}(${e})`, (e as any).stack);
@@ -42,14 +45,19 @@ const set = async (key: string, path: string, val: any) => {
   return true;
 };
 
-const mset = async (data: [string, any][], path?: string) => {
+const mset = async (data: [string, any][], path?: string, timeout?: number) => {
   try {
     let temp = client.multi();
     data.forEach(([key, val]) => {
       const newKey = convertKey(key, path);
       temp = temp.json
         .set(newKey, "$", val)
-        .expire(newKey, add(new Date(), { days: 1 }).valueOf() - Date.now());
+        .expire(
+          newKey,
+          timeout
+            ? timeout
+            : add(new Date(), { days: 1 }).valueOf() - Date.now()
+        );
     });
     await temp.exec();
   } catch (e) {

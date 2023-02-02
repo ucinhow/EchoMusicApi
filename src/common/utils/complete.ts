@@ -23,5 +23,6 @@ export const completeListSongMeta = async (
     ret[idx] = ~index ? data[index] : item;
   });
   await limitAsyncExec(taskList, 5);
+  songItemCache.mset(ret);
   return ret;
 };
