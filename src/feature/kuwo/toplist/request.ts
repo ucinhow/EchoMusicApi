@@ -23,9 +23,9 @@ export const queryToplistDetail = (id: number, page: number, size: number) =>
   });
 
 export const toplistDetail = (id: number, page: number, size: number) =>
-  queryToplistDetail(id, page, size).then((res) =>
-    serializeToplistDetail(res.data, id)
-  );
+  queryToplistDetail(id, page, size).then((res) => {
+    return serializeToplistDetail(res.data, id);
+  });
 
 export const metaMap = new Promise<Map<number, ToplistItem>>((resolve) => {
   setTimeout(() => {
@@ -36,5 +36,5 @@ export const metaMap = new Promise<Map<number, ToplistItem>>((resolve) => {
       }
       resolve(map);
     });
-  }, 1000);
+  }, 500);
 });

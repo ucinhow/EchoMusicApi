@@ -14,6 +14,7 @@ specifiers:
   '@types/md5': ^2.3.2
   '@types/node': ^18.11.18
   '@types/opencc-js': ^1.0.0
+  '@types/set-cookie-parser': ^2.4.2
   '@types/supertest': ^2.0.12
   '@typescript-eslint/eslint-plugin': ^5.48.1
   NeteaseCloudMusicApi: ^4.8.7
@@ -32,6 +33,7 @@ specifiers:
   md5: ^2.3.0
   opencc-js: ^1.0.5
   redis: ^4.5.1
+  set-cookie-parser: ^2.5.1
   supertest: ^6.3.3
   typescript: '*'
 
@@ -47,6 +49,7 @@ dependencies:
   md5: 2.3.0
   opencc-js: 1.0.5
   redis: 4.5.1
+  set-cookie-parser: 2.5.1
 
 devDependencies:
   '@swc/cli': 0.1.59_cr4os3zuq4gmhe2qzzjtw2pxeu
@@ -60,6 +63,7 @@ devDependencies:
   '@types/md5': 2.3.2
   '@types/node': 18.11.18
   '@types/opencc-js': 1.0.0
+  '@types/set-cookie-parser': 2.4.2
   '@types/supertest': 2.0.12
   '@typescript-eslint/eslint-plugin': 5.48.1_iukboom6ndih5an6iafl45j2fe
   chokidar: 3.5.3
@@ -1218,6 +1222,12 @@ packages:
     dependencies:
       '@types/mime': 3.0.1
       '@types/node': 18.11.18
+
+  /@types/set-cookie-parser/2.4.2:
+    resolution: {integrity: sha512-fBZgytwhYAUkj/jC/FAV4RQ5EerRup1YQsXQCh8rZfiHkc4UahC192oH0smGwsXol3cL3A5oETuAHeQHmhXM4w==}
+    dependencies:
+      '@types/node': 18.11.18
+    dev: true
 
   /@types/stack-utils/2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
@@ -5227,6 +5237,10 @@ packages:
 
   /set-blocking/2.0.0:
     resolution: {integrity: sha512-KiKBS8AnWGEyLzofFfmvKwpdPzqiy16LvQfK3yv/fVH7Bj13/wl3JSR1J+rfgRE9q7xUJK4qvgS8raSOeLUehw==}
+    dev: false
+
+  /set-cookie-parser/2.5.1:
+    resolution: {integrity: sha512-1jeBGaKNGdEq4FgIrORu/N570dwoPYio8lSoYLWmX7sQ//0JY08Xh9o5pBcgmHQ/MbsYp/aZnOe1s1lIsbLprQ==}
     dev: false
 
   /setprototypeof/1.2.0:

@@ -26,7 +26,8 @@
     "koa-logger": "^3.2.1",
     "md5": "^2.3.0",
     "opencc-js": "^1.0.5",
-    "redis": "^4.5.1"
+    "redis": "^4.5.1",
+    "set-cookie-parser": "^2.5.1"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.59",
@@ -40,6 +41,7 @@
     "@types/md5": "^2.3.2",
     "@types/node": "^18.11.18",
     "@types/opencc-js": "^1.0.0",
+    "@types/set-cookie-parser": "^2.4.2",
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
     "chokidar": "^3.5.3",

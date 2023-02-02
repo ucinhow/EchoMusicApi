@@ -22,6 +22,7 @@ export const querySearchSong = (key: string, page: number, size: number) =>
         key,
         pn: page,
         rn: size,
+        httpsStatus: 1,
       },
       headers: {
         Referer: `http://www.kuwo.cn/search/list?key=${encodeURIComponent(
@@ -47,6 +48,7 @@ export const querySearchAlbum = (key: string, page: number, size: number) =>
         key,
         pn: page,
         rn: size,
+        httpsStatus: 1,
       },
       headers: {
         Referer: `http://www.kuwo.cn/search/album?key=${encodeURIComponent(
@@ -72,6 +74,7 @@ export const querySearchSonglist = (key: string, page: number, size: number) =>
         key,
         pn: page,
         rn: size,
+        httpsStatus: 1,
       },
       headers: {
         Referer: `http://www.kuwo.cn/search/playlist?key=${encodeURIComponent(
@@ -90,12 +93,13 @@ const singerInstance = createCommInstance("/search/singers?key=hello");
 
 export const querySearchSinger = (key: string, page: number, size: number) =>
   singerInstance.get<SearchArtistResponse>(
-    "api/www/search/searchArtistBykeyWord",
+    "/api/www/search/searchArtistBykeyWord",
     {
       params: {
         key,
         pn: page,
         rn: size,
+        httpsStatus: 1,
       },
       headers: {
         Referer: `http://www.kuwo.cn/search/singers?key=${encodeURIComponent(
