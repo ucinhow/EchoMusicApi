@@ -2,8 +2,8 @@ import { SongItem } from "../typing";
 import searchSong from "@/controller/search/searchSong";
 import { calcSongItemKey, limitAsyncExec } from "./other";
 import { songItemCache } from "../cache";
+import { PLAYSOURCE } from "../constant";
 
-// todo: try to fix the problem that return with cache but not has complete src information.
 export const completeListSongMeta = async (
   list: SongItem[]
 ): Promise<SongItem[]> => {
@@ -15,12 +15,13 @@ export const completeListSongMeta = async (
       return;
     }
     const searchStr = `${item.name} ${item.singerName.join(" ")}`;
-    const { data } = await searchSong(searchStr, 1, 10);
+    const unknownSrcList = PLAYSOURCE.filter((src) => item[src] === undefined);
+    const { data } = await searchSong(searchStr, 1, 10, unknownSrcList);
     const index = data.findIndex((item) => {
       const itemKey = calcSongItemKey(item);
       return itemKey === key;
     });
-    ret[idx] = ~index ? data[index] : item;
+    ret[idx] = ~index ? { ...data[index], ...item } : item;
   });
   await limitAsyncExec(taskList, 5);
   songItemCache.mset(ret);

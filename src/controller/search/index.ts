@@ -1,6 +1,12 @@
 import Router from "@koa/router";
 import { suggestSearch } from "@/feature";
-import { isStr, mergeSSItem, isSearchType, str2Decimal } from "@/common/utils";
+import {
+  isStr,
+  mergeSSItem,
+  isSearchType,
+  str2Decimal,
+  completeListSongMeta,
+} from "@/common/utils";
 import { SearchType, SearchTypeResponse } from "@/common/typing";
 import searchSong from "./searchSong";
 import searchAlbum from "./searchAlbum";
@@ -32,7 +38,8 @@ router.get("/type", async (ctx) => {
   switch (type) {
     case SearchType.song: {
       const { data, hasMore } = await searchSong(key, page, size);
-      rsp.data = data;
+      const completedData = await completeListSongMeta(data);
+      rsp.data = completedData;
       rsp.hasMore = hasMore;
       break;
     }
