@@ -17,7 +17,7 @@ const errorHandler = (err: unknown, ctx: Context) => {
   if (isAxiosError(err)) {
     devLog(
       `ServerError: request data error(${err.message})`,
-      `${err.response?.config.baseURL}/${err.response?.config.url}`,
+      `${err.response?.config.baseURL}${err.response?.config.url}`,
       err.response?.data
     );
     ctx.status = 500;
