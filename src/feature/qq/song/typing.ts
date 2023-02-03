@@ -46,58 +46,58 @@ export interface SongInfo {
   };
 }
 
-interface SongUrlData {
-  midurlinfo: Array<{
-    songmid: string;
-    filename: string;
-    purl: string;
-    // errtype: "";
-    // p2pfromtag: 0;
-    // qmdlfromtag: 0;
-    // common_downfromtag: 0;
-    // vip_downfromtag: 0;
-    // pdl: 0;
-    // premain: 0;
-    // hisdown: 0;
-    // hisbuy: 0;
-    // uiAlert: 0;
-    // isbuy: 0;
-    // pneedbuy: 0;
-    // pneed: 0;
-    // isonly: 0;
-    // onecan: 0;
-    // result: 0;
-    // tips: "";
-    // opi48kurl: "";
-    // opi96kurl: "";
-    // opi192kurl: "";
-    // opiflackurl: "";
-    // opi128kurl: "";
-    // opi192koggurl: "";
-    // wififromtag: "";
-    // flowfromtag: "";
-    // wifiurl: "C400003IubDD2DZgRs.m4a?guid=0&vkey=97E0E110194138C15C89A920ABDD57CDB48EAC71A831306CC09B06AB4398BBEA71089D194DCF121B12983D5BF61CEFB6EAEA8BFA8BC54E75&uin=&fromtag=196032";
-    // flowurl: "C400003IubDD2DZgRs.m4a?guid=0&vkey=97E0E110194138C15C89A920ABDD57CDB48EAC71A831306CC09B06AB4398BBEA71089D194DCF121B12983D5BF61CEFB6EAEA8BFA8BC54E75&uin=&fromtag=196032";
-    // vkey: "97E0E110194138C15C89A920ABDD57CDB48EAC71A831306CC09B06AB4398BBEA71089D194DCF121B12983D5BF61CEFB6EAEA8BFA8BC54E75";
-    // opi30surl: "";
-    // ekey: "";
-    // auth_switch: 16889603;
-    // subcode: 0;
-    // opi96koggurl: "";
-    // auth_switch2: 0;
-  }>;
-}
+// interface SongUrlData {
+//   midurlinfo: Array<{
+//     songmid: string;
+//     filename: string;
+//     purl: string;
+//     // errtype: "";
+//     // p2pfromtag: 0;
+//     // qmdlfromtag: 0;
+//     // common_downfromtag: 0;
+//     // vip_downfromtag: 0;
+//     // pdl: 0;
+//     // premain: 0;
+//     // hisdown: 0;
+//     // hisbuy: 0;
+//     // uiAlert: 0;
+//     // isbuy: 0;
+//     // pneedbuy: 0;
+//     // pneed: 0;
+//     // isonly: 0;
+//     // onecan: 0;
+//     // result: 0;
+//     // tips: "";
+//     // opi48kurl: "";
+//     // opi96kurl: "";
+//     // opi192kurl: "";
+//     // opiflackurl: "";
+//     // opi128kurl: "";
+//     // opi192koggurl: "";
+//     // wififromtag: "";
+//     // flowfromtag: "";
+//     // wifiurl: "C400003IubDD2DZgRs.m4a?guid=0&vkey=97E0E110194138C15C89A920ABDD57CDB48EAC71A831306CC09B06AB4398BBEA71089D194DCF121B12983D5BF61CEFB6EAEA8BFA8BC54E75&uin=&fromtag=196032";
+//     // flowurl: "C400003IubDD2DZgRs.m4a?guid=0&vkey=97E0E110194138C15C89A920ABDD57CDB48EAC71A831306CC09B06AB4398BBEA71089D194DCF121B12983D5BF61CEFB6EAEA8BFA8BC54E75&uin=&fromtag=196032";
+//     // vkey: "97E0E110194138C15C89A920ABDD57CDB48EAC71A831306CC09B06AB4398BBEA71089D194DCF121B12983D5BF61CEFB6EAEA8BFA8BC54E75";
+//     // opi30surl: "";
+//     // ekey: "";
+//     // auth_switch: 16889603;
+//     // subcode: 0;
+//     // opi96koggurl: "";
+//     // auth_switch2: 0;
+//   }>;
+// }
 
 interface SongDetail {
   track_info: SongInfo;
 }
 
-export interface SongUrlResponse {
-  req_1: {
-    code: number;
-    data: SongUrlData;
-  };
-}
+// export interface SongUrlResponse {
+//   req_1: {
+//     code: number;
+//     data: SongUrlData;
+//   };
+// }
 
 export interface SongDetailResponse {
   req_1: {
@@ -126,4 +126,18 @@ export interface SongDetailResponse {
 export interface SongLyricResponse {
   lyric: string;
   trans: string;
+}
+
+export interface SongUrlResponse {
+  code: number;
+  req_1: {
+    data: {
+      midurlinfo: Array<{
+        songmid: string;
+        filename: string;
+        purl: string;
+        vkey: string;
+      }>;
+    };
+  };
 }

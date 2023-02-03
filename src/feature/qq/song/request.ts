@@ -1,4 +1,4 @@
-import { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { postMusics, instanceC } from "../common";
 import {
   SongDetailResponse,
@@ -10,17 +10,18 @@ import {
   serializeSongLyric,
   serializeSongUrl,
 } from "./utils";
-const createPlayUrlParam = (mid: string) => ({
-  req_1: {
-    module: "vkey.GetVkeyServer",
-    method: "CgiGetVkey",
-    param: {
-      songmid: [mid],
-      guid: "0",
-      uin: "0",
-    },
-  },
-});
+import { queryPlayUrl } from "./urlRequest";
+// const createPlayUrlParam = (mid: string) => ({
+//   req_1: {
+//     module: "vkey.GetVkeyServer",
+//     method: "CgiGetVkey",
+//     param: {
+//       songmid: [mid],
+//       guid: "0",
+//       uin: "0",
+//     },
+//   },
+// });
 
 const createDetailParam = (mid: string) => ({
   req_1: {
@@ -39,13 +40,15 @@ const createLyricParam = (mid: string) => ({
   uin: "0",
 });
 
-export const queryPlayUrl = (mid: string) =>
-  postMusics<ReturnType<typeof createPlayUrlParam>, SongUrlResponse>(
-    createPlayUrlParam(mid)
-  );
+// export const queryPlayUrl = (mid: string) =>
+//   postMusics<ReturnType<typeof createPlayUrlParam>, SongUrlResponse>(
+//     createPlayUrlParam(mid)
+//   );
 
 export const songUrl = (mid: string) =>
-  queryPlayUrl(mid).then((res) => serializeSongUrl(res.data));
+  queryPlayUrl(mid).then((res) => {
+    return serializeSongUrl(res.data);
+  });
 
 export const querySongDetail = (mid: string) =>
   postMusics<ReturnType<typeof createDetailParam>, SongDetailResponse>(
@@ -65,3 +68,12 @@ export const querySongLyric = (mid: string) =>
 
 export const songLyric = (mid: string) =>
   querySongLyric(mid).then((res) => serializeSongLyric(res.data));
+
+// const urlInstace = axios.create({
+//   baseURL: "https://c.y.qq.com/base/fcgi-bin",
+//   headers: {
+//     "User-Agent":
+//       "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1",
+//     Referer: "http://y.qq.com",
+//   },
+// });

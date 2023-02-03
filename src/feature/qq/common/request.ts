@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { AxiosResponse } from "axios";
 import getSecuritySign from "./getSecuritySign";
 const instanceU = axios.create({
@@ -14,10 +14,14 @@ const instanceU = axios.create({
   },
 });
 
-export const postMusics = <P extends Record<string, any>, R>(paramsBody: P) =>
+export const postMusics = <P extends Record<string, any>, R>(
+  paramsBody: P,
+  config?: AxiosRequestConfig
+) =>
   instanceU.post<R, AxiosResponse<R>, P>(
     `/cgi-bin/musics.fcg?_=${Date.now()}&sign=${getSecuritySign(paramsBody)}`,
-    paramsBody
+    paramsBody,
+    config
   );
 export const postMusicu = <P, R>(paramsBody: P) =>
   instanceU.post<R, AxiosResponse<R>, P>("/cgi-bin/musicu.fcg", paramsBody);
