@@ -1,5 +1,5 @@
 import axios from "axios";
-import { get } from "../common";
+import { baseGet } from "../common";
 import { DetailResponse, LyricResponse } from "./typing";
 import { serializeSongUrl, serializeSongLyric, serializeDetail } from "./utils";
 
@@ -51,7 +51,7 @@ export const songLyric = (rid: number) =>
   queryLyric(rid).then((res) => serializeSongLyric(res.data));
 
 export const queryDetail = (id: number) =>
-  get<DetailResponse>("/api/www/music/musicInfo", { params: { mid: id } });
+  baseGet<DetailResponse>("/api/www/music/musicInfo", { params: { mid: id } });
 
 export const songDetail = (id: number) =>
   queryDetail(id).then((res) => serializeDetail(res.data));

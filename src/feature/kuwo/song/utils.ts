@@ -21,7 +21,8 @@ export const completeArtistId = async (artist: string, artistId: number) => {
     }
     idList[idx] = -1;
   });
-  await limitAsyncExec(taskList, 2);
+  // await limitAsyncExec(taskList, 2);
+  await Promise.all(taskList);
   return [nameList, idList.map((id) => (id === -1 ? "" : id.toString()))];
 };
 
@@ -48,12 +49,9 @@ export const serializeMusicItem = async (
 };
 
 export const serializeItemList = async (itemList: MusicItem[]) => {
-  const ret = new Array<SongItem>(itemList.length);
-  const taskList = itemList.map((item, idx) => async () => {
-    ret[idx] = await serializeMusicItem(item);
-  });
-  await limitAsyncExec(taskList, 4);
-  return ret;
+  return Promise.all(
+    itemList.map(async (item) => await serializeMusicItem(item))
+  );
 };
 
 export const serializeSongUrl = (url: string): SongPlayUrl => ({ url });

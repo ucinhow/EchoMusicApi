@@ -1,4 +1,4 @@
-import { createCommInstance } from "../common";
+import { createCommRequest } from "../common";
 import {
   SearchAlbumResponse,
   SearchArtistResponse,
@@ -12,25 +12,20 @@ import {
 } from "./utils";
 
 // search song logic
-const songInstance = createCommInstance("/search/list?key=hello");
+const songGet = createCommRequest("/search/list?key=hello");
 
 export const querySearchSong = (key: string, page: number, size: number) =>
-  songInstance.get<SearchMusicResponse>(
-    "/api/www/search/searchMusicBykeyWord",
-    {
-      params: {
-        key,
-        pn: page,
-        rn: size,
-        httpsStatus: 1,
-      },
-      headers: {
-        Referer: `http://www.kuwo.cn/search/list?key=${encodeURIComponent(
-          key
-        )}`,
-      },
-    }
-  );
+  songGet<SearchMusicResponse>("/api/www/search/searchMusicBykeyWord", {
+    params: {
+      key,
+      pn: page,
+      rn: size,
+      httpsStatus: 1,
+    },
+    headers: {
+      Referer: `http://www.kuwo.cn/search/list?key=${encodeURIComponent(key)}`,
+    },
+  });
 
 export const searchSong = (key: string, page: number, size: number) =>
   querySearchSong(key, page, size).then((res) =>
@@ -38,25 +33,20 @@ export const searchSong = (key: string, page: number, size: number) =>
   );
 
 // search album logic
-const albumInstance = createCommInstance("/search/album?key=hello");
+const albumGet = createCommRequest("/search/album?key=hello");
 
 export const querySearchAlbum = (key: string, page: number, size: number) =>
-  albumInstance.get<SearchAlbumResponse>(
-    "/api/www/search/searchAlbumBykeyWord",
-    {
-      params: {
-        key,
-        pn: page,
-        rn: size,
-        httpsStatus: 1,
-      },
-      headers: {
-        Referer: `http://www.kuwo.cn/search/album?key=${encodeURIComponent(
-          key
-        )}`,
-      },
-    }
-  );
+  albumGet<SearchAlbumResponse>("/api/www/search/searchAlbumBykeyWord", {
+    params: {
+      key,
+      pn: page,
+      rn: size,
+      httpsStatus: 1,
+    },
+    headers: {
+      Referer: `http://www.kuwo.cn/search/album?key=${encodeURIComponent(key)}`,
+    },
+  });
 
 export const searchAlbum = (key: string, page: number, size: number) =>
   querySearchAlbum(key, page, size).then((res) =>
@@ -64,10 +54,10 @@ export const searchAlbum = (key: string, page: number, size: number) =>
   );
 
 // search songlist logic
-const songlistInstance = createCommInstance("/search/playlist?key=hello");
+const songlistGet = createCommRequest("/search/playlist?key=hello");
 
 export const querySearchSonglist = (key: string, page: number, size: number) =>
-  songlistInstance.get<SearchPlaylistResponse>(
+  songlistGet<SearchPlaylistResponse>(
     "/api/www/search/searchPlayListBykeyWord",
     {
       params: {
@@ -89,22 +79,19 @@ export const searchSonglist = (key: string, page: number, size: number) =>
     serializeSearchPlaylist(res.data, page, size)
   );
 
-const singerInstance = createCommInstance("/search/singers?key=hello");
+const singerGet = createCommRequest("/search/singers?key=hello");
 
 export const querySearchSinger = (key: string, page: number, size: number) =>
-  singerInstance.get<SearchArtistResponse>(
-    "/api/www/search/searchArtistBykeyWord",
-    {
-      params: {
-        key,
-        pn: page,
-        rn: size,
-        httpsStatus: 1,
-      },
-      headers: {
-        Referer: `http://www.kuwo.cn/search/singers?key=${encodeURIComponent(
-          key
-        )}`,
-      },
-    }
-  );
+  singerGet<SearchArtistResponse>("/api/www/search/searchArtistBykeyWord", {
+    params: {
+      key,
+      pn: page,
+      rn: size,
+      httpsStatus: 1,
+    },
+    headers: {
+      Referer: `http://www.kuwo.cn/search/singers?key=${encodeURIComponent(
+        key
+      )}`,
+    },
+  });

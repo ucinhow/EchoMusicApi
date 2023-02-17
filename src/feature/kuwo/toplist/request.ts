@@ -1,12 +1,10 @@
-import { createCommInstance } from "../common";
+import { baseGet } from "../common";
 import { ToplistDetailResponse, ToplistMenuResponse } from "./typing";
 import { serializeToplistDetail, serializeToplistMenu } from "./utils";
 import { ToplistItem } from "@/common/typing";
 
-const instance = createCommInstance("/rankList");
-
 export const queryToplistAll = () =>
-  instance.get<ToplistMenuResponse>("/api/www/bang/bang/bangMenu", {});
+  baseGet<ToplistMenuResponse>("/api/www/bang/bang/bangMenu", {});
 
 export const toplistAll = () =>
   queryToplistAll().then((res) => {
@@ -14,7 +12,7 @@ export const toplistAll = () =>
   });
 
 export const queryToplistDetail = (id: number, page: number, size: number) =>
-  instance.get<ToplistDetailResponse>("/api/www/bang/bang/musicList", {
+  baseGet<ToplistDetailResponse>("/api/www/bang/bang/musicList", {
     params: {
       bangId: id,
       pn: page,
