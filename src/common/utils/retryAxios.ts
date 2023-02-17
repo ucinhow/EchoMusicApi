@@ -26,13 +26,14 @@ const retryRanges = [
 
 const shouldRetry = (status: number) => {
   for (const [start, end] of retryRanges) {
-    if (status < start || status > end) return false;
+    if (status >= start && status <= end) return true;
   }
-  return true;
+  return false;
 };
 
-const addRetryInterceptor = (
+export const addRetryInterceptor = (
   instance: AxiosInstance,
+  extraOnError?: (err: AxiosError) => Promise<void>,
   { retryLimit = 10 } = {}
 ) => {
   const onResolve = async (res: AxiosResponse) => {
@@ -56,11 +57,13 @@ const addRetryInterceptor = (
     let retryCount = config.retryCount || 0;
     if (
       retryCount === retryLimit ||
-      (err.status !== undefined && !shouldRetry(err.status))
+      (err.response?.status !== undefined && !shouldRetry(err.response.status))
     )
       return Promise.reject(err);
+    await extraOnError?.(err);
     retryCount += 1;
     config.retryCount = retryCount;
+
     // retryDelay add up with the increasing of retryCount
     const retryDelay = retryCount * 200;
     return sleep(retryDelay).then(() => instance.request(config));
@@ -68,5 +71,3 @@ const addRetryInterceptor = (
 
   instance.interceptors.response.use(onResolve, onError);
 };
-
-export default addRetryInterceptor;
