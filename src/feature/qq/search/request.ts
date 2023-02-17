@@ -44,27 +44,28 @@ export const searchSuggest = (key: string) =>
 
 type SearchTypeParams = ReturnType<typeof createSearchTypeParams>;
 
-/**
- * @description: qq source searchType request, it will return upto 100 results if request success.
- * @return SearchTypeData
- */
-export const querySearchType = <Rsp>(
-  key: string,
-  page: number,
-  type: SearchType
-) => postMusicu<SearchTypeParams, Rsp>(createSearchTypeParams(key, page, type));
+export const querySearchSong = (key: string, page: number) =>
+  postMusicu<SearchTypeParams, SearchSongResponse>(
+    createSearchTypeParams(key, page, SearchType.song)
+  );
 
 export const searchSong = (key: string, page: number) =>
-  querySearchType<SearchSongResponse>(key, page, SearchType.song).then((res) =>
-    serializeSearchSong(res.data)
+  querySearchSong(key, page).then((res) => serializeSearchSong(res.data));
+
+export const querySearchAlbum = (key: string, page: number) =>
+  postMusicu<SearchTypeParams, SearchAlbumResponse>(
+    createSearchTypeParams(key, page, SearchType.album)
   );
 
 export const searchAlbum = (key: string, page: number) =>
-  querySearchType<SearchAlbumResponse>(key, page, SearchType.album).then(
-    (res) => serializeSearchAlbum(res.data)
+  querySearchAlbum(key, page).then((res) => serializeSearchAlbum(res.data));
+
+export const querySearchSonglist = (key: string, page: number) =>
+  postMusicu<SearchTypeParams, SearchSonglistResponse>(
+    createSearchTypeParams(key, page, SearchType.songlist)
   );
 
 export const searchSonglist = (key: string, page: number) =>
-  querySearchType<SearchSonglistResponse>(key, page, SearchType.songlist).then(
-    (res) => serializeSearchSonglist(res.data)
+  querySearchSonglist(key, page).then((res) =>
+    serializeSearchSonglist(res.data)
   );
