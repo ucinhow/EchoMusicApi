@@ -1,5 +1,5 @@
 import { ERROR_MSG } from "@/common/constant";
-import { Banner, DataType } from "@/common/typing";
+import { Banner, DataType, Source } from "@/common/typing";
 import { BannerResponse, JumpType } from "./typing";
 
 const convertType = (type: string) => {
@@ -22,6 +22,7 @@ export const serializeBanner = (res: BannerResponse): Banner[] => {
       picUrl: pic,
       id,
       type: convertType(type),
+      src: Source.kw,
     };
   });
 };

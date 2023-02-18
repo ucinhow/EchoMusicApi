@@ -1,5 +1,5 @@
 import { ERROR_MSG } from "@/common/constant";
-import { Banner, DataType } from "@/common/typing";
+import { Banner, DataType, Source } from "@/common/typing";
 import { BannerResponse, JumpType } from "./typing";
 import { devLog } from "@/common/utils";
 
@@ -34,6 +34,7 @@ export const serializeBanner = (res: BannerResponse): Array<Banner> => {
       id,
       picUrl: item.cover,
       type,
+      src: Source.qq,
     };
   });
 };
