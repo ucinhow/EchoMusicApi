@@ -45,11 +45,14 @@ export const serializeRecommend = (
 
 export const serializeCategory = (res: CategoryResponse): SonglistCategory => {
   const data = res.req_1.data.v_group;
+  const aiCategoryId = 9527;
   return {
     group: data.map((item) => ({
       id: item.group_id.toString(),
       name: item.group_name,
-      item: item.v_item.map((i) => ({ name: i.name, id: i.id.toString() })),
+      item: item.v_item
+        .filter((i) => i.id !== aiCategoryId)
+        .map((i) => ({ name: i.name, id: i.id.toString() })),
     })),
   };
 };
