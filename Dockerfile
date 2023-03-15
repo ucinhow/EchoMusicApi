@@ -1,6 +1,4 @@
-FROM node:lts
-
-WORKDIR /app
+FROM node:lts-buster as build-stage
 
 COPY ["package.json", "pnpm-lock.yaml", "./"]
 
@@ -10,6 +8,16 @@ RUN pnpm install
 
 COPY . ./
 
+RUN pnpm build
+
+FROM node:lts-buster as prod-stage
+
+WORKDIR /app
+
+COPY --from=build-stage /dist ./
+
+COPY --from=build-stage config.json ./
+
 EXPOSE 3001
 
-CMD ["pnpm", "start"]
+CMD ["node", "index.js"]

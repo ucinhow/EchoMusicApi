@@ -1,5 +1,6 @@
 import Router from "@koa/router";
-import { completeListSongMeta, isSource, isStr } from "@/common/utils";
+import { completeListSongMeta } from "@/common/utils/complete";
+import { isSource, isStr } from "@/common/utils";
 import { ERROR_MSG } from "@/common/constant";
 import { queryAlbumDetail } from "@/feature";
 

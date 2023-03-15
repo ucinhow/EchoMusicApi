@@ -2,7 +2,7 @@
 
 ## 介绍
 
-通过 HTTP 抓包分析等方法解析部分音乐资源的 Api，提供整合的音乐查询服务的 Koa 服务。项目基于 Koa完成服务开发，基于 Jest 实现单测。支持 Docker 部署。
+通过 HTTP 抓包分析等方法解析部分音乐资源的 Api，提供整合的音乐查询服务的 Koa 服务。项目基于 Koa 完成服务开发，基于 Mocha 实现单测。支持 Docker 部署。
 
 ## 指令
 
@@ -14,7 +14,7 @@ pnpm dev
 pnpm start
 
 // Docker 部署
-pnpm start:docker
+pnpm run:docker
 
 // 测试数据获取请求
 pnpm test-request

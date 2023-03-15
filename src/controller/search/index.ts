@@ -1,12 +1,8 @@
 import Router from "@koa/router";
 import { suggestSearch } from "@/feature";
-import {
-  isStr,
-  mergeSSItem,
-  isSearchType,
-  str2Decimal,
-  completeListSongMeta,
-} from "@/common/utils";
+import { isStr, mergeSSItem, isSearchType, str2Decimal } from "@/common/utils";
+import { completeListSongMeta } from "@/common/utils/complete";
+
 import { SearchType, SearchTypeResponse } from "@/common/typing";
 import searchSong from "./searchSong";
 import searchAlbum from "./searchAlbum";

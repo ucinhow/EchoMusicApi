@@ -10,18 +10,18 @@ import {
   serializeSongLyric,
   serializeSongUrl,
 } from "./utils";
-import { queryPlayUrl } from "./urlRequest";
-// const createPlayUrlParam = (mid: string) => ({
-//   req_1: {
-//     module: "vkey.GetVkeyServer",
-//     method: "CgiGetVkey",
-//     param: {
-//       songmid: [mid],
-//       guid: "0",
-//       uin: "0",
-//     },
-//   },
-// });
+// import { queryPlayUrl } from "./urlRequest";
+const createPlayUrlParam = (mid: string) => ({
+  req_1: {
+    module: "vkey.GetVkeyServer",
+    method: "CgiGetVkey",
+    param: {
+      songmid: [mid],
+      guid: "0",
+      uin: "0",
+    },
+  },
+});
 
 const createDetailParam = (mid: string) => ({
   req_1: {
@@ -40,10 +40,10 @@ const createLyricParam = (mid: string) => ({
   uin: "0",
 });
 
-// export const queryPlayUrl = (mid: string) =>
-//   postMusics<ReturnType<typeof createPlayUrlParam>, SongUrlResponse>(
-//     createPlayUrlParam(mid)
-//   );
+export const queryPlayUrl = (mid: string) =>
+  postMusics<ReturnType<typeof createPlayUrlParam>, SongUrlResponse>(
+    createPlayUrlParam(mid)
+  );
 
 export const songUrl = (mid: string) =>
   queryPlayUrl(mid).then((res) => {

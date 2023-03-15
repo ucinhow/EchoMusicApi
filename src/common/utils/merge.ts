@@ -6,8 +6,6 @@ import {
   SonglistItem,
 } from "@/common/typing";
 import md5 from "md5";
-import { songItemCache } from "../cache";
-import { PLAYSOURCE } from "../constant";
 import { calcAlbumItemKey, calcSongItemKey, traverseByHorizon } from "./other";
 
 /**
