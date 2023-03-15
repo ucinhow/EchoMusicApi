@@ -1,7 +1,7 @@
 import { createClient } from "redis";
 import { cacheByRedis, redisUrl, password as redisPsw } from "@/common/config";
 import { add } from "date-fns";
-import { devLog } from "../utils";
+import { devlog } from "../utils";
 
 const errorMsg = "ServerError: cache logic error";
 export const client = createClient({
@@ -15,7 +15,7 @@ export const client = createClient({
     client.addListener("error", (err) => console.error(err));
     await client.connect();
   } catch (e) {
-    devLog(`ServerError: failed to connect to redis(${e})`);
+    devlog(`ServerError: failed to connect to redis(${e})`);
   }
 })();
 
@@ -39,7 +39,7 @@ const set = async (key: string, path: string, val: any, timeout?: number) => {
       )
       .exec();
   } catch (e) {
-    devLog(`${errorMsg}(${e})`, (e as any).stack);
+    devlog(`${errorMsg}(${e})`, (e as any).stack);
     return false;
   }
   return true;
@@ -61,7 +61,7 @@ const mset = async (data: [string, any][], path?: string, timeout?: number) => {
     });
     await temp.exec();
   } catch (e) {
-    devLog(`${errorMsg}(${e})`, (e as any).stack);
+    devlog(`${errorMsg}(${e})`, (e as any).stack);
     return false;
   }
   return true;

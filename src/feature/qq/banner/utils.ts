@@ -1,7 +1,7 @@
 import { ERROR_MSG } from "@/common/constant";
 import { Banner, DataType, Source } from "@/common/typing";
 import { BannerResponse, JumpType } from "./typing";
-import { devLog } from "@/common/utils";
+import { devlog } from "@/common/utils";
 
 export const serializeBanner = (res: BannerResponse): Array<Banner> => {
   const data = res.req_1.data.shelf.v_niche?.[0]?.v_card || [];
@@ -27,7 +27,7 @@ export const serializeBanner = (res: BannerResponse): Array<Banner> => {
         type = DataType.mv;
         break;
       default:
-        devLog(item.jumptype, item);
+        devlog(item.jumptype, item);
         throw new Error(ERROR_MSG.BannerJumpError);
     }
     return {
